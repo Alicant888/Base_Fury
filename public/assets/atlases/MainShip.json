@@ -1,0 +1,524 @@
+{
+	"textures": [
+		{
+			"image": "MainShip.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 63,
+				"h": 650
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 12,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 6,
+						"w": 7,
+						"h": 8
+					},
+					"frame": {
+						"x": 55,
+						"y": 1,
+						"w": 7,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 12,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 6,
+						"w": 7,
+						"h": 8
+					},
+					"frame": {
+						"x": 55,
+						"y": 1,
+						"w": 7,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 12,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 5,
+						"w": 7,
+						"h": 8
+					},
+					"frame": {
+						"x": 55,
+						"y": 1,
+						"w": 7,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 12,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 5,
+						"w": 7,
+						"h": 8
+					},
+					"frame": {
+						"x": 55,
+						"y": 1,
+						"w": 7,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 12,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 6,
+						"w": 7,
+						"h": 7
+					},
+					"frame": {
+						"x": 55,
+						"y": 11,
+						"w": 7,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 12,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 6,
+						"w": 7,
+						"h": 7
+					},
+					"frame": {
+						"x": 55,
+						"y": 11,
+						"w": 7,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 55,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 109,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 163,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 217,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 271,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 325,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 379,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 433,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 5,
+						"w": 52,
+						"h": 52
+					},
+					"frame": {
+						"x": 1,
+						"y": 487,
+						"w": 52,
+						"h": 52
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 4,
+						"w": 31,
+						"h": 29
+					},
+					"frame": {
+						"x": 1,
+						"y": 541,
+						"w": 31,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 4,
+						"w": 28,
+						"h": 29
+					},
+					"frame": {
+						"x": 34,
+						"y": 541,
+						"w": 28,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Main Ship - Bases/Main Ship - Base - Full health.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 10,
+						"w": 32,
+						"h": 28
+					},
+					"frame": {
+						"x": 1,
+						"y": 572,
+						"w": 32,
+						"h": 28
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 5,
+						"w": 26,
+						"h": 28
+					},
+					"frame": {
+						"x": 35,
+						"y": 572,
+						"w": 26,
+						"h": 28
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 7,
+						"w": 26,
+						"h": 26
+					},
+					"frame": {
+						"x": 1,
+						"y": 602,
+						"w": 26,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 10,
+						"w": 29,
+						"h": 23
+					},
+					"frame": {
+						"x": 29,
+						"y": 602,
+						"w": 29,
+						"h": 23
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 14,
+						"w": 26,
+						"h": 19
+					},
+					"frame": {
+						"x": 29,
+						"y": 627,
+						"w": 26,
+						"h": 19
+					}
+				},
+				{
+					"filename": "Main Ship - Weapons/Main Ship - Weapons - Auto Cannon/Main Ship - Weapons - Auto Cannon-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 14,
+						"w": 26,
+						"h": 19
+					},
+					"frame": {
+						"x": 1,
+						"y": 630,
+						"w": 26,
+						"h": 19
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:09d815bc51d6411569b59feb860840b6:c4c328ce34e09fe238804ce0c7bed0da:76017b13b1c2ca405c07053c3f2f7567$"
+	}
+}

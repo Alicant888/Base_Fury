@@ -45,6 +45,14 @@ NEXT_PUBLIC_URL=
 npm run dev
 ```
 
+## Phaser game (`/game`)
+
+This repo also includes a small Phaser 3 + TypeScript vertical shooter that runs client-only inside Next.js (App Router).
+
+- **Start dev server**: `npm run dev`
+- **Open route**: `http://localhost:3000/game`
+- **Audio policy**: no autoplay — press **START** in the menu to unlock audio (required on mobile / WebView).
+
 ## Customization
 
 ### Update Manifest Configuration
@@ -156,4 +164,4 @@ For official Base developer resources, please visit:
 - [https://base.org](https://base.org)  
 - [https://docs.base.org](https://docs.base.org)  
 
----
+----
