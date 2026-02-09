@@ -84,6 +84,7 @@ export class MenuScene extends Phaser.Scene {
   private onStart() {
     // IMPORTANT: unlock audio only after START click (user gesture).
     this.unlockAudioOnce();
+    this.playClick();
 
     // Stop menu music immediately.
     this.menuMusic?.stop();
@@ -91,6 +92,14 @@ export class MenuScene extends Phaser.Scene {
     this.menuMusic = undefined;
 
     this.scene.start("GameScene");
+  }
+
+  private playClick() {
+    try {
+      this.sound.play(AUDIO_KEYS.click, { volume: 0.7 });
+    } catch {
+      // ignore
+    }
   }
 
   private unlockAudioOnce() {

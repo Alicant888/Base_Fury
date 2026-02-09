@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { EnemyBullet } from "./EnemyBullet";
-import { ATLAS_KEYS, GAME_HEIGHT, SPRITE_FRAMES } from "../config";
+import { ATLAS_KEYS, AUDIO_KEYS, GAME_HEIGHT, SPRITE_FRAMES } from "../config";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   private engineFx: Phaser.GameObjects.Sprite;
@@ -200,6 +200,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (!bullet) return;
 
     bullet.fire(x, y);
+
+    if (this.scene.registry.get("audioUnlocked")) {
+      try {
+        this.scene.sound.play(AUDIO_KEYS.laserScout, { volume: 0.35 });
+      } catch {
+        // ignore
+      }
+    }
   }
 }
 

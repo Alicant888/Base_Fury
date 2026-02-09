@@ -183,6 +183,15 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  private playSfx(key: string, volume = 1) {
+    if (!this.registry.get("audioUnlocked")) return;
+    try {
+      this.sound.play(key, { volume });
+    } catch {
+      // ignore
+    }
+  }
+
   private setupPointerDrag() {
     const onPointerDown = (pointer: Phaser.Input.Pointer) => {
       if (this.draggingPointerId !== null) return;
@@ -245,13 +254,16 @@ export class GameScene extends Phaser.Scene {
     // Start from under the ship center.
     const y = this.player.y + this.player.displayHeight * 0.45;
 
-    this.spawnBullet(x, y);
+    if (this.spawnBullet(x, y)) {
+      this.playSfx(AUDIO_KEYS.laserShort, 0.35);
+    }
   }
 
-  private spawnBullet(x: number, y: number) {
+  private spawnBullet(x: number, y: number): boolean {
     const bullet = this.bullets.get(x, y) as Bullet | null;
-    if (!bullet) return;
+    if (!bullet) return false;
     bullet.fire(x, y);
+    return true;
   }
 
   private onBulletHitsEnemy(bulletObj: Phaser.GameObjects.GameObject, enemyObj: Phaser.GameObjects.GameObject) {
@@ -267,6 +279,7 @@ export class GameScene extends Phaser.Scene {
       enemy.kill();
 
       this.spawnExplosion(enemy.x, enemy.y);
+      this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
       this.kills += 1;
 
       // 4% chance to drop a shield pickup.
@@ -302,6 +315,8 @@ export class GameScene extends Phaser.Scene {
 
   private takeHit() {
     if (this.isGameOver) return;
+
+    this.playSfx(AUDIO_KEYS.impactSmall, 0.45);
 
     if (this.shieldHits > 0) {
       this.shieldHits = Math.max(0, this.shieldHits - 1);
@@ -341,6 +356,7 @@ export class GameScene extends Phaser.Scene {
   private addShield(hits: number) {
     // No stacking: picking up a new shield just refreshes durability.
     this.shieldHits = hits;
+    this.playSfx(AUDIO_KEYS.energyShield, 0.6);
     this.enableShield();
   }
 
@@ -483,6 +499,7 @@ export class GameScene extends Phaser.Scene {
     playAgainBtn.on("pointerout", () => release(playAgainBtn));
     playAgainBtn.on("pointerup", () => {
       release(playAgainBtn);
+      this.playSfx(AUDIO_KEYS.click, 0.7);
       dim.destroy();
       panel.destroy();
       this.scene.restart();
@@ -492,6 +509,7 @@ export class GameScene extends Phaser.Scene {
     exitBtn.on("pointerout", () => release(exitBtn));
     exitBtn.on("pointerup", () => {
       release(exitBtn);
+      this.playSfx(AUDIO_KEYS.click, 0.7);
       dim.destroy();
       panel.destroy();
       this.scene.start("MenuScene");
@@ -503,9 +521,10 @@ export class GameScene extends Phaser.Scene {
       .sprite(x, y, ATLAS_KEYS.enemy, `${SPRITE_FRAMES.enemyDestructionPrefix}${SPRITE_FRAMES.enemyDestructionStart}${SPRITE_FRAMES.enemyDestructionSuffix}`)
       .setDepth(6);
 
-    // Enemy faces down (flipY), so keep destruction animation consistent.
-    boom.setFlipY(true);
     boom.play("enemy_explode");
+    // Use negative scale instead of flipY to ensure vertical mirroring applies
+    // consistently across trimmed atlas frames.
+    boom.setScale(boom.scaleX, -Math.abs(boom.scaleY));
     boom.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => boom.destroy());
   }
 
@@ -628,7 +647,10 @@ export class GameScene extends Phaser.Scene {
       .setDepth(uiDepth)
       .setInteractive({ useHandCursor: true });
 
-    back.on("pointerup", () => this.scene.start("MenuScene"));
+    back.on("pointerup", () => {
+      this.playSfx(AUDIO_KEYS.click, 0.7);
+      this.scene.start("MenuScene");
+    });
 
     // HP bar (5 hits max).
     this.hpBar = this.add.image(48, 14, ATLAS_KEYS.ui, UI_FRAMES.barHp).setOrigin(0, 0).setDepth(uiDepth);

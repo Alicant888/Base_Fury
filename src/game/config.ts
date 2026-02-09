@@ -9,6 +9,12 @@ export const IMAGE_KEYS = {
 export const AUDIO_KEYS = {
   startMenuMusic: "start_menu_music",
   gameMusic: "game_music",
+  click: "sfx_click",
+  energyShield: "sfx_energy_shield",
+  explosionScout: "sfx_explosion_scout",
+  impactSmall: "sfx_impact_small",
+  laserShort: "sfx_laser_short",
+  laserScout: "sfx_laser_scout",
 } as const;
 
 // Atlas keys (DO NOT CHANGE): required by project docs.
