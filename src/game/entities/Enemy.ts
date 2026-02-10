@@ -88,6 +88,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     this.isFiring = false;
     this.nextFireAt = this.scene.time.now + Phaser.Math.Between(850, 1400);
+
+    // IMPORTANT: This enemy is pooled and its FX sprites are separate GameObjects.
+    // Sync their positions immediately on spawn to avoid a 1-frame "flicker" at the
+    // previous pooled position (especially noticeable for shielded enemies).
+    this.syncFxPositions();
   }
 
   kill() {
