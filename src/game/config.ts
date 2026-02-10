@@ -55,6 +55,9 @@ export const UI_FRAMES = {
 // Gameplay sprite frames we use (must exist in the atlases).
 export const SPRITE_FRAMES = {
   playerShip: "Main Ship - Bases/Main Ship - Base - Full health.png",
+  playerShipSlightDamage: "Main Ship - Bases/Main Ship - Base - Slight damage.png",
+  playerShipDamaged: "Main Ship - Bases/Main Ship - Base - Damaged.png",
+  playerShipVeryDamaged: "Main Ship - Bases/Main Ship - Base - Very damaged.png",
   playerEnginePrefix:
     "Main Ship - Engine Effects/Main Ship - Engines - Base Engine - Idle/Main Ship - Engines - Base Engine - Idle-",
   playerEngineSuffix: ".png",
@@ -89,10 +92,22 @@ export const SPRITE_FRAMES = {
 
   // Shield pickup icon (atlas: FX)
   shieldPickupPrefix:
-    "Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-",
+    "PickupsPack/Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-",
   shieldPickupSuffix: ".png",
   shieldPickupStart: 0,
   shieldPickupEnd: 9,
+
+  // Health pickup icon (atlas: FX)
+  healthPickupPrefix: "PickupsPack/Health/Pickup Icon - Health- ",
+  healthPickupSuffix: ".png",
+  healthPickupStart: 0,
+  healthPickupEnd: 9,
+
+  // Firing-rate pickup icon (atlas: FX)
+  firingRatePickupPrefix: "PickupsPack/Firing rate/Pickup Icon - Firing Rate- ",
+  firingRatePickupSuffix: ".png",
+  firingRatePickupStart: 0,
+  firingRatePickupEnd: 9,
 
   // Player round shield overlay (atlas: MainShip)
   playerShieldPrefix: "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-",

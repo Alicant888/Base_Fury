@@ -2,12 +2,14 @@ import Phaser from "phaser";
 import { Bullet } from "../entities/Bullet";
 import { Enemy } from "../entities/Enemy";
 import { EnemyBullet } from "../entities/EnemyBullet";
+import { FiringRatePickup } from "../entities/FiringRatePickup";
+import { HealthPickup } from "../entities/HealthPickup";
 import { Player } from "../entities/Player";
 import { ShieldPickup } from "../entities/ShieldPickup";
 import { EnemySpawner } from "../systems/EnemySpawner";
 import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, SPRITE_FRAMES, UI_FRAMES } from "../config";
 
-const FIRE_RATE_MS = 375; // ~2.67 shots/sec
+const BASE_FIRE_RATE_MS = 375; // ~2.67 shots/sec
 
 export class GameScene extends Phaser.Scene {
   private bgStar!: Phaser.GameObjects.TileSprite;
@@ -19,6 +21,8 @@ export class GameScene extends Phaser.Scene {
   private enemyBullets!: Phaser.Physics.Arcade.Group;
   private enemies!: Phaser.Physics.Arcade.Group;
   private shieldPickups!: Phaser.Physics.Arcade.Group;
+  private healthPickups!: Phaser.Physics.Arcade.Group;
+  private firingRatePickups!: Phaser.Physics.Arcade.Group;
   private spawner!: EnemySpawner;
 
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -31,8 +35,9 @@ export class GameScene extends Phaser.Scene {
   private isGameOver = false;
   private shieldHits = 0;
   private shieldFx?: Phaser.GameObjects.Sprite;
+  private fireRateMultiplier = 1;
 
-  private hpBar!: Phaser.GameObjects.Image;
+  private lifeIcons: Phaser.GameObjects.Image[] = [];
   private fireEvent?: Phaser.Time.TimerEvent;
   private gameMusic?: Phaser.Sound.BaseSound;
 
@@ -48,6 +53,7 @@ export class GameScene extends Phaser.Scene {
     this.kills = 0;
     this.isGameOver = false;
     this.shieldHits = 0;
+    this.fireRateMultiplier = 1;
     this.draggingPointerId = null;
 
     // Background (parallax).
@@ -79,6 +85,18 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: true,
     });
 
+    this.healthPickups = this.physics.add.group({
+      classType: HealthPickup,
+      maxSize: 12,
+      runChildUpdate: true,
+    });
+
+    this.firingRatePickups = this.physics.add.group({
+      classType: FiringRatePickup,
+      maxSize: 12,
+      runChildUpdate: true,
+    });
+
     this.enemies = this.physics.add.group({
       classType: Enemy,
       maxSize: 50,
@@ -87,6 +105,7 @@ export class GameScene extends Phaser.Scene {
 
     // Player.
     this.player = new Player(this, GAME_WIDTH / 2, GAME_HEIGHT - 80);
+    this.updatePlayerDamageAppearance();
 
     // Input.
     this.cursors = this.input.keyboard?.createCursorKeys();
@@ -127,16 +146,32 @@ export class GameScene extends Phaser.Scene {
       this,
     );
 
+    this.physics.add.overlap(
+      this.player,
+      this.healthPickups,
+      this.onHealthPickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+      undefined,
+      this,
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.firingRatePickups,
+      this.onFiringRatePickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+      undefined,
+      this,
+    );
+
     // Auto-fire (single shot).
     this.fireEvent = this.time.addEvent({
-      delay: FIRE_RATE_MS,
+      delay: this.getFireDelayMs(),
       loop: true,
       callback: () => this.fireSingleShot(),
     });
 
     // UI overlay.
     this.createUI();
-    this.updateBars();
+    this.updateLivesUI();
 
     // Game music (starts after START click / audio unlock).
     if (this.registry.get("audioUnlocked")) {
@@ -282,10 +317,7 @@ export class GameScene extends Phaser.Scene {
       this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
       this.kills += 1;
 
-      // 4% chance to drop a shield pickup.
-      if (!this.isGameOver && Phaser.Math.FloatBetween(0, 1) < 0.04) {
-        this.spawnShieldPickup(enemy.x, enemy.y);
-      }
+      this.maybeSpawnPickup(enemy.x, enemy.y);
     }
   }
 
@@ -313,6 +345,25 @@ export class GameScene extends Phaser.Scene {
     this.addShield(5);
   }
 
+  private onHealthPickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
+    const pickup = pickupObj as HealthPickup;
+    if (!pickup.active) return;
+
+    pickup.kill();
+    this.hp = this.maxHp;
+    this.updateLivesUI();
+    this.updatePlayerDamageAppearance();
+  }
+
+  private onFiringRatePickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
+    const pickup = pickupObj as FiringRatePickup;
+    if (!pickup.active) return;
+
+    pickup.kill();
+    // +20% fire rate => delay * 0.8
+    this.setFireRateMultiplier(0.8);
+  }
+
   private takeHit() {
     if (this.isGameOver) return;
 
@@ -328,7 +379,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.hp = Math.max(0, this.hp - 1);
-    this.updateBars();
+    this.updateLivesUI();
+    this.updatePlayerDamageAppearance();
     this.flashPlayer();
 
     if (this.hp <= 0) {
@@ -406,6 +458,31 @@ export class GameScene extends Phaser.Scene {
     const pickup = this.shieldPickups.get(x, y) as ShieldPickup | null;
     if (!pickup) return;
     pickup.spawn(x, y);
+  }
+
+  private spawnHealthPickup(x: number, y: number) {
+    const pickup = this.healthPickups.get(x, y) as HealthPickup | null;
+    if (!pickup) return;
+    pickup.spawn(x, y);
+  }
+
+  private spawnFiringRatePickup(x: number, y: number) {
+    const pickup = this.firingRatePickups.get(x, y) as FiringRatePickup | null;
+    if (!pickup) return;
+    pickup.spawn(x, y);
+  }
+
+  private maybeSpawnPickup(x: number, y: number) {
+    if (this.isGameOver) return;
+
+    // Spawn at most one pickup to avoid clutter, using exact probabilities:
+    // - Health: 3%
+    // - Firing rate: 4%
+    // - Shield: 4%
+    const r = Phaser.Math.FloatBetween(0, 1);
+    if (r < 0.03) this.spawnHealthPickup(x, y);
+    else if (r < 0.03 + 0.04) this.spawnFiringRatePickup(x, y);
+    else if (r < 0.03 + 0.04 + 0.04) this.spawnShieldPickup(x, y);
   }
 
   private triggerGameOver() {
@@ -599,19 +676,35 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
-    if (!this.anims.exists("shield_pickup")) {
-      this.anims.create({
-        key: "shield_pickup",
-        frames: this.anims.generateFrameNames(ATLAS_KEYS.fx, {
-          start: SPRITE_FRAMES.shieldPickupStart,
-          end: SPRITE_FRAMES.shieldPickupEnd,
-          prefix: SPRITE_FRAMES.shieldPickupPrefix,
-          suffix: SPRITE_FRAMES.shieldPickupSuffix,
-        }),
-        frameRate: 14,
-        repeat: -1,
-      });
-    }
+    this.createLoopAnimIfFrames(
+      "shield_pickup",
+      ATLAS_KEYS.fx,
+      SPRITE_FRAMES.shieldPickupPrefix,
+      SPRITE_FRAMES.shieldPickupStart,
+      SPRITE_FRAMES.shieldPickupEnd,
+      SPRITE_FRAMES.shieldPickupSuffix,
+      14,
+    );
+
+    this.createLoopAnimIfFrames(
+      "health_pickup",
+      ATLAS_KEYS.fx,
+      SPRITE_FRAMES.healthPickupPrefix,
+      SPRITE_FRAMES.healthPickupStart,
+      SPRITE_FRAMES.healthPickupEnd,
+      SPRITE_FRAMES.healthPickupSuffix,
+      14,
+    );
+
+    this.createLoopAnimIfFrames(
+      "firing_rate_pickup",
+      ATLAS_KEYS.fx,
+      SPRITE_FRAMES.firingRatePickupPrefix,
+      SPRITE_FRAMES.firingRatePickupStart,
+      SPRITE_FRAMES.firingRatePickupEnd,
+      SPRITE_FRAMES.firingRatePickupSuffix,
+      14,
+    );
 
     if (!this.anims.exists("player_shield")) {
       this.anims.create({
@@ -626,6 +719,35 @@ export class GameScene extends Phaser.Scene {
         repeat: -1,
       });
     }
+  }
+
+  private createLoopAnimIfFrames(
+    key: string,
+    atlasKey: string,
+    prefix: string,
+    start: number,
+    end: number,
+    suffix: string,
+    frameRate: number,
+  ) {
+    if (this.anims.exists(key)) return;
+
+    const tex = this.textures.get(atlasKey);
+    const frames: Array<{ key: string; frame: string }> = [];
+    for (let i = start; i <= end; i += 1) {
+      const name = `${prefix}${i}${suffix}`;
+      if (tex?.has(name)) frames.push({ key: atlasKey, frame: name });
+    }
+
+    // Avoid creating empty animations (can crash on play()) if frame names ever change.
+    if (frames.length === 0) return;
+
+    this.anims.create({
+      key,
+      frames: frames as unknown as Phaser.Types.Animations.AnimationFrame[],
+      frameRate,
+      repeat: -1,
+    });
   }
 
   private ensureBulletTexture() {
@@ -652,14 +774,62 @@ export class GameScene extends Phaser.Scene {
       this.scene.start("MenuScene");
     });
 
-    // HP bar (5 hits max).
-    this.hpBar = this.add.image(48, 14, ATLAS_KEYS.ui, UI_FRAMES.barHp).setOrigin(0, 0).setDepth(uiDepth);
+    // Lives: 5 mini ship icons. One disappears per hit (HP loss).
+    const startX = 48;
+    const y = 14;
+    const scale = 0.75;
+    const spacing = 20;
+
+    this.lifeIcons.forEach((i) => i.destroy());
+    this.lifeIcons = [];
+
+    for (let i = 0; i < this.maxHp; i += 1) {
+      const icon = this.add
+        .image(startX + i * spacing, y, ATLAS_KEYS.ship, SPRITE_FRAMES.playerShip)
+        .setOrigin(0, 0)
+        .setDepth(uiDepth)
+        .setScale(scale);
+      this.lifeIcons.push(icon);
+    }
   }
 
-  private updateBars() {
-    const hpPct = Phaser.Math.Clamp(this.hp / this.maxHp, 0, 1);
+  private updateLivesUI() {
+    for (let i = 0; i < this.lifeIcons.length; i += 1) {
+      this.lifeIcons[i].setVisible(i < this.hp);
+    }
+  }
 
-    this.hpBar.setCrop(0, 0, this.hpBar.frame.width * hpPct, this.hpBar.frame.height);
+  private updatePlayerDamageAppearance() {
+    const hitsTaken = this.maxHp - this.hp;
+    let frame: string = SPRITE_FRAMES.playerShip;
+    if (hitsTaken >= 4) frame = SPRITE_FRAMES.playerShipVeryDamaged;
+    else if (hitsTaken === 3) frame = SPRITE_FRAMES.playerShipDamaged;
+    else if (hitsTaken === 2) frame = SPRITE_FRAMES.playerShipSlightDamage;
+    else frame = SPRITE_FRAMES.playerShip; // 0-1
+
+    this.player.setFrame(frame);
+    // Keep hitbox roughly consistent with the current frame size.
+    (this.player.body as Phaser.Physics.Arcade.Body).setSize(this.player.width * 0.6, this.player.height * 0.6, true);
+  }
+
+  private getFireDelayMs() {
+    return Math.round(BASE_FIRE_RATE_MS * this.fireRateMultiplier);
+  }
+
+  private setFireRateMultiplier(multiplier: number) {
+    this.fireRateMultiplier = Phaser.Math.Clamp(multiplier, 0.2, 2);
+
+    if (this.isGameOver) return;
+    if (this.fireEvent) {
+      this.fireEvent.remove(false);
+      this.fireEvent = undefined;
+    }
+
+    this.fireEvent = this.time.addEvent({
+      delay: this.getFireDelayMs(),
+      loop: true,
+      callback: () => this.fireSingleShot(),
+    });
   }
 }
 
