@@ -52,12 +52,17 @@ const BIG_PULSE_ENGINE_FLAME_OFFSET_X = 0; // single flame (center)
 // TUNE WEAPON OFFSETS HERE (Auto Cannons):
 // - Weapon sprite position is relative to the player.
 // - Bullet spawn is relative to the weapon sprite (muzzles).
-const AUTO_CANNON_BARREL_OFFSET_MS = 333;
 const AUTO_CANNON_WEAPON_OFFSET_X = 0;
 const AUTO_CANNON_WEAPON_OFFSET_Y = -2;
 const AUTO_CANNON_BULLET_FROM_WEAPON_OFFSET_Y = -6;
 const AUTO_CANNON_BULLET_FROM_WEAPON_OFFSET_X_L = -10;
 const AUTO_CANNON_BULLET_FROM_WEAPON_OFFSET_X_R = 10;
+
+// Auto Cannon firing is synced to the weapon animation frames:
+// - Frame ...Auto Cannon-1 => left bullet
+// - Frame ...Auto Cannon-2 => right bullet
+const AUTO_CANNON_WEAPON_FIRE_LEFT_FRAME = `${SPRITE_FRAMES.autoCannonWeaponPrefix}1${SPRITE_FRAMES.autoCannonWeaponSuffix}`;
+const AUTO_CANNON_WEAPON_FIRE_RIGHT_FRAME = `${SPRITE_FRAMES.autoCannonWeaponPrefix}2${SPRITE_FRAMES.autoCannonWeaponSuffix}`;
 
 export class GameScene extends Phaser.Scene {
   private bgStar!: Phaser.GameObjects.TileSprite;
@@ -101,7 +106,6 @@ export class GameScene extends Phaser.Scene {
 
   private lifeIcons: Phaser.GameObjects.Image[] = [];
   private fireEvent?: Phaser.Time.TimerEvent;
-  private secondaryFireStartEvent?: Phaser.Time.TimerEvent;
   private gameMusic?: Phaser.Sound.BaseSound;
 
   private activeWeaponType: "default" | "autoCannons" = "default";
@@ -515,12 +519,19 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private fireAutoCannonsPair() {
-    this.fireAutoCannonBarrel("left");
-    this.secondaryFireStartEvent?.remove(false);
-    this.secondaryFireStartEvent = this.time.delayedCall(AUTO_CANNON_BARREL_OFFSET_MS, () => {
-      this.fireAutoCannonBarrel("right");
-    });
+  private onWeaponAnimationUpdate(
+    animation: Phaser.Animations.Animation,
+    _frame: Phaser.Animations.AnimationFrame,
+    _gameObject: Phaser.GameObjects.Sprite,
+    frameKey: string,
+  ) {
+    if (this.isGameOver) return;
+    if (!this.player.active) return;
+    if (this.activeWeaponType !== "autoCannons") return;
+    if (animation.key !== "auto_cannon_weapon") return;
+
+    if (frameKey === AUTO_CANNON_WEAPON_FIRE_LEFT_FRAME) this.fireAutoCannonBarrel("left");
+    else if (frameKey === AUTO_CANNON_WEAPON_FIRE_RIGHT_FRAME) this.fireAutoCannonBarrel("right");
   }
 
   private onBulletHitsEnemy(bulletObj: Phaser.GameObjects.GameObject, enemyObj: Phaser.GameObjects.GameObject) {
@@ -1081,7 +1092,7 @@ export class GameScene extends Phaser.Scene {
       SPRITE_FRAMES.autoCannonWeaponStart,
       SPRITE_FRAMES.autoCannonWeaponEnd,
       SPRITE_FRAMES.autoCannonWeaponSuffix,
-      18,
+      14.4, // 18fps slowed by 20%
     );
 
     this.createLoopAnimIfFrames(
@@ -1203,27 +1214,13 @@ export class GameScene extends Phaser.Scene {
   private destroyWeaponFireEvents() {
     this.fireEvent?.remove(false);
     this.fireEvent = undefined;
-
-    this.secondaryFireStartEvent?.remove(false);
-    this.secondaryFireStartEvent = undefined;
   }
 
   private configureWeaponFireEvents() {
     this.destroyWeaponFireEvents();
     if (this.isGameOver) return;
 
-    if (this.activeWeaponType === "autoCannons") {
-      // Ensure the right barrel shot lands before the next cycle.
-      const delay = Math.max(this.getFireDelayMs(), AUTO_CANNON_BARREL_OFFSET_MS + 20);
-      this.fireEvent = this.time.addEvent({
-        delay,
-        loop: true,
-        callback: () => this.fireAutoCannonsPair(),
-      });
-      return;
-    }
-
-    // Default weapon (single shot).
+    // Base weapon (single shot) always stays active.
     this.fireEvent = this.time.addEvent({
       delay: this.getFireDelayMs(),
       loop: true,
@@ -1287,6 +1284,10 @@ export class GameScene extends Phaser.Scene {
     } catch {
       // ignore
     }
+
+    // Sync bullet spawn to animation frames (frame -1 => left, frame -2 => right).
+    this.weaponSprite.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.onWeaponAnimationUpdate, this);
+    this.weaponSprite.on(Phaser.Animations.Events.ANIMATION_UPDATE, this.onWeaponAnimationUpdate, this);
 
     // Shield should render above the weapon.
     if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
