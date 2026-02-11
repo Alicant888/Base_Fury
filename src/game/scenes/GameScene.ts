@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { BaseEnginePickup } from "../entities/BaseEnginePickup";
+import { BigPulseEnginePickup } from "../entities/BigPulseEnginePickup";
 import { Bullet } from "../entities/Bullet";
+import { BurstEnginePickup } from "../entities/BurstEnginePickup";
 import { Enemy } from "../entities/Enemy";
 import { EnemyBullet } from "../entities/EnemyBullet";
 import { FiringRatePickup } from "../entities/FiringRatePickup";
@@ -16,7 +18,8 @@ const BASE_MOVE_SPEED_PX_PER_SEC = 280;
 const BASE_MOVE_SPEED_MULTIPLIER = 0.8; // Main Ship is 20% slower by default.
 
 const DEPTH_PLAYER = 5;
-const DEPTH_ENGINE_FLAMES = 5.5;
+// Flames should render above the engine, but still below the shield.
+const DEPTH_ENGINE_FLAMES = 6.5;
 const DEPTH_ENGINE = 6;
 const DEPTH_SHIELD = 7;
 
@@ -33,6 +36,16 @@ const SUPERCHARGED_ENGINE_OFFSET_Y = 2;
 const SUPERCHARGED_ENGINE_FLAME_OFFSET_Y = 18;
 const SUPERCHARGED_ENGINE_FLAME_SPACING_X = 7;
 
+// TUNE ENGINE FX OFFSETS HERE (Burst Engine):
+const BURST_ENGINE_OFFSET_Y = 2;
+const BURST_ENGINE_FLAME_OFFSET_Y = 16;
+const BURST_ENGINE_FLAME_OFFSET_X = 0; // single flame (center)
+
+// TUNE ENGINE FX OFFSETS HERE (Big Pulse Engine):
+const BIG_PULSE_ENGINE_OFFSET_Y = 5;
+const BIG_PULSE_ENGINE_FLAME_OFFSET_Y = 20;
+const BIG_PULSE_ENGINE_FLAME_OFFSET_X = 0; // single flame (center)
+
 export class GameScene extends Phaser.Scene {
   private bgStar!: Phaser.GameObjects.TileSprite;
   private bgNebula!: Phaser.GameObjects.TileSprite;
@@ -47,6 +60,8 @@ export class GameScene extends Phaser.Scene {
   private firingRatePickups!: Phaser.Physics.Arcade.Group;
   private baseEnginePickups!: Phaser.Physics.Arcade.Group;
   private superchargedEnginePickups!: Phaser.Physics.Arcade.Group;
+  private burstEnginePickups!: Phaser.Physics.Arcade.Group;
+  private bigPulseEnginePickups!: Phaser.Physics.Arcade.Group;
   private spawner!: EnemySpawner;
 
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -66,7 +81,7 @@ export class GameScene extends Phaser.Scene {
   private engineSprite?: Phaser.GameObjects.Image;
   private engineFlameL?: Phaser.GameObjects.Sprite;
   private engineFlameR?: Phaser.GameObjects.Sprite;
-  private activeEngineType: "base" | "supercharged" | null = null;
+  private activeEngineType: "base" | "supercharged" | "burst" | "bigPulse" | null = null;
   private fireRateMultiplier = 1;
 
   private lifeIcons: Phaser.GameObjects.Image[] = [];
@@ -142,6 +157,18 @@ export class GameScene extends Phaser.Scene {
 
     this.superchargedEnginePickups = this.physics.add.group({
       classType: SuperchargedEnginePickup,
+      maxSize: 12,
+      runChildUpdate: true,
+    });
+
+    this.burstEnginePickups = this.physics.add.group({
+      classType: BurstEnginePickup,
+      maxSize: 12,
+      runChildUpdate: true,
+    });
+
+    this.bigPulseEnginePickups = this.physics.add.group({
+      classType: BigPulseEnginePickup,
       maxSize: 12,
       runChildUpdate: true,
     });
@@ -224,6 +251,22 @@ export class GameScene extends Phaser.Scene {
       this.player,
       this.superchargedEnginePickups,
       this.onSuperchargedEnginePickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+      undefined,
+      this,
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.burstEnginePickups,
+      this.onBurstEnginePickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+      undefined,
+      this,
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.bigPulseEnginePickups,
+      this.onBigPulseEnginePickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
       undefined,
       this,
     );
@@ -480,6 +523,22 @@ export class GameScene extends Phaser.Scene {
     this.activateSuperchargedEngine();
   }
 
+  private onBurstEnginePickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
+    const pickup = pickupObj as BurstEnginePickup;
+    if (!pickup.active) return;
+
+    pickup.kill();
+    this.activateBurstEngine();
+  }
+
+  private onBigPulseEnginePickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
+    const pickup = pickupObj as BigPulseEnginePickup;
+    if (!pickup.active) return;
+
+    pickup.kill();
+    this.activateBigPulseEngine();
+  }
+
   private takeHit() {
     if (this.isGameOver) return;
 
@@ -593,17 +652,21 @@ export class GameScene extends Phaser.Scene {
     if (this.isGameOver) return;
 
     // Spawn at most one pickup to avoid clutter, using exact probabilities:
-    // - Supercharged engine: 50%
+    // - Burst engine: 40%
+    // - Big Pulse engine: 40%
+    // - Supercharged engine: 8.9%
     // - Base engine: 0.1%
     // - Health: 3%
     // - Firing rate: 4%
     // - Shield: 4%
     const r = Phaser.Math.FloatBetween(0, 1);
-    if (r < 0.5) this.spawnSuperchargedEnginePickup(x, y);
-    else if (r < 0.5 + 0.001) this.spawnBaseEnginePickup(x, y);
-    else if (r < 0.5 + 0.001 + 0.03) this.spawnHealthPickup(x, y);
-    else if (r < 0.5 + 0.001 + 0.03 + 0.04) this.spawnFiringRatePickup(x, y);
-    else if (r < 0.5 + 0.001 + 0.03 + 0.04 + 0.04) this.spawnShieldPickup(x, y);
+    if (r < 0.4) this.spawnBurstEnginePickup(x, y);
+    else if (r < 0.8) this.spawnBigPulseEnginePickup(x, y);
+    else if (r < 0.889) this.spawnSuperchargedEnginePickup(x, y);
+    else if (r < 0.89) this.spawnBaseEnginePickup(x, y);
+    else if (r < 0.92) this.spawnHealthPickup(x, y);
+    else if (r < 0.96) this.spawnFiringRatePickup(x, y);
+    else if (r < 1.0) this.spawnShieldPickup(x, y);
   }
 
   private triggerGameOver() {
@@ -848,6 +911,26 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.createLoopAnimIfFrames(
+      "burst_engine_pickup",
+      ATLAS_KEYS.fx,
+      SPRITE_FRAMES.burstEnginePickupPrefix,
+      SPRITE_FRAMES.burstEnginePickupStart,
+      SPRITE_FRAMES.burstEnginePickupEnd,
+      SPRITE_FRAMES.burstEnginePickupSuffix,
+      14,
+    );
+
+    this.createLoopAnimIfFrames(
+      "big_pulse_engine_pickup",
+      ATLAS_KEYS.fx,
+      SPRITE_FRAMES.bigPulseEnginePickupPrefix,
+      SPRITE_FRAMES.bigPulseEnginePickupStart,
+      SPRITE_FRAMES.bigPulseEnginePickupEnd,
+      SPRITE_FRAMES.bigPulseEnginePickupSuffix,
+      14,
+    );
+
+    this.createLoopAnimIfFrames(
       "base_engine_flame",
       ATLAS_KEYS.ship,
       SPRITE_FRAMES.baseEngineFlamePrefix,
@@ -864,6 +947,26 @@ export class GameScene extends Phaser.Scene {
       SPRITE_FRAMES.superchargedEngineFlameStart,
       SPRITE_FRAMES.superchargedEngineFlameEnd,
       SPRITE_FRAMES.superchargedEngineFlameSuffix,
+      18,
+    );
+
+    this.createLoopAnimIfFrames(
+      "burst_engine_flame",
+      ATLAS_KEYS.ship,
+      SPRITE_FRAMES.burstEngineFlamePrefix,
+      SPRITE_FRAMES.burstEngineFlameStart,
+      SPRITE_FRAMES.burstEngineFlameEnd,
+      SPRITE_FRAMES.burstEngineFlameSuffix,
+      18,
+    );
+
+    this.createLoopAnimIfFrames(
+      "big_pulse_engine_flame",
+      ATLAS_KEYS.ship,
+      SPRITE_FRAMES.bigPulseEngineFlamePrefix,
+      SPRITE_FRAMES.bigPulseEngineFlameStart,
+      SPRITE_FRAMES.bigPulseEngineFlameEnd,
+      SPRITE_FRAMES.bigPulseEngineFlameSuffix,
       18,
     );
 
@@ -1005,6 +1108,18 @@ export class GameScene extends Phaser.Scene {
     pickup.spawn(x, y);
   }
 
+  private spawnBurstEnginePickup(x: number, y: number) {
+    const pickup = this.burstEnginePickups.get(x, y) as BurstEnginePickup | null;
+    if (!pickup) return;
+    pickup.spawn(x, y);
+  }
+
+  private spawnBigPulseEnginePickup(x: number, y: number) {
+    const pickup = this.bigPulseEnginePickups.get(x, y) as BigPulseEnginePickup | null;
+    if (!pickup) return;
+    pickup.spawn(x, y);
+  }
+
   private activateBaseEngine() {
     // +25% move speed.
     this.moveSpeedMultiplier = 1.25;
@@ -1096,24 +1211,128 @@ export class GameScene extends Phaser.Scene {
     this.syncPlayerEngineFx();
   }
 
+  private activateBurstEngine() {
+    // +75% move speed.
+    this.moveSpeedMultiplier = 1.75;
+    this.activeEngineType = "burst";
+
+    if (!this.engineSprite) {
+      this.engineSprite = this.add
+        .image(this.player.x, this.player.y, ATLAS_KEYS.ship, SPRITE_FRAMES.burstEngineSprite)
+        .setDepth(DEPTH_ENGINE)
+        .setScale(1);
+    }
+    this.engineSprite.setFrame(SPRITE_FRAMES.burstEngineSprite);
+    this.engineSprite.setVisible(true);
+    this.engineSprite.setDepth(DEPTH_ENGINE);
+
+    const flameFrame = `${SPRITE_FRAMES.burstEngineFlamePrefix}${SPRITE_FRAMES.burstEngineFlameStart}${SPRITE_FRAMES.burstEngineFlameSuffix}`;
+
+    if (!this.engineFlameL) {
+      this.engineFlameL = this.add.sprite(this.player.x, this.player.y, ATLAS_KEYS.ship, flameFrame).setDepth(DEPTH_ENGINE_FLAMES).setScale(1);
+    }
+    // Burst uses a single flame (centered). Hide the right flame if it exists from another engine.
+    if (this.engineFlameR) {
+      this.engineFlameR.setVisible(false);
+      this.engineFlameR.anims.stop();
+    }
+
+    this.engineFlameL.setVisible(true);
+    this.engineFlameL.setDepth(DEPTH_ENGINE_FLAMES);
+
+    try {
+      this.engineFlameL.play("burst_engine_flame", true);
+    } catch {
+      // ignore
+    }
+
+    if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
+    this.syncPlayerEngineFx();
+  }
+
+  private activateBigPulseEngine() {
+    // +100% move speed.
+    this.moveSpeedMultiplier = 2.0;
+    this.activeEngineType = "bigPulse";
+
+    if (!this.engineSprite) {
+      this.engineSprite = this.add
+        .image(this.player.x, this.player.y, ATLAS_KEYS.ship, SPRITE_FRAMES.bigPulseEngineSprite)
+        .setDepth(DEPTH_ENGINE)
+        .setScale(1);
+    }
+    this.engineSprite.setFrame(SPRITE_FRAMES.bigPulseEngineSprite);
+    this.engineSprite.setVisible(true);
+    this.engineSprite.setDepth(DEPTH_ENGINE);
+
+    const flameFrame = `${SPRITE_FRAMES.bigPulseEngineFlamePrefix}${SPRITE_FRAMES.bigPulseEngineFlameStart}${SPRITE_FRAMES.bigPulseEngineFlameSuffix}`;
+
+    if (!this.engineFlameL) {
+      this.engineFlameL = this.add.sprite(this.player.x, this.player.y, ATLAS_KEYS.ship, flameFrame).setDepth(DEPTH_ENGINE_FLAMES).setScale(1);
+    }
+    // Big Pulse uses a single flame (centered). Hide the right flame if it exists from another engine.
+    if (this.engineFlameR) {
+      this.engineFlameR.setVisible(false);
+      this.engineFlameR.anims.stop();
+    }
+
+    this.engineFlameL.setVisible(true);
+    this.engineFlameL.setDepth(DEPTH_ENGINE_FLAMES);
+
+    try {
+      this.engineFlameL.play("big_pulse_engine_flame", true);
+    } catch {
+      // ignore
+    }
+
+    if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
+    this.syncPlayerEngineFx();
+  }
+
   private syncPlayerEngineFx() {
     if (!this.engineSprite) return;
     if (!this.engineSprite.visible) return;
 
     const engineX = this.player.x;
-    const engineOffsetY = this.activeEngineType === "supercharged" ? SUPERCHARGED_ENGINE_OFFSET_Y : BASE_ENGINE_OFFSET_Y;
-    const flameOffsetY =
-      this.activeEngineType === "supercharged" ? SUPERCHARGED_ENGINE_FLAME_OFFSET_Y : BASE_ENGINE_FLAME_OFFSET_Y;
-    const flameSpacingX =
-      this.activeEngineType === "supercharged" ? SUPERCHARGED_ENGINE_FLAME_SPACING_X : BASE_ENGINE_FLAME_SPACING_X;
+
+    let engineOffsetY = BASE_ENGINE_OFFSET_Y;
+    let flameOffsetY = BASE_ENGINE_FLAME_OFFSET_Y;
+    let flameSpacingX = BASE_ENGINE_FLAME_SPACING_X;
+    let flameOffsetX = 0;
+    let isSingleFlame = false;
+
+    if (this.activeEngineType === "supercharged") {
+      engineOffsetY = SUPERCHARGED_ENGINE_OFFSET_Y;
+      flameOffsetY = SUPERCHARGED_ENGINE_FLAME_OFFSET_Y;
+      flameSpacingX = SUPERCHARGED_ENGINE_FLAME_SPACING_X;
+    } else if (this.activeEngineType === "burst") {
+      engineOffsetY = BURST_ENGINE_OFFSET_Y;
+      flameOffsetY = BURST_ENGINE_FLAME_OFFSET_Y;
+      flameOffsetX = BURST_ENGINE_FLAME_OFFSET_X;
+      isSingleFlame = true;
+    } else if (this.activeEngineType === "bigPulse") {
+      engineOffsetY = BIG_PULSE_ENGINE_OFFSET_Y;
+      flameOffsetY = BIG_PULSE_ENGINE_FLAME_OFFSET_Y;
+      flameOffsetX = BIG_PULSE_ENGINE_FLAME_OFFSET_X;
+      isSingleFlame = true;
+    }
 
     const engineY = this.player.y + engineOffsetY;
     this.engineSprite.setPosition(engineX, engineY);
 
-    if (this.engineFlameL && this.engineFlameR) {
+    if (this.engineFlameL) {
       const flameY = this.player.y + flameOffsetY;
-      this.engineFlameL.setPosition(engineX - flameSpacingX, flameY);
-      this.engineFlameR.setPosition(engineX + flameSpacingX, flameY);
+      if (isSingleFlame) {
+        this.engineFlameL.setPosition(engineX + flameOffsetX, flameY);
+        if (this.engineFlameR) {
+          this.engineFlameR.setVisible(false);
+          this.engineFlameR.anims.stop();
+        }
+      } else if (this.engineFlameR) {
+        this.engineFlameL.setPosition(engineX - flameSpacingX, flameY);
+        this.engineFlameR.setPosition(engineX + flameSpacingX, flameY);
+        this.engineFlameR.setVisible(true);
+      }
     }
   }
 

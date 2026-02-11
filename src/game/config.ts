@@ -142,6 +142,39 @@ export const SPRITE_FRAMES = {
   superchargedEngineFlameStart: 0,
   superchargedEngineFlameEnd: 7,
 
+  // Burst engine pickup icon (atlas: FX)
+  burstEnginePickupPrefix: "PickupsPack/Engines/Pickup Icon - Engines - Burst Engine/Pickup Icon - Engines - Burst Engine-",
+  burstEnginePickupSuffix: ".png",
+  burstEnginePickupStart: 0,
+  burstEnginePickupEnd: 9,
+
+  // Burst engine sprite (atlas: MainShip)
+  burstEngineSprite: "Main Ship - Engines/Main Ship - Engines - Burst Engine.png",
+
+  // Burst engine flame (atlas: MainShip)
+  burstEngineFlamePrefix:
+    "Main Ship - Engine Effects/Main Ship - Engines - Burst Engine - Powering/Main Ship - Engines - Burst Engine - Powering-",
+  burstEngineFlameSuffix: ".png",
+  burstEngineFlameStart: 0,
+  burstEngineFlameEnd: 7,
+
+  // Big Pulse engine pickup icon (atlas: FX)
+  bigPulseEnginePickupPrefix:
+    "PickupsPack/Engines/Pickup Icon - Engines - Big Pulse Engine/Pickup Icon - Engines - Big Pulse Engine-",
+  bigPulseEnginePickupSuffix: ".png",
+  bigPulseEnginePickupStart: 0,
+  bigPulseEnginePickupEnd: 9,
+
+  // Big Pulse engine sprite (atlas: MainShip)
+  bigPulseEngineSprite: "Main Ship - Engines/Main Ship - Engines - Big Pulse Engine.png",
+
+  // Big Pulse engine flame (atlas: MainShip) - atlas may have fewer than 0..7, animation creation is guarded.
+  bigPulseEngineFlamePrefix:
+    "Main Ship - Engine Effects/Main Ship - Engines - Big Pulse Engine - Powering/Main Ship - Engines - Big Pulse Engine - Powering-",
+  bigPulseEngineFlameSuffix: ".png",
+  bigPulseEngineFlameStart: 0,
+  bigPulseEngineFlameEnd: 7,
+
   // Player round shield overlay (atlas: MainShip)
   playerShieldPrefix: "Main Ship - Shields/Main Ship - Shields - Round Shield/Main Ship - Shields - Round Shield-",
   playerShieldSuffix: ".png",
