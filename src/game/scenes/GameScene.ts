@@ -886,8 +886,9 @@ export class GameScene extends Phaser.Scene {
     const bullet = bulletObj as EnemyBullet;
     if (!bullet.active) return;
 
+    const damage = bullet.getDamage();
     bullet.kill();
-    this.takeHit();
+    this.takeHit(damage);
   }
 
   private onShieldPickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
@@ -981,21 +982,26 @@ export class GameScene extends Phaser.Scene {
     this.activateBigPulseEngine();
   }
 
-  private takeHit() {
+  private takeHit(damage = 1) {
     if (this.isGameOver) return;
 
     this.playSfx(AUDIO_KEYS.impactSmall, 0.45);
 
-    if (this.shieldHits > 0) {
-      this.shieldHits = Math.max(0, this.shieldHits - 1);
+    let remaining = Math.max(1, Math.round(damage));
+
+    if (this.shieldHits > 0 && remaining > 0) {
+      const shieldBefore = this.shieldHits;
+      this.shieldHits = Math.max(0, this.shieldHits - remaining);
+      remaining = Math.max(0, remaining - shieldBefore);
+
       this.flashShield();
       if (this.shieldHits === 0) {
         this.disableShield();
       }
-      return;
+      if (remaining === 0) return;
     }
 
-    this.hp = Math.max(0, this.hp - 1);
+    this.hp = Math.max(0, this.hp - remaining);
     this.updateLivesUI();
     this.updatePlayerDamageAppearance();
     this.flashPlayer();
@@ -1252,14 +1258,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   private spawnExplosion(x: number, y: number, kind: EnemyKind) {
-    const isFighter = kind === "fighter";
-    const frame = isFighter
-      ? `${SPRITE_FRAMES.fighterDestructionPrefix}${SPRITE_FRAMES.fighterDestructionStart}${SPRITE_FRAMES.fighterDestructionSuffix}`
-      : `${SPRITE_FRAMES.enemyDestructionPrefix}${SPRITE_FRAMES.enemyDestructionStart}${SPRITE_FRAMES.enemyDestructionSuffix}`;
+    const frame =
+      kind === "fighter"
+        ? `${SPRITE_FRAMES.fighterDestructionPrefix}${SPRITE_FRAMES.fighterDestructionStart}${SPRITE_FRAMES.fighterDestructionSuffix}`
+        : kind === "torpedo"
+          ? `${SPRITE_FRAMES.torpedoShipDestructionPrefix}${SPRITE_FRAMES.torpedoShipDestructionStart}${SPRITE_FRAMES.torpedoShipDestructionSuffix}`
+          : `${SPRITE_FRAMES.enemyDestructionPrefix}${SPRITE_FRAMES.enemyDestructionStart}${SPRITE_FRAMES.enemyDestructionSuffix}`;
 
     const boom = this.add.sprite(x, y, ATLAS_KEYS.enemy, frame).setDepth(6);
 
-    boom.play(isFighter ? "fighter_explode" : "enemy_explode");
+    const animKey = kind === "fighter" ? "fighter_explode" : kind === "torpedo" ? "torpedo_ship_explode" : "enemy_explode";
+    boom.play(animKey);
     // Use negative scale instead of flipY to ensure vertical mirroring applies
     // consistently across trimmed atlas frames.
     boom.setScale(boom.scaleX, -Math.abs(boom.scaleY));
@@ -1295,6 +1304,20 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
+    if (!this.anims.exists("torpedo_ship_explode")) {
+      this.anims.create({
+        key: "torpedo_ship_explode",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.torpedoShipDestructionStart,
+          end: SPRITE_FRAMES.torpedoShipDestructionEnd,
+          prefix: SPRITE_FRAMES.torpedoShipDestructionPrefix,
+          suffix: SPRITE_FRAMES.torpedoShipDestructionSuffix,
+        }),
+        frameRate: 20,
+        repeat: 0,
+      });
+    }
+
     if (!this.anims.exists("enemy_engine")) {
       this.anims.create({
         key: "enemy_engine",
@@ -1317,6 +1340,20 @@ export class GameScene extends Phaser.Scene {
           end: SPRITE_FRAMES.fighterEngineEnd,
           prefix: SPRITE_FRAMES.fighterEnginePrefix,
           suffix: SPRITE_FRAMES.fighterEngineSuffix,
+        }),
+        frameRate: 14,
+        repeat: -1,
+      });
+    }
+
+    if (!this.anims.exists("torpedo_ship_engine")) {
+      this.anims.create({
+        key: "torpedo_ship_engine",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.torpedoShipEngineStart,
+          end: SPRITE_FRAMES.torpedoShipEngineEnd,
+          prefix: SPRITE_FRAMES.torpedoShipEnginePrefix,
+          suffix: SPRITE_FRAMES.torpedoShipEngineSuffix,
         }),
         frameRate: 14,
         repeat: -1,
@@ -1351,6 +1388,26 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
+    if (!this.anims.exists("torpedo_ship_weapon")) {
+      // Avoid creating an empty animation if the atlas doesn't have the frames yet.
+      const tex = this.textures.get(ATLAS_KEYS.enemy);
+      const torpedoWeaponFrames: Array<{ key: string; frame: string }> = [];
+      for (let i = 1; i <= 14; i += 1) {
+        const name = `${SPRITE_FRAMES.torpedoShipWeaponPrefix}${i}${SPRITE_FRAMES.torpedoShipWeaponSuffix}`;
+        if (tex?.has(name)) torpedoWeaponFrames.push({ key: ATLAS_KEYS.enemy, frame: name });
+      }
+
+      if (torpedoWeaponFrames.length > 0) {
+        this.anims.create({
+        key: "torpedo_ship_weapon",
+        // Play after idle (Weapons-0), so start at Weapons-1.
+        frames: torpedoWeaponFrames as unknown as Phaser.Types.Animations.AnimationFrame[],
+        frameRate: 18,
+        repeat: 0,
+        });
+      }
+    }
+
     if (!this.anims.exists("enemy_bullet")) {
       this.anims.create({
         key: "enemy_bullet",
@@ -1364,6 +1421,16 @@ export class GameScene extends Phaser.Scene {
         repeat: -1,
       });
     }
+
+    this.createLoopAnimIfFrames(
+      "enemy_torpedo",
+      ATLAS_KEYS.enemy,
+      SPRITE_FRAMES.torpedoProjectilePrefix,
+      SPRITE_FRAMES.torpedoProjectileStart,
+      SPRITE_FRAMES.torpedoProjectileEnd,
+      SPRITE_FRAMES.torpedoProjectileSuffix,
+      18,
+    );
 
     if (!this.anims.exists("enemy_shield")) {
       this.anims.create({
@@ -1387,6 +1454,20 @@ export class GameScene extends Phaser.Scene {
           end: SPRITE_FRAMES.fighterShieldEnd,
           prefix: SPRITE_FRAMES.fighterShieldPrefix,
           suffix: SPRITE_FRAMES.fighterShieldSuffix,
+        }),
+        frameRate: 18,
+        repeat: -1,
+      });
+    }
+
+    if (!this.anims.exists("torpedo_ship_shield")) {
+      this.anims.create({
+        key: "torpedo_ship_shield",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.torpedoShipShieldStart,
+          end: SPRITE_FRAMES.torpedoShipShieldEnd,
+          prefix: SPRITE_FRAMES.torpedoShipShieldPrefix,
+          suffix: SPRITE_FRAMES.torpedoShipShieldSuffix,
         }),
         frameRate: 18,
         repeat: -1,

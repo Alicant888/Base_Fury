@@ -113,6 +113,32 @@ export const SPRITE_FRAMES = {
   fighterDestructionStart: 0,
   fighterDestructionEnd: 7,
 
+  torpedoShipBase: "Base/Kla'ed - Torpedo Ship - Base.png",
+  torpedoShipEnginePrefix: "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-",
+  torpedoShipEngineSuffix: ".png",
+  torpedoShipEngineStart: 0,
+  torpedoShipEngineEnd: 9,
+
+  torpedoShipWeaponPrefix: "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-",
+  torpedoShipWeaponSuffix: ".png",
+  torpedoShipWeaponStart: 0,
+  torpedoShipWeaponEnd: 9,
+
+  torpedoProjectilePrefix: "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-",
+  torpedoProjectileSuffix: ".png",
+  torpedoProjectileStart: 0,
+  torpedoProjectileEnd: 14,
+
+  torpedoShipShieldPrefix: "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-",
+  torpedoShipShieldSuffix: ".png",
+  torpedoShipShieldStart: 0,
+  torpedoShipShieldEnd: 9,
+
+  torpedoShipDestructionPrefix: "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-",
+  torpedoShipDestructionSuffix: ".png",
+  torpedoShipDestructionStart: 0,
+  torpedoShipDestructionEnd: 8,
+
   // Shield pickup icon (atlas: FX)
   shieldPickupPrefix:
     "PickupsPack/Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-",

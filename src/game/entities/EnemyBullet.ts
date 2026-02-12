@@ -2,30 +2,62 @@ import Phaser from "phaser";
 import { ATLAS_KEYS, GAME_HEIGHT, SPRITE_FRAMES } from "../config";
 
 const ENEMY_BULLET_SPEED = 240;
+const DEFAULT_DEPTH = 4;
+
+export type EnemyProjectileFireOptions = {
+  damage?: number;
+  speedY?: number;
+  animKey?: string;
+  frame?: string;
+  depth?: number;
+  flipY?: boolean;
+};
 
 export class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
+  private damage = 1;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, ATLAS_KEYS.enemy, `${SPRITE_FRAMES.enemyProjectilePrefix}${SPRITE_FRAMES.enemyProjectileStart}${SPRITE_FRAMES.enemyProjectileSuffix}`);
 
     this.setActive(false);
     this.setVisible(false);
-    this.setDepth(4);
+    this.setDepth(DEFAULT_DEPTH);
   }
 
-  fire(x: number, y: number) {
+  getDamage() {
+    return this.damage;
+  }
+
+  fire(x: number, y: number, options?: EnemyProjectileFireOptions) {
     const body = this.body as Phaser.Physics.Arcade.Body | null;
     if (!body) return;
+
+    this.damage = options?.damage ?? 1;
+
+    const frame =
+      options?.frame ?? `${SPRITE_FRAMES.enemyProjectilePrefix}${SPRITE_FRAMES.enemyProjectileStart}${SPRITE_FRAMES.enemyProjectileSuffix}`;
+    const animKey = options?.animKey ?? "enemy_bullet";
+    const speedY = options?.speedY ?? ENEMY_BULLET_SPEED;
+    const depth = options?.depth ?? DEFAULT_DEPTH;
+    const flipY = options?.flipY ?? true;
 
     this.setPosition(x, y);
     this.setActive(true);
     this.setVisible(true);
+    this.setDepth(depth);
+    this.setFlipY(flipY);
+    this.setFrame(frame);
 
     body.enable = true;
     body.reset(x, y);
     body.allowGravity = false;
 
-    this.setVelocity(0, ENEMY_BULLET_SPEED);
-    this.play("enemy_bullet");
+    this.setVelocity(0, speedY);
+    try {
+      this.play(animKey);
+    } catch {
+      // ignore
+    }
 
     // Small hitbox.
     body.setSize(this.width * 0.7, this.height * 0.7, true);
@@ -35,6 +67,7 @@ export class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
     this.setActive(false);
     this.setVisible(false);
     this.anims.stop();
+    this.damage = 1;
 
     const body = this.body as Phaser.Physics.Arcade.Body | null;
     if (body) {
