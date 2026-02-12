@@ -52,7 +52,7 @@ Enemy Torpedo Ship (atlas: `Enemy`)
 
 - `Base/Kla'ed - Torpedo Ship - Base.png`
 - `Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-0.png` … `Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-9.png`
-- `Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-0.png` … `Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-9.png`
+- `Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-0.png` … `Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-14.png`
 - `Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-0.png` … `Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-14.png`
 - `Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-0.png` … `Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-9.png`
 - `Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-0.png` … `Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-8.png`

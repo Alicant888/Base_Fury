@@ -35,13 +35,13 @@ type TorpedoShipShotConfig = {
 // Later you can tune each shot position (offsetX/offsetY) and sync frameIndex independently.
 const TORPEDO_SHIP_SALVO_SHOTS: TorpedoShipShotConfig[] = [
   // Left side (3 shots)
-  { frameIndex: 14, offsetX: -56, offsetY: 10 },
-  { frameIndex: 10, offsetX: -42, offsetY: 10 },
-  { frameIndex: 6, offsetX: -28, offsetY: 10 },
+  { frameIndex: 14, offsetX: -20, offsetY: 0 },
+  { frameIndex: 10, offsetX: -14, offsetY: 0 },
+  { frameIndex: 6, offsetX: -8, offsetY: 0 },
   // Right side (3 shots)
-  { frameIndex: 2, offsetX: 28, offsetY: 10 },
-  { frameIndex: 8, offsetX: 42, offsetY: 10 },
-  { frameIndex: 12, offsetX: 56, offsetY: 10 },
+  { frameIndex: 4, offsetX: 8, offsetY: 0 },
+  { frameIndex: 8, offsetX: 14, offsetY: 0 },
+  { frameIndex: 12, offsetX: 20, offsetY: 0 },
 ];
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {

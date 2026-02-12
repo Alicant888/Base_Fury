@@ -4,8 +4,8 @@
 			"image": "Enemy.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 1286,
-				"h": 512
+				"w": 497,
+				"h": 1346
 			},
 			"scale": 1,
 			"frames": [
@@ -66,8 +66,8 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 1,
-						"y": 245,
+						"x": 123,
+						"y": 1,
 						"w": 120,
 						"h": 120
 					}
@@ -88,244 +88,13 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 367,
+						"y": 245,
 						"w": 120,
 						"h": 120
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 11,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 0,
-						"w": 7,
-						"h": 22
-					},
-					"frame": {
-						"x": 1,
-						"y": 489,
-						"w": 7,
-						"h": 22
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 11,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 0,
-						"w": 7,
-						"h": 21
-					},
-					"frame": {
-						"x": 10,
-						"y": 489,
-						"w": 7,
-						"h": 21
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 11,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 0,
-						"w": 7,
-						"h": 20
-					},
-					"frame": {
-						"x": 19,
-						"y": 489,
-						"w": 7,
-						"h": 20
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 14,
-						"y": 27,
-						"w": 36,
-						"h": 19
-					},
-					"frame": {
-						"x": 28,
-						"y": 489,
-						"w": 36,
-						"h": 19
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 3,
-						"w": 72,
-						"h": 18
-					},
-					"frame": {
-						"x": 66,
-						"y": 489,
-						"w": 72,
-						"h": 18
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 2,
-						"w": 72,
-						"h": 18
-					},
-					"frame": {
-						"x": 66,
-						"y": 489,
-						"w": 72,
-						"h": 18
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 1,
-						"w": 72,
-						"h": 18
-					},
-					"frame": {
-						"x": 66,
-						"y": 489,
-						"w": 72,
-						"h": 18
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 3,
-						"w": 72,
-						"h": 18
-					},
-					"frame": {
-						"x": 66,
-						"y": 489,
-						"w": 72,
-						"h": 18
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 2,
-						"w": 72,
-						"h": 18
-					},
-					"frame": {
-						"x": 66,
-						"y": 489,
-						"w": 72,
-						"h": 18
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 1,
-						"w": 72,
-						"h": 18
-					},
-					"frame": {
-						"x": 66,
-						"y": 489,
-						"w": 72,
-						"h": 18
 					}
 				},
 				{
 					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 4,
-						"y": 4,
-						"w": 120,
-						"h": 120
-					},
-					"frame": {
-						"x": 123,
-						"y": 1,
-						"w": 120,
-						"h": 120
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-5.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -346,6 +115,27 @@
 					}
 				},
 				{
+					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 120,
+						"h": 120
+					},
+					"frame": {
+						"x": 245,
+						"y": 1,
+						"w": 120,
+						"h": 120
+					}
+				},
+				{
 					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-6.png",
 					"rotated": false,
 					"trimmed": true,
@@ -360,8 +150,8 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 123,
-						"y": 245,
+						"x": 1,
+						"y": 367,
 						"w": 120,
 						"h": 120
 					}
@@ -382,97 +172,13 @@
 					},
 					"frame": {
 						"x": 123,
-						"y": 367,
+						"y": 245,
 						"w": 120,
 						"h": 120
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 14,
-						"y": 27,
-						"w": 36,
-						"h": 17
-					},
-					"frame": {
-						"x": 140,
-						"y": 489,
-						"w": 36,
-						"h": 17
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 4,
-						"w": 72,
-						"h": 16
-					},
-					"frame": {
-						"x": 178,
-						"y": 489,
-						"w": 72,
-						"h": 16
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 4,
-						"w": 72,
-						"h": 16
-					},
-					"frame": {
-						"x": 178,
-						"y": 489,
-						"w": 72,
-						"h": 16
 					}
 				},
 				{
 					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 4,
-						"y": 4,
-						"w": 120,
-						"h": 120
-					},
-					"frame": {
-						"x": 245,
-						"y": 1,
-						"w": 120,
-						"h": 120
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-9.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -493,6 +199,69 @@
 					}
 				},
 				{
+					"filename": "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 120,
+						"h": 120
+					},
+					"frame": {
+						"x": 367,
+						"y": 1,
+						"w": 120,
+						"h": 120
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 16,
+						"w": 128,
+						"h": 101
+					},
+					"frame": {
+						"x": 1,
+						"y": 489,
+						"w": 128,
+						"h": 101
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 13,
+						"w": 112,
+						"h": 100
+					},
+					"frame": {
+						"x": 245,
+						"y": 245,
+						"w": 112,
+						"h": 100
+					}
+				},
+				{
 					"filename": "Base/Kla'ed - Dreadnought - Base.png",
 					"rotated": false,
 					"trimmed": true,
@@ -507,8 +276,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 245,
-						"y": 245,
+						"x": 367,
+						"y": 123,
 						"w": 74,
 						"h": 102
 					}
@@ -528,8 +297,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 245,
-						"y": 349,
+						"x": 1,
+						"y": 592,
 						"w": 74,
 						"h": 102
 					}
@@ -549,94 +318,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 245,
-						"y": 349,
+						"x": 1,
+						"y": 592,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 1,
-						"w": 64,
-						"h": 58
-					},
-					"frame": {
-						"x": 252,
-						"y": 453,
-						"w": 64,
-						"h": 58
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 5,
-						"y": 3,
-						"w": 55,
-						"h": 58
-					},
-					"frame": {
-						"x": 318,
-						"y": 453,
-						"w": 55,
-						"h": 58
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 3,
-						"w": 4,
-						"h": 13
-					},
-					"frame": {
-						"x": 245,
-						"y": 453,
-						"w": 4,
-						"h": 13
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 4,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 4,
-						"h": 13
-					},
-					"frame": {
-						"x": 245,
-						"y": 468,
-						"w": 4,
-						"h": 13
 					}
 				},
 				{
@@ -654,8 +339,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 321,
-						"y": 245,
+						"x": 123,
+						"y": 367,
 						"w": 74,
 						"h": 102
 					}
@@ -675,31 +360,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 321,
-						"y": 349,
+						"x": 1,
+						"y": 696,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 4,
-						"w": 64,
-						"h": 53
-					},
-					"frame": {
-						"x": 375,
-						"y": 453,
-						"w": 64,
-						"h": 53
 					}
 				},
 				{
@@ -717,8 +381,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 367,
-						"y": 1,
+						"x": 1,
+						"y": 800,
 						"w": 74,
 						"h": 102
 					}
@@ -738,136 +402,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 367,
-						"y": 105,
+						"x": 1,
+						"y": 904,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 25,
-						"w": 52,
-						"h": 31
-					},
-					"frame": {
-						"x": 367,
-						"y": 209,
-						"w": 52,
-						"h": 31
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 25,
-						"w": 52,
-						"h": 31
-					},
-					"frame": {
-						"x": 367,
-						"y": 209,
-						"w": 52,
-						"h": 31
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 25,
-						"w": 52,
-						"h": 31
-					},
-					"frame": {
-						"x": 367,
-						"y": 209,
-						"w": 52,
-						"h": 31
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 25,
-						"w": 52,
-						"h": 31
-					},
-					"frame": {
-						"x": 367,
-						"y": 209,
-						"w": 52,
-						"h": 31
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 22,
-						"w": 52,
-						"h": 31
-					},
-					"frame": {
-						"x": 367,
-						"y": 209,
-						"w": 52,
-						"h": 31
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 22,
-						"w": 52,
-						"h": 31
-					},
-					"frame": {
-						"x": 367,
-						"y": 209,
-						"w": 52,
-						"h": 31
 					}
 				},
 				{
@@ -885,31 +423,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 397,
-						"y": 242,
+						"x": 1,
+						"y": 1008,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 14,
-						"w": 58,
-						"h": 30
-					},
-					"frame": {
-						"x": 421,
-						"y": 209,
-						"w": 58,
-						"h": 30
 					}
 				},
 				{
@@ -927,31 +444,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 397,
-						"y": 346,
+						"x": 1,
+						"y": 1112,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 64,
-						"h": 59
-					},
-					"frame": {
-						"x": 441,
-						"y": 450,
-						"w": 64,
-						"h": 59
 					}
 				},
 				{
@@ -969,8 +465,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 443,
-						"y": 1,
+						"x": 1,
+						"y": 1216,
 						"w": 74,
 						"h": 102
 					}
@@ -990,8 +486,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 443,
-						"y": 105,
+						"x": 77,
+						"y": 592,
 						"w": 74,
 						"h": 102
 					}
@@ -1011,31 +507,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 473,
-						"y": 241,
+						"x": 77,
+						"y": 696,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 14,
-						"w": 58,
-						"h": 30
-					},
-					"frame": {
-						"x": 481,
-						"y": 209,
-						"w": 58,
-						"h": 30
 					}
 				},
 				{
@@ -1053,31 +528,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 473,
-						"y": 345,
+						"x": 77,
+						"y": 800,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 25,
-						"y": 8,
-						"w": 78,
-						"h": 62
-					},
-					"frame": {
-						"x": 507,
-						"y": 449,
-						"w": 78,
-						"h": 62
 					}
 				},
 				{
@@ -1095,8 +549,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 519,
-						"y": 1,
+						"x": 77,
+						"y": 904,
 						"w": 74,
 						"h": 102
 					}
@@ -1116,31 +570,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 519,
-						"y": 105,
+						"x": 77,
+						"y": 1008,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 14,
-						"w": 58,
-						"h": 30
-					},
-					"frame": {
-						"x": 541,
-						"y": 209,
-						"w": 58,
-						"h": 30
 					}
 				},
 				{
@@ -1158,8 +591,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 595,
-						"y": 1,
+						"x": 77,
+						"y": 1112,
 						"w": 74,
 						"h": 102
 					}
@@ -1179,8 +612,8 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 595,
-						"y": 105,
+						"x": 77,
+						"y": 1216,
 						"w": 74,
 						"h": 102
 					}
@@ -1200,199 +633,10 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 549,
-						"y": 241,
+						"x": 131,
+						"y": 471,
 						"w": 74,
 						"h": 102
-					}
-				},
-				{
-					"filename": "Base/Kla'ed - Support ship - Base.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 17,
-						"y": 14,
-						"w": 30,
-						"h": 30
-					},
-					"frame": {
-						"x": 601,
-						"y": 209,
-						"w": 30,
-						"h": 30
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 17,
-						"y": 14,
-						"w": 30,
-						"h": 30
-					},
-					"frame": {
-						"x": 601,
-						"y": 209,
-						"w": 30,
-						"h": 30
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 17,
-						"y": 14,
-						"w": 30,
-						"h": 30
-					},
-					"frame": {
-						"x": 601,
-						"y": 209,
-						"w": 30,
-						"h": 30
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 16,
-						"w": 128,
-						"h": 101
-					},
-					"frame": {
-						"x": 549,
-						"y": 345,
-						"w": 128,
-						"h": 101
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 25,
-						"y": 8,
-						"w": 78,
-						"h": 62
-					},
-					"frame": {
-						"x": 587,
-						"y": 448,
-						"w": 78,
-						"h": 62
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 25,
-						"y": 8,
-						"w": 78,
-						"h": 62
-					},
-					"frame": {
-						"x": 667,
-						"y": 448,
-						"w": 78,
-						"h": 62
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 8,
-						"y": 13,
-						"w": 112,
-						"h": 100
-					},
-					"frame": {
-						"x": 625,
-						"y": 241,
-						"w": 112,
-						"h": 100
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 17,
-						"y": 14,
-						"w": 30,
-						"h": 30
-					},
-					"frame": {
-						"x": 633,
-						"y": 209,
-						"w": 30,
-						"h": 30
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 17,
-						"y": 14,
-						"w": 30,
-						"h": 30
-					},
-					"frame": {
-						"x": 665,
-						"y": 209,
-						"w": 30,
-						"h": 30
 					}
 				},
 				{
@@ -1410,31 +654,10 @@
 						"h": 98
 					},
 					"frame": {
-						"x": 679,
-						"y": 343,
+						"x": 199,
+						"y": 367,
 						"w": 68,
 						"h": 98
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-6.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
-					},
-					"frame": {
-						"x": 747,
-						"y": 443,
-						"w": 64,
-						"h": 64
 					}
 				},
 				{
@@ -1452,8 +675,8 @@
 						"h": 97
 					},
 					"frame": {
-						"x": 671,
-						"y": 1,
+						"x": 207,
+						"y": 467,
 						"w": 60,
 						"h": 97
 					}
@@ -1473,157 +696,10 @@
 						"h": 96
 					},
 					"frame": {
-						"x": 671,
-						"y": 100,
+						"x": 269,
+						"y": 347,
 						"w": 74,
 						"h": 96
-					}
-				},
-				{
-					"filename": "Base/Kla'ed - Frigate - Base.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 697,
-						"y": 198,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 737,
-						"y": 198,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 737,
-						"y": 198,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 737,
-						"y": 198,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 737,
-						"y": 198,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 12,
-						"y": 5,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 671,
-						"y": 198,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 8
-					},
-					"frame": {
-						"x": 685,
-						"y": 198,
-						"w": 8,
-						"h": 8
 					}
 				},
 				{
@@ -1641,8 +717,8 @@
 						"h": 92
 					},
 					"frame": {
-						"x": 733,
-						"y": 1,
+						"x": 269,
+						"y": 445,
 						"w": 74,
 						"h": 92
 					}
@@ -1662,31 +738,10 @@
 						"h": 91
 					},
 					"frame": {
-						"x": 739,
-						"y": 241,
+						"x": 443,
+						"y": 123,
 						"w": 51,
 						"h": 91
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 8,
-						"w": 32,
-						"h": 7
-					},
-					"frame": {
-						"x": 739,
-						"y": 334,
-						"w": 32,
-						"h": 7
 					}
 				},
 				{
@@ -1704,8 +759,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 749,
-						"y": 343,
+						"x": 153,
+						"y": 575,
 						"w": 74,
 						"h": 90
 					}
@@ -1725,8 +780,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 749,
-						"y": 343,
+						"x": 153,
+						"y": 575,
 						"w": 74,
 						"h": 90
 					}
@@ -1746,8 +801,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 749,
-						"y": 343,
+						"x": 153,
+						"y": 575,
 						"w": 74,
 						"h": 90
 					}
@@ -1767,73 +822,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 749,
-						"y": 343,
+						"x": 153,
+						"y": 575,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 24,
-						"y": 0,
-						"w": 16,
-						"h": 7
-					},
-					"frame": {
-						"x": 773,
-						"y": 334,
-						"w": 16,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 24,
-						"y": 0,
-						"w": 16,
-						"h": 7
-					},
-					"frame": {
-						"x": 773,
-						"y": 334,
-						"w": 16,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 12,
-						"y": 5,
-						"w": 12,
-						"h": 7
-					},
-					"frame": {
-						"x": 791,
-						"y": 334,
-						"w": 12,
-						"h": 7
 					}
 				},
 				{
@@ -1851,52 +843,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 747,
-						"y": 95,
+						"x": 153,
+						"y": 667,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 8,
-						"w": 32,
-						"h": 9
-					},
-					"frame": {
-						"x": 747,
-						"y": 187,
-						"w": 32,
-						"h": 9
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 777,
-						"y": 198,
-						"w": 38,
-						"h": 41
 					}
 				},
 				{
@@ -1914,157 +864,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 792,
-						"y": 241,
+						"x": 153,
+						"y": 759,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 8,
-						"w": 32,
-						"h": 8
-					},
-					"frame": {
-						"x": 805,
-						"y": 333,
-						"w": 32,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 5,
-						"w": 59,
-						"h": 51
-					},
-					"frame": {
-						"x": 817,
-						"y": 187,
-						"w": 59,
-						"h": 51
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 8,
-						"y": 5,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 781,
-						"y": 187,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 12,
-						"y": 5,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 795,
-						"y": 187,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 12,
-						"y": 4,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 795,
-						"y": 187,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 30,
-						"y": 0,
-						"w": 4,
-						"h": 8
-					},
-					"frame": {
-						"x": 809,
-						"y": 187,
-						"w": 4,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 30,
-						"y": 0,
-						"w": 4,
-						"h": 8
-					},
-					"frame": {
-						"x": 809,
-						"y": 187,
-						"w": 4,
-						"h": 8
 					}
 				},
 				{
@@ -2082,8 +885,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 809,
-						"y": 1,
+						"x": 153,
+						"y": 851,
 						"w": 74,
 						"h": 90
 					}
@@ -2103,8 +906,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 823,
-						"y": 93,
+						"x": 153,
+						"y": 943,
 						"w": 74,
 						"h": 90
 					}
@@ -2124,8 +927,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 823,
-						"y": 93,
+						"x": 153,
+						"y": 943,
 						"w": 74,
 						"h": 90
 					}
@@ -2145,8 +948,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 823,
-						"y": 93,
+						"x": 153,
+						"y": 943,
 						"w": 74,
 						"h": 90
 					}
@@ -2166,8 +969,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 885,
-						"y": 1,
+						"x": 153,
+						"y": 1035,
 						"w": 74,
 						"h": 90
 					}
@@ -2187,31 +990,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 885,
-						"y": 1,
+						"x": 153,
+						"y": 1035,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-7.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
-					},
-					"frame": {
-						"x": 813,
-						"y": 435,
-						"w": 64,
-						"h": 64
 					}
 				},
 				{
@@ -2229,94 +1011,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 825,
-						"y": 343,
+						"x": 153,
+						"y": 1127,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 8,
-						"y": 5,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 839,
-						"y": 333,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 853,
-						"y": 333,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 853,
-						"y": 333,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 867,
-						"y": 333,
-						"w": 12,
-						"h": 8
 					}
 				},
 				{
@@ -2334,115 +1032,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 868,
-						"y": 240,
+						"x": 153,
+						"y": 1219,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 8
-					},
-					"frame": {
-						"x": 881,
-						"y": 332,
-						"w": 12,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 8
-					},
-					"frame": {
-						"x": 895,
-						"y": 332,
-						"w": 8,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 8
-					},
-					"frame": {
-						"x": 895,
-						"y": 332,
-						"w": 8,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 8
-					},
-					"frame": {
-						"x": 813,
-						"y": 501,
-						"w": 8,
-						"h": 8
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 6,
-						"w": 57,
-						"h": 50
-					},
-					"frame": {
-						"x": 878,
-						"y": 185,
-						"w": 57,
-						"h": 50
 					}
 				},
 				{
@@ -2460,8 +1053,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 899,
-						"y": 93,
+						"x": 229,
+						"y": 566,
 						"w": 74,
 						"h": 90
 					}
@@ -2481,199 +1074,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 961,
-						"y": 1,
+						"x": 229,
+						"y": 658,
 						"w": 74,
 						"h": 90
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 8,
-						"y": 5,
-						"w": 12,
-						"h": 7
-					},
-					"frame": {
-						"x": 823,
-						"y": 501,
-						"w": 12,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 7
-					},
-					"frame": {
-						"x": 837,
-						"y": 501,
-						"w": 12,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 7
-					},
-					"frame": {
-						"x": 837,
-						"y": 501,
-						"w": 12,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 7
-					},
-					"frame": {
-						"x": 851,
-						"y": 501,
-						"w": 12,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 7
-					},
-					"frame": {
-						"x": 865,
-						"y": 501,
-						"w": 8,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 7
-					},
-					"frame": {
-						"x": 875,
-						"y": 501,
-						"w": 8,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 25,
-						"y": 8,
-						"w": 78,
-						"h": 62
-					},
-					"frame": {
-						"x": 879,
-						"y": 435,
-						"w": 78,
-						"h": 62
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 0,
-						"w": 38,
-						"h": 12
-					},
-					"frame": {
-						"x": 885,
-						"y": 499,
-						"w": 38,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 0,
-						"w": 38,
-						"h": 12
-					},
-					"frame": {
-						"x": 925,
-						"y": 499,
-						"w": 38,
-						"h": 12
 					}
 				},
 				{
@@ -2691,10 +1095,94 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 901,
-						"y": 342,
+						"x": 229,
+						"y": 750,
 						"w": 74,
 						"h": 90
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 8,
+						"w": 78,
+						"h": 62
+					},
+					"frame": {
+						"x": 229,
+						"y": 842,
+						"w": 78,
+						"h": 62
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 8,
+						"w": 78,
+						"h": 62
+					},
+					"frame": {
+						"x": 229,
+						"y": 906,
+						"w": 78,
+						"h": 62
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 8,
+						"w": 78,
+						"h": 62
+					},
+					"frame": {
+						"x": 229,
+						"y": 970,
+						"w": 78,
+						"h": 62
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 8,
+						"w": 78,
+						"h": 62
+					},
+					"frame": {
+						"x": 229,
+						"y": 1034,
+						"w": 78,
+						"h": 62
 					}
 				},
 				{
@@ -2712,241 +1200,10 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 959,
-						"y": 434,
+						"x": 229,
+						"y": 1098,
 						"w": 78,
 						"h": 62
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 14,
-						"y": 27,
-						"w": 36,
-						"h": 13
-					},
-					"frame": {
-						"x": 965,
-						"y": 498,
-						"w": 36,
-						"h": 13
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 3,
-						"w": 6,
-						"h": 13
-					},
-					"frame": {
-						"x": 1003,
-						"y": 498,
-						"w": 6,
-						"h": 13
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 3,
-						"w": 6,
-						"h": 13
-					},
-					"frame": {
-						"x": 1011,
-						"y": 498,
-						"w": 6,
-						"h": 13
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 4,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 4,
-						"h": 13
-					},
-					"frame": {
-						"x": 1019,
-						"y": 498,
-						"w": 4,
-						"h": 13
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 4,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 4,
-						"h": 13
-					},
-					"frame": {
-						"x": 1025,
-						"y": 498,
-						"w": 4,
-						"h": 13
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 0,
-						"w": 38,
-						"h": 12
-					},
-					"frame": {
-						"x": 1031,
-						"y": 498,
-						"w": 38,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 0,
-						"w": 8,
-						"h": 7
-					},
-					"frame": {
-						"x": 905,
-						"y": 332,
-						"w": 8,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 4,
-						"w": 8,
-						"h": 7
-					},
-					"frame": {
-						"x": 915,
-						"y": 332,
-						"w": 8,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 30,
-						"y": 0,
-						"w": 4,
-						"h": 7
-					},
-					"frame": {
-						"x": 925,
-						"y": 332,
-						"w": 4,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 8
-					},
-					"spriteSourceSize": {
-						"x": 30,
-						"y": 0,
-						"w": 4,
-						"h": 7
-					},
-					"frame": {
-						"x": 925,
-						"y": 332,
-						"w": 4,
-						"h": 7
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 7,
-						"w": 54,
-						"h": 48
-					},
-					"frame": {
-						"x": 937,
-						"y": 185,
-						"w": 54,
-						"h": 48
 					}
 				},
 				{
@@ -2964,52 +1221,10 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 975,
-						"y": 93,
+						"x": 229,
+						"y": 1162,
 						"w": 78,
 						"h": 62
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 975,
-						"y": 157,
-						"w": 28,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 975,
-						"y": 157,
-						"w": 28,
-						"h": 26
 					}
 				},
 				{
@@ -3027,31 +1242,136 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 1037,
-						"y": 1,
+						"x": 229,
+						"y": 1226,
 						"w": 78,
 						"h": 62
 					}
 				},
 				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-1.png",
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-2.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 64,
-						"h": 64
+						"w": 128,
+						"h": 32
 					},
 					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
+						"x": 28,
+						"y": 3,
+						"w": 72,
+						"h": 18
 					},
 					"frame": {
-						"x": 1037,
-						"y": 65,
-						"w": 28,
-						"h": 26
+						"x": 1,
+						"y": 1320,
+						"w": 72,
+						"h": 18
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 2,
+						"w": 72,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 1320,
+						"w": 72,
+						"h": 18
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 1,
+						"w": 72,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 1320,
+						"w": 72,
+						"h": 18
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 3,
+						"w": 72,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 1320,
+						"w": 72,
+						"h": 18
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 2,
+						"w": 72,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 1320,
+						"w": 72,
+						"h": 18
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 1,
+						"w": 72,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 1320,
+						"w": 72,
+						"h": 18
 					}
 				},
 				{
@@ -3069,94 +1389,10 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 944,
-						"y": 235,
+						"x": 367,
+						"y": 227,
 						"w": 78,
 						"h": 62
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 944,
-						"y": 299,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Frigate - Shield/Kla'ed - Frigate - Shield-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 10,
-						"y": 7,
-						"w": 44,
-						"h": 47
-					},
-					"frame": {
-						"x": 993,
-						"y": 185,
-						"w": 44,
-						"h": 47
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 1005,
-						"y": 157,
-						"w": 28,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 1035,
-						"y": 157,
-						"w": 28,
-						"h": 26
 					}
 				},
 				{
@@ -3174,52 +1410,10 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 1055,
-						"y": 93,
+						"x": 359,
+						"y": 291,
 						"w": 78,
 						"h": 62
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 1067,
-						"y": 65,
-						"w": 28,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 1097,
-						"y": 65,
-						"w": 28,
-						"h": 26
 					}
 				},
 				{
@@ -3237,14 +1431,35 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 1117,
-						"y": 1,
+						"x": 345,
+						"y": 355,
 						"w": 78,
 						"h": 62
 					}
 				},
 				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-6.png",
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 345,
+						"y": 419,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-6.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -3252,16 +1467,100 @@
 						"h": 64
 					},
 					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
+						"x": 0,
+						"y": 3,
+						"w": 64,
+						"h": 59
 					},
 					"frame": {
-						"x": 1127,
-						"y": 65,
-						"w": 28,
-						"h": 26
+						"x": 345,
+						"y": 485,
+						"w": 64,
+						"h": 59
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 6,
+						"w": 57,
+						"h": 50
+					},
+					"frame": {
+						"x": 439,
+						"y": 291,
+						"w": 57,
+						"h": 50
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 57,
+						"h": 42
+					},
+					"frame": {
+						"x": 439,
+						"y": 343,
+						"w": 57,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 4,
+						"w": 72,
+						"h": 16
+					},
+					"frame": {
+						"x": 229,
+						"y": 1290,
+						"w": 72,
+						"h": 16
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 4,
+						"w": 72,
+						"h": 16
+					},
+					"frame": {
+						"x": 229,
+						"y": 1290,
+						"w": 72,
+						"h": 16
 					}
 				},
 				{
@@ -3279,8 +1578,8 @@
 						"h": 15
 					},
 					"frame": {
-						"x": 1197,
-						"y": 1,
+						"x": 75,
+						"y": 1320,
 						"w": 72,
 						"h": 15
 					}
@@ -3300,682 +1599,10 @@
 						"h": 15
 					},
 					"frame": {
-						"x": 1197,
-						"y": 1,
+						"x": 75,
+						"y": 1320,
 						"w": 72,
 						"h": 15
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 26,
-						"y": 0,
-						"w": 12,
-						"h": 11
-					},
-					"frame": {
-						"x": 1271,
-						"y": 1,
-						"w": 12,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 5,
-						"w": 8,
-						"h": 12
-					},
-					"frame": {
-						"x": 1271,
-						"y": 14,
-						"w": 8,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 5,
-						"w": 8,
-						"h": 12
-					},
-					"frame": {
-						"x": 1271,
-						"y": 14,
-						"w": 8,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 5,
-						"w": 8,
-						"h": 12
-					},
-					"frame": {
-						"x": 1271,
-						"y": 14,
-						"w": 8,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 28,
-						"y": 5,
-						"w": 8,
-						"h": 12
-					},
-					"frame": {
-						"x": 1271,
-						"y": 14,
-						"w": 8,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 6,
-						"w": 8,
-						"h": 12
-					},
-					"frame": {
-						"x": 1271,
-						"y": 14,
-						"w": 8,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 4,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 4,
-						"h": 11
-					},
-					"frame": {
-						"x": 1281,
-						"y": 14,
-						"w": 4,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 2,
-						"w": 63,
-						"h": 62
-					},
-					"frame": {
-						"x": 1197,
-						"y": 18,
-						"w": 63,
-						"h": 62
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 1157,
-						"y": 65,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 11,
-						"w": 7,
-						"h": 12
-					},
-					"frame": {
-						"x": 1262,
-						"y": 18,
-						"w": 7,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 21,
-						"y": 0,
-						"w": 22,
-						"h": 11
-					},
-					"frame": {
-						"x": 1262,
-						"y": 32,
-						"w": 22,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-2.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 18,
-						"h": 38
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 18,
-						"h": 38
-					},
-					"frame": {
-						"x": 1135,
-						"y": 93,
-						"w": 18,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-3.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 18,
-						"h": 38
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 18,
-						"h": 38
-					},
-					"frame": {
-						"x": 1262,
-						"y": 45,
-						"w": 18,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 10,
-						"w": 63,
-						"h": 45
-					},
-					"frame": {
-						"x": 1197,
-						"y": 82,
-						"w": 63,
-						"h": 45
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 1155,
-						"y": 108,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 18,
-						"h": 38
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 17,
-						"h": 38
-					},
-					"frame": {
-						"x": 1135,
-						"y": 133,
-						"w": 17,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 0,
-						"w": 62,
-						"h": 11
-					},
-					"frame": {
-						"x": 1071,
-						"y": 157,
-						"w": 62,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 0,
-						"w": 62,
-						"h": 11
-					},
-					"frame": {
-						"x": 1071,
-						"y": 170,
-						"w": 62,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 18,
-						"h": 38
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 0,
-						"w": 17,
-						"h": 38
-					},
-					"frame": {
-						"x": 1262,
-						"y": 85,
-						"w": 17,
-						"h": 38
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 6,
-						"y": 6,
-						"w": 8,
-						"h": 12
-					},
-					"frame": {
-						"x": 1262,
-						"y": 125,
-						"w": 8,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 10,
-						"w": 63,
-						"h": 44
-					},
-					"frame": {
-						"x": 1195,
-						"y": 129,
-						"w": 63,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 11,
-						"w": 58,
-						"h": 42
-					},
-					"frame": {
-						"x": 1135,
-						"y": 173,
-						"w": 58,
-						"h": 42
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 0,
-						"w": 62,
-						"h": 11
-					},
-					"frame": {
-						"x": 1071,
-						"y": 183,
-						"w": 62,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 0,
-						"w": 38,
-						"h": 12
-					},
-					"frame": {
-						"x": 1154,
-						"y": 151,
-						"w": 38,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1260,
-						"y": 139,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1260,
-						"y": 139,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1260,
-						"y": 139,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1260,
-						"y": 139,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 11,
-						"w": 7,
-						"h": 12
-					},
-					"frame": {
-						"x": 1272,
-						"y": 125,
-						"w": 7,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1260,
-						"y": 167,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 1039,
-						"y": 185,
-						"w": 28,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 0,
-						"w": 60,
-						"h": 11
-					},
-					"frame": {
-						"x": 1071,
-						"y": 196,
-						"w": 60,
-						"h": 11
 					}
 				},
 				{
@@ -3993,8 +1620,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1071,
-						"y": 209,
+						"x": 269,
+						"y": 539,
 						"w": 58,
 						"h": 24
 					}
@@ -4014,8 +1641,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1071,
-						"y": 209,
+						"x": 269,
+						"y": 539,
 						"w": 58,
 						"h": 24
 					}
@@ -4035,14 +1662,266 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1071,
-						"y": 209,
+						"x": 269,
+						"y": 539,
 						"w": 58,
 						"h": 24
 					}
 				},
 				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-4.png",
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-7.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 305,
+						"y": 565,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 2,
+						"w": 63,
+						"h": 62
+					},
+					"frame": {
+						"x": 305,
+						"y": 631,
+						"w": 63,
+						"h": 62
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 1,
+						"w": 64,
+						"h": 58
+					},
+					"frame": {
+						"x": 305,
+						"y": 695,
+						"w": 64,
+						"h": 58
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 4,
+						"w": 64,
+						"h": 53
+					},
+					"frame": {
+						"x": 305,
+						"y": 755,
+						"w": 64,
+						"h": 53
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 14,
+						"w": 58,
+						"h": 30
+					},
+					"frame": {
+						"x": 305,
+						"y": 810,
+						"w": 58,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 3,
+						"w": 55,
+						"h": 58
+					},
+					"frame": {
+						"x": 309,
+						"y": 842,
+						"w": 55,
+						"h": 58
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 5,
+						"w": 59,
+						"h": 51
+					},
+					"frame": {
+						"x": 309,
+						"y": 902,
+						"w": 59,
+						"h": 51
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 10,
+						"w": 63,
+						"h": 45
+					},
+					"frame": {
+						"x": 309,
+						"y": 955,
+						"w": 63,
+						"h": 45
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 10,
+						"w": 63,
+						"h": 44
+					},
+					"frame": {
+						"x": 309,
+						"y": 1002,
+						"w": 63,
+						"h": 44
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 7,
+						"w": 54,
+						"h": 48
+					},
+					"frame": {
+						"x": 309,
+						"y": 1048,
+						"w": 54,
+						"h": 48
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 9,
+						"w": 56,
+						"h": 46
+					},
+					"frame": {
+						"x": 309,
+						"y": 1098,
+						"w": 56,
+						"h": 46
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 11,
+						"w": 58,
+						"h": 42
+					},
+					"frame": {
+						"x": 309,
+						"y": 1146,
+						"w": 58,
+						"h": 42
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Frigate - Shield/Kla'ed - Frigate - Shield-0.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -4051,456 +1930,15 @@
 					},
 					"spriteSourceSize": {
 						"x": 10,
-						"y": 11,
-						"w": 45,
-						"h": 44
+						"y": 7,
+						"w": 44,
+						"h": 47
 					},
 					"frame": {
-						"x": 1024,
-						"y": 234,
-						"w": 45,
-						"h": 44
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1195,
-						"y": 175,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 28,
-						"h": 26
-					},
-					"frame": {
-						"x": 1255,
-						"y": 195,
-						"w": 28,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1195,
-						"y": 201,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 27,
-						"h": 27
-					},
-					"frame": {
-						"x": 1255,
-						"y": 223,
-						"w": 27,
-						"h": 27
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 27,
-						"h": 27
-					},
-					"frame": {
-						"x": 1255,
-						"y": 223,
-						"w": 27,
-						"h": 27
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 27,
-						"h": 27
-					},
-					"frame": {
-						"x": 1255,
-						"y": 223,
-						"w": 27,
-						"h": 27
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 19,
-						"w": 27,
-						"h": 27
-					},
-					"frame": {
-						"x": 1255,
-						"y": 223,
-						"w": 27,
-						"h": 27
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 16,
-						"w": 27,
-						"h": 27
-					},
-					"frame": {
-						"x": 1255,
-						"y": 223,
-						"w": 27,
-						"h": 27
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 18,
-						"y": 16,
-						"w": 27,
-						"h": 27
-					},
-					"frame": {
-						"x": 1255,
-						"y": 223,
-						"w": 27,
-						"h": 27
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1131,
-						"y": 217,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1071,
-						"y": 235,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1191,
-						"y": 227,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1131,
-						"y": 243,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1071,
-						"y": 261,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 9,
-						"y": 15,
-						"w": 45,
-						"h": 35
-					},
-					"frame": {
-						"x": 1024,
-						"y": 280,
-						"w": 45,
-						"h": 35
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
-					},
-					"frame": {
-						"x": 984,
-						"y": 299,
-						"w": 38,
-						"h": 41
-					}
-				},
-				{
-					"filename": "Base/Kla'ed - Bomber - Base.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 16,
-						"y": 19,
-						"w": 32,
-						"h": 29
-					},
-					"frame": {
-						"x": 1251,
-						"y": 252,
-						"w": 32,
-						"h": 29
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 16,
-						"y": 19,
-						"w": 32,
-						"h": 29
-					},
-					"frame": {
-						"x": 1251,
-						"y": 252,
-						"w": 32,
-						"h": 29
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1191,
-						"y": 253,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 20,
-						"w": 58,
-						"h": 24
-					},
-					"frame": {
-						"x": 1131,
-						"y": 269,
-						"w": 58,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 8,
-						"w": 57,
-						"h": 42
-					},
-					"frame": {
-						"x": 1071,
-						"y": 287,
-						"w": 57,
-						"h": 42
+						"x": 309,
+						"y": 1190,
+						"w": 44,
+						"h": 47
 					}
 				},
 				{
@@ -4518,8 +1956,8 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1024,
-						"y": 317,
+						"x": 309,
+						"y": 1239,
 						"w": 44,
 						"h": 47
 					}
@@ -4539,14 +1977,14 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 977,
-						"y": 342,
+						"x": 447,
+						"y": 216,
 						"w": 44,
 						"h": 47
 					}
 				},
 				{
-					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-4.png",
+					"filename": "Base/Kla'ed - Fighter - Base.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -4554,41 +1992,20 @@
 						"h": 64
 					},
 					"spriteSourceSize": {
-						"x": 13,
-						"y": 10,
-						"w": 38,
-						"h": 41
+						"x": 19,
+						"y": 20,
+						"w": 26,
+						"h": 24
 					},
 					"frame": {
-						"x": 977,
-						"y": 391,
-						"w": 38,
-						"h": 41
+						"x": 447,
+						"y": 265,
+						"w": 26,
+						"h": 24
 					}
 				},
 				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 9,
-						"w": 56,
-						"h": 46
-					},
-					"frame": {
-						"x": 1191,
-						"y": 279,
-						"w": 56,
-						"h": 46
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-2.png",
+					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-4.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -4599,517 +2016,34 @@
 						"x": 14,
 						"y": 27,
 						"w": 36,
-						"h": 15
+						"h": 17
 					},
 					"frame": {
-						"x": 1249,
-						"y": 283,
+						"x": 329,
+						"y": 546,
 						"w": 36,
-						"h": 15
+						"h": 17
 					}
 				},
 				{
-					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-3.png",
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-6.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
 						"w": 64,
 						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 14,
-						"y": 27,
-						"w": 36,
-						"h": 15
-					},
-					"frame": {
-						"x": 1249,
-						"y": 300,
-						"w": 36,
-						"h": 15
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 14,
-						"y": 27,
-						"w": 36,
-						"h": 11
-					},
-					"frame": {
-						"x": 1249,
-						"y": 317,
-						"w": 36,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 16,
-						"w": 51,
-						"h": 36
-					},
-					"frame": {
-						"x": 1017,
-						"y": 391,
-						"w": 51,
-						"h": 36
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 12,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 12,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 3,
-						"y": 7,
-						"w": 6,
-						"h": 12
+						"y": 14,
+						"w": 58,
+						"h": 30
 					},
 					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1039,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 12,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 12,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 6,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1047,
-						"y": 213,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 3,
-						"w": 8,
-						"h": 11
-					},
-					"frame": {
-						"x": 1055,
-						"y": 213,
-						"w": 8,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 6,
-						"y": 0,
-						"w": 52,
-						"h": 11
-					},
-					"frame": {
-						"x": 1130,
-						"y": 295,
-						"w": 52,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 0,
-						"w": 38,
-						"h": 12
-					},
-					"frame": {
-						"x": 1023,
-						"y": 366,
-						"w": 38,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 0,
-						"w": 38,
-						"h": 12
-					},
-					"frame": {
-						"x": 1063,
-						"y": 366,
-						"w": 38,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 16,
-						"y": 19,
-						"w": 32,
-						"h": 29
-					},
-					"frame": {
-						"x": 1070,
-						"y": 331,
-						"w": 32,
-						"h": 29
+						"x": 425,
+						"y": 387,
+						"w": 58,
+						"h": 30
 					}
 				},
 				{
@@ -5127,367 +2061,10 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1130,
-						"y": 308,
+						"x": 411,
+						"y": 419,
 						"w": 44,
 						"h": 47
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1104,
-						"y": 331,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 13,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 13,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 8,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-7.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 8,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 308,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 13,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 8,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 13,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-3.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 29,
-						"y": 7,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 8,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
-					}
-				},
-				{
-					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 16,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 8,
-						"w": 6,
-						"h": 12
-					},
-					"frame": {
-						"x": 1176,
-						"y": 322,
-						"w": 6,
-						"h": 12
 					}
 				},
 				{
@@ -5505,10 +2082,136 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1184,
-						"y": 327,
+						"x": 411,
+						"y": 468,
 						"w": 44,
 						"h": 47
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 11,
+						"w": 45,
+						"h": 44
+					},
+					"frame": {
+						"x": 411,
+						"y": 517,
+						"w": 45,
+						"h": 44
+					}
+				},
+				{
+					"filename": "Base/Kla'ed - Frigate - Base.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 371,
+						"y": 546,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 371,
+						"y": 589,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 371,
+						"y": 589,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 371,
+						"y": 589,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 371,
+						"y": 589,
+						"w": 38,
+						"h": 41
 					}
 				},
 				{
@@ -5526,94 +2229,10 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1130,
-						"y": 357,
+						"x": 411,
+						"y": 563,
 						"w": 44,
 						"h": 47
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1104,
-						"y": 359,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 16,
-						"y": 19,
-						"w": 32,
-						"h": 29
-					},
-					"frame": {
-						"x": 1070,
-						"y": 380,
-						"w": 32,
-						"h": 29
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 1104,
-						"y": 387,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 16,
-						"y": 0,
-						"w": 32,
-						"h": 11
-					},
-					"frame": {
-						"x": 1070,
-						"y": 411,
-						"w": 32,
-						"h": 11
 					}
 				},
 				{
@@ -5631,8 +2250,8 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1230,
-						"y": 330,
+						"x": 370,
+						"y": 632,
 						"w": 44,
 						"h": 47
 					}
@@ -5652,8 +2271,8 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1176,
-						"y": 376,
+						"x": 371,
+						"y": 681,
 						"w": 44,
 						"h": 47
 					}
@@ -5673,14 +2292,770 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1130,
-						"y": 406,
+						"x": 371,
+						"y": 730,
 						"w": 44,
 						"h": 47
 					}
 				},
 				{
-					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-3.png",
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 25,
+						"w": 52,
+						"h": 31
+					},
+					"frame": {
+						"x": 371,
+						"y": 779,
+						"w": 52,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 25,
+						"w": 52,
+						"h": 31
+					},
+					"frame": {
+						"x": 371,
+						"y": 779,
+						"w": 52,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 25,
+						"w": 52,
+						"h": 31
+					},
+					"frame": {
+						"x": 371,
+						"y": 779,
+						"w": 52,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 25,
+						"w": 52,
+						"h": 31
+					},
+					"frame": {
+						"x": 371,
+						"y": 779,
+						"w": 52,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 22,
+						"w": 52,
+						"h": 31
+					},
+					"frame": {
+						"x": 371,
+						"y": 779,
+						"w": 52,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 22,
+						"w": 52,
+						"h": 31
+					},
+					"frame": {
+						"x": 371,
+						"y": 779,
+						"w": 52,
+						"h": 31
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 365,
+						"y": 812,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Frigate - Shield/Kla'ed - Frigate - Shield-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 7,
+						"w": 44,
+						"h": 47
+					},
+					"frame": {
+						"x": 366,
+						"y": 838,
+						"w": 44,
+						"h": 47
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 62,
+						"h": 11
+					},
+					"frame": {
+						"x": 153,
+						"y": 1311,
+						"w": 62,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 62,
+						"h": 11
+					},
+					"frame": {
+						"x": 149,
+						"y": 1324,
+						"w": 62,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 457,
+						"y": 419,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 457,
+						"y": 462,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 458,
+						"y": 505,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 458,
+						"y": 548,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 8,
+						"w": 32,
+						"h": 8
+					},
+					"frame": {
+						"x": 75,
+						"y": 1337,
+						"w": 32,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 370,
+						"y": 887,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 62,
+						"h": 11
+					},
+					"frame": {
+						"x": 229,
+						"y": 1308,
+						"w": 62,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 217,
+						"y": 1321,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 277,
+						"y": 1321,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 0,
+						"w": 42,
+						"h": 11
+					},
+					"frame": {
+						"x": 293,
+						"y": 1308,
+						"w": 42,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Frigate - Weapons/Kla'ed - Frigate - Weapons-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 38,
+						"h": 41
+					},
+					"frame": {
+						"x": 416,
+						"y": 612,
+						"w": 38,
+						"h": 41
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 416,
+						"y": 655,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 16,
+						"w": 51,
+						"h": 36
+					},
+					"frame": {
+						"x": 417,
+						"y": 681,
+						"w": 51,
+						"h": 36
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 14,
+						"w": 58,
+						"h": 30
+					},
+					"frame": {
+						"x": 417,
+						"y": 719,
+						"w": 58,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 417,
+						"y": 751,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 15,
+						"w": 45,
+						"h": 35
+					},
+					"frame": {
+						"x": 425,
+						"y": 777,
+						"w": 45,
+						"h": 35
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 425,
+						"y": 814,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 14,
+						"w": 58,
+						"h": 30
+					},
+					"frame": {
+						"x": 412,
+						"y": 840,
+						"w": 58,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 412,
+						"y": 872,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 14,
+						"w": 58,
+						"h": 30
+					},
+					"frame": {
+						"x": 410,
+						"y": 898,
+						"w": 58,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 60,
+						"h": 11
+					},
+					"frame": {
+						"x": 370,
+						"y": 930,
+						"w": 60,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 14,
+						"w": 58,
+						"h": 30
+					},
+					"frame": {
+						"x": 374,
+						"y": 943,
+						"w": 58,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 374,
+						"y": 975,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 374,
+						"y": 1001,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 374,
+						"y": 1027,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 20,
+						"w": 58,
+						"h": 24
+					},
+					"frame": {
+						"x": 365,
+						"y": 1053,
+						"w": 58,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-0.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -5689,15 +3064,120 @@
 					},
 					"spriteSourceSize": {
 						"x": 20,
-						"y": 21,
+						"y": 20,
 						"w": 24,
-						"h": 25
+						"h": 26
 					},
 					"frame": {
-						"x": 1104,
-						"y": 415,
+						"x": 472,
+						"y": 840,
 						"w": 24,
-						"h": 25
+						"h": 26
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 472,
+						"y": 840,
+						"w": 24,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 472,
+						"y": 840,
+						"w": 24,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 472,
+						"y": 840,
+						"w": 24,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 472,
+						"y": 868,
+						"w": 24,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 0,
+						"w": 52,
+						"h": 11
+					},
+					"frame": {
+						"x": 365,
+						"y": 1079,
+						"w": 52,
+						"h": 11
 					}
 				},
 				{
@@ -5715,8 +3195,8 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1071,
-						"y": 424,
+						"x": 470,
+						"y": 681,
 						"w": 26,
 						"h": 28
 					}
@@ -5736,10 +3216,31 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1099,
-						"y": 442,
+						"x": 470,
+						"y": 898,
 						"w": 26,
 						"h": 28
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 472,
+						"y": 777,
+						"w": 24,
+						"h": 26
 					}
 				},
 				{
@@ -5757,35 +3258,14 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1071,
-						"y": 454,
+						"x": 470,
+						"y": 928,
 						"w": 26,
 						"h": 28
 					}
 				},
 				{
-					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 11,
-						"y": 0,
-						"w": 42,
-						"h": 11
-					},
-					"frame": {
-						"x": 1039,
-						"y": 484,
-						"w": 42,
-						"h": 11
-					}
-				},
-				{
-					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-4.png",
+					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-0.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -5793,16 +3273,688 @@
 						"h": 64
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 21,
-						"w": 24,
-						"h": 25
+						"x": 14,
+						"y": 27,
+						"w": 36,
+						"h": 11
 					},
 					"frame": {
-						"x": 1083,
-						"y": 484,
-						"w": 24,
-						"h": 25
+						"x": 432,
+						"y": 930,
+						"w": 36,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Base/Kla'ed - Bomber - Base.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 19,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 434,
+						"y": 943,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 19,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 434,
+						"y": 943,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 468,
+						"y": 958,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 468,
+						"y": 958,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 19,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 434,
+						"y": 974,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 468,
+						"y": 986,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 19,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 434,
+						"y": 1005,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 468,
+						"y": 1014,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Base/Kla'ed - Support ship - Base.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 14,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 367,
+						"y": 1092,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 14,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 367,
+						"y": 1092,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 14,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 367,
+						"y": 1092,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 27,
+						"w": 36,
+						"h": 19
+					},
+					"frame": {
+						"x": 457,
+						"y": 591,
+						"w": 36,
+						"h": 19
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 14,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 456,
+						"y": 612,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 8,
+						"w": 32,
+						"h": 9
+					},
+					"frame": {
+						"x": 456,
+						"y": 644,
+						"w": 32,
+						"h": 9
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 11,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 7,
+						"h": 22
+					},
+					"frame": {
+						"x": 489,
+						"y": 1,
+						"w": 7,
+						"h": 22
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 11,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 7,
+						"h": 21
+					},
+					"frame": {
+						"x": 489,
+						"y": 25,
+						"w": 7,
+						"h": 21
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 18,
+						"h": 38
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 38
+					},
+					"frame": {
+						"x": 355,
+						"y": 1190,
+						"w": 17,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 18,
+						"h": 38
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 17,
+						"h": 38
+					},
+					"frame": {
+						"x": 355,
+						"y": 1230,
+						"w": 17,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 11,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 7,
+						"h": 20
+					},
+					"frame": {
+						"x": 489,
+						"y": 48,
+						"w": 7,
+						"h": 20
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 0,
+						"w": 32,
+						"h": 11
+					},
+					"frame": {
+						"x": 434,
+						"y": 1036,
+						"w": 32,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 468,
+						"y": 1042,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 14,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 399,
+						"y": 1092,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 27,
+						"w": 36,
+						"h": 15
+					},
+					"frame": {
+						"x": 367,
+						"y": 1124,
+						"w": 36,
+						"h": 15
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 18,
+						"h": 38
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 18,
+						"h": 38
+					},
+					"frame": {
+						"x": 369,
+						"y": 1141,
+						"w": 18,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Ray/Kla'ed - Ray-3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 18,
+						"h": 38
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 18,
+						"h": 38
+					},
+					"frame": {
+						"x": 389,
+						"y": 1141,
+						"w": 18,
+						"h": 38
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 0,
+						"w": 22,
+						"h": 11
+					},
+					"frame": {
+						"x": 245,
+						"y": 347,
+						"w": 22,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Bomber - Destruction/Kla'ed - Bomber - Destruction-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 374,
+						"y": 1181,
+						"w": 27,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 374,
+						"y": 1181,
+						"w": 27,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 374,
+						"y": 1181,
+						"w": 27,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Scout - Destruction/Kla'ed - Scout - Destruction-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 374,
+						"y": 1181,
+						"w": 27,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Support ship - Destruction/Kla'ed - Support ship - Destruction-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 16,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 374,
+						"y": 1181,
+						"w": 27,
+						"h": 27
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Torpedo Ship - Destruction/Kla'ed - Torpedo Ship - Destruction-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 16,
+						"w": 27,
+						"h": 27
+					},
+					"frame": {
+						"x": 374,
+						"y": 1181,
+						"w": 27,
+						"h": 27
 					}
 				},
 				{
@@ -5820,31 +3972,10 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1039,
-						"y": 429,
+						"x": 374,
+						"y": 1210,
 						"w": 26,
 						"h": 28
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Frigate - Shield/Kla'ed - Frigate - Shield-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 10,
-						"y": 7,
-						"w": 44,
-						"h": 47
-					},
-					"frame": {
-						"x": 1127,
-						"y": 455,
-						"w": 44,
-						"h": 47
 					}
 				},
 				{
@@ -5862,10 +3993,304 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1173,
-						"y": 455,
+						"x": 374,
+						"y": 1240,
 						"w": 26,
 						"h": 28
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 27,
+						"w": 36,
+						"h": 15
+					},
+					"frame": {
+						"x": 355,
+						"y": 1270,
+						"w": 36,
+						"h": 15
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 8,
+						"w": 32,
+						"h": 7
+					},
+					"frame": {
+						"x": 434,
+						"y": 1049,
+						"w": 32,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 0,
+						"w": 16,
+						"h": 7
+					},
+					"frame": {
+						"x": 207,
+						"y": 566,
+						"w": 16,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 0,
+						"w": 16,
+						"h": 7
+					},
+					"frame": {
+						"x": 207,
+						"y": 566,
+						"w": 16,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 38,
+						"h": 12
+					},
+					"frame": {
+						"x": 425,
+						"y": 1058,
+						"w": 38,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 38,
+						"h": 12
+					},
+					"frame": {
+						"x": 425,
+						"y": 1072,
+						"w": 38,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 431,
+						"y": 1086,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 465,
+						"y": 1070,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 38,
+						"h": 12
+					},
+					"frame": {
+						"x": 309,
+						"y": 1288,
+						"w": 38,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 461,
+						"y": 1098,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 431,
+						"y": 1114,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Fighter - Shield/Kla'ed - Fighter - Shield-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 19,
+						"w": 28,
+						"h": 26
+					},
+					"frame": {
+						"x": 461,
+						"y": 1126,
+						"w": 28,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 11
+					},
+					"frame": {
+						"x": 425,
+						"y": 355,
+						"w": 12,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Wave/Kla'ed - Wave-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 27,
+						"w": 36,
+						"h": 13
+					},
+					"frame": {
+						"x": 355,
+						"y": 1287,
+						"w": 36,
+						"h": 13
 					}
 				},
 				{
@@ -5883,31 +4308,10 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1176,
-						"y": 425,
+						"x": 337,
+						"y": 1302,
 						"w": 26,
 						"h": 28
-					}
-				},
-				{
-					"filename": "Base/Kla'ed - Fighter - Base.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 19,
-						"y": 20,
-						"w": 26,
-						"h": 24
-					},
-					"frame": {
-						"x": 1173,
-						"y": 485,
-						"w": 26,
-						"h": 24
 					}
 				},
 				{
@@ -5925,10 +4329,31 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1201,
-						"y": 455,
+						"x": 365,
+						"y": 1302,
 						"w": 26,
 						"h": 28
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 38,
+						"h": 12
+					},
+					"frame": {
+						"x": 337,
+						"y": 1332,
+						"w": 38,
+						"h": 12
 					}
 				},
 				{
@@ -5946,10 +4371,73 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1204,
-						"y": 425,
+						"x": 393,
+						"y": 1270,
 						"w": 26,
 						"h": 28
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Scout - Shield/Kla'ed - Scout - Shield-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 19,
+						"w": 26,
+						"h": 28
+					},
+					"frame": {
+						"x": 393,
+						"y": 1300,
+						"w": 26,
+						"h": 28
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 38,
+						"h": 12
+					},
+					"frame": {
+						"x": 421,
+						"y": 1142,
+						"w": 38,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Bomber - Shield/Kla'ed - Bomber - Shield-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 38,
+						"h": 12
+					},
+					"frame": {
+						"x": 409,
+						"y": 1156,
+						"w": 38,
+						"h": 12
 					}
 				},
 				{
@@ -5967,8 +4455,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1201,
-						"y": 485,
+						"x": 409,
+						"y": 1170,
 						"w": 26,
 						"h": 24
 					}
@@ -5988,8 +4476,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1201,
-						"y": 485,
+						"x": 409,
+						"y": 1170,
 						"w": 26,
 						"h": 24
 					}
@@ -6009,71 +4497,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1201,
-						"y": 485,
-						"w": 26,
-						"h": 24
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Scout - Shield/Kla'ed - Scout - Shield-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 19,
-						"y": 19,
-						"w": 26,
-						"h": 28
-					},
-					"frame": {
-						"x": 1222,
-						"y": 379,
-						"w": 26,
-						"h": 28
-					}
-				},
-				{
-					"filename": "Shield/Kla'ed - Scout - Shield/Kla'ed - Scout - Shield-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 19,
-						"y": 19,
-						"w": 26,
-						"h": 28
-					},
-					"frame": {
-						"x": 1250,
-						"y": 379,
-						"w": 26,
-						"h": 28
-					}
-				},
-				{
-					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-1.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 19,
-						"y": 20,
-						"w": 26,
-						"h": 24
-					},
-					"frame": {
-						"x": 1232,
-						"y": 409,
+						"x": 409,
+						"y": 1170,
 						"w": 26,
 						"h": 24
 					}
@@ -6093,10 +4518,325 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1260,
-						"y": 409,
+						"x": 437,
+						"y": 1170,
 						"w": 24,
 						"h": 24
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Scout - Shield/Kla'ed - Scout - Shield-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 19,
+						"w": 26,
+						"h": 28
+					},
+					"frame": {
+						"x": 463,
+						"y": 1154,
+						"w": 26,
+						"h": 28
+					}
+				},
+				{
+					"filename": "Destruction/Kla'ed - Fighter - Destruction/Kla'ed - Fighter - Destruction-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 20,
+						"w": 26,
+						"h": 24
+					},
+					"frame": {
+						"x": 463,
+						"y": 1184,
+						"w": 26,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 5,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 109,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 5,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 123,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 5,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 137,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 4,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 137,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 5,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 151,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 165,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 165,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 179,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 8
+					},
+					"frame": {
+						"x": 193,
+						"y": 1337,
+						"w": 12,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 3,
+						"w": 6,
+						"h": 13
+					},
+					"frame": {
+						"x": 123,
+						"y": 471,
+						"w": 6,
+						"h": 13
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 3,
+						"w": 6,
+						"h": 13
+					},
+					"frame": {
+						"x": 359,
+						"y": 245,
+						"w": 6,
+						"h": 13
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 11,
+						"w": 7,
+						"h": 12
+					},
+					"frame": {
+						"x": 489,
+						"y": 70,
+						"w": 7,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 11,
+						"w": 7,
+						"h": 12
+					},
+					"frame": {
+						"x": 489,
+						"y": 84,
+						"w": 7,
+						"h": 12
 					}
 				},
 				{
@@ -6114,8 +4854,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1232,
-						"y": 435,
+						"x": 403,
+						"y": 1196,
 						"w": 26,
 						"h": 24
 					}
@@ -6135,8 +4875,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1229,
-						"y": 461,
+						"x": 431,
+						"y": 1196,
 						"w": 26,
 						"h": 24
 					}
@@ -6156,8 +4896,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1229,
-						"y": 487,
+						"x": 402,
+						"y": 1222,
 						"w": 26,
 						"h": 24
 					}
@@ -6177,10 +4917,409 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1257,
-						"y": 461,
+						"x": 430,
+						"y": 1222,
 						"w": 26,
 						"h": 24
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 3,
+						"w": 4,
+						"h": 13
+					},
+					"frame": {
+						"x": 403,
+						"y": 1181,
+						"w": 4,
+						"h": 13
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 5,
+						"w": 12,
+						"h": 7
+					},
+					"frame": {
+						"x": 472,
+						"y": 805,
+						"w": 12,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 12,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 12,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 260,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 12,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 12,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 359,
+						"y": 274,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 8
+					},
+					"frame": {
+						"x": 207,
+						"y": 1337,
+						"w": 8,
+						"h": 8
 					}
 				},
 				{
@@ -6198,10 +5337,976 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 1257,
-						"y": 487,
+						"x": 459,
+						"y": 1210,
 						"w": 26,
 						"h": 24
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 458,
+						"y": 1236,
+						"w": 24,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 5,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 488,
+						"y": 612,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 5,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 488,
+						"y": 612,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 5,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 488,
+						"y": 612,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 5,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 488,
+						"y": 612,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 6,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 488,
+						"y": 612,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 6,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 488,
+						"y": 626,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 4,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 4,
+						"h": 13
+					},
+					"frame": {
+						"x": 303,
+						"y": 1290,
+						"w": 4,
+						"h": 13
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 5,
+						"w": 12,
+						"h": 7
+					},
+					"frame": {
+						"x": 425,
+						"y": 368,
+						"w": 12,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 13,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 13,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 8,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 490,
+						"y": 640,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 7
+					},
+					"frame": {
+						"x": 425,
+						"y": 377,
+						"w": 12,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 7
+					},
+					"frame": {
+						"x": 425,
+						"y": 377,
+						"w": 12,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 4,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 4,
+						"h": 11
+					},
+					"frame": {
+						"x": 419,
+						"y": 1079,
+						"w": 4,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 20,
+						"w": 24,
+						"h": 26
+					},
+					"frame": {
+						"x": 421,
+						"y": 1248,
+						"w": 24,
+						"h": 26
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 21,
+						"w": 24,
+						"h": 25
+					},
+					"frame": {
+						"x": 421,
+						"y": 1276,
+						"w": 24,
+						"h": 25
+					}
+				},
+				{
+					"filename": "Weapons/Kla'ed - Scout - Weapons/Kla'ed - Scout - Weapons-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 21,
+						"w": 24,
+						"h": 25
+					},
+					"frame": {
+						"x": 421,
+						"y": 1303,
+						"w": 24,
+						"h": 25
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 13,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Bomber - Engine/Kla'ed - Bomber - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 13,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Fighter - Engine/Kla'ed - Fighter - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Scout - Engine/Kla'ed - Scout - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 7,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 8,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Torpedo Ship - Engine/Kla'ed - Torpedo Ship - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 16,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 6,
+						"h": 12
+					},
+					"frame": {
+						"x": 449,
+						"y": 1156,
+						"w": 6,
+						"h": 12
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 8
+					},
+					"frame": {
+						"x": 217,
+						"y": 1311,
+						"w": 8,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 8
+					},
+					"frame": {
+						"x": 217,
+						"y": 1311,
+						"w": 8,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 0,
+						"w": 4,
+						"h": 8
+					},
+					"frame": {
+						"x": 349,
+						"y": 1288,
+						"w": 4,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 0,
+						"w": 4,
+						"h": 8
+					},
+					"frame": {
+						"x": 349,
+						"y": 1288,
+						"w": 4,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 4,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 4,
+						"h": 13
+					},
+					"frame": {
+						"x": 377,
+						"y": 1332,
+						"w": 4,
+						"h": 13
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Bullet/Kla'ed - Bullet-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 4,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 4,
+						"h": 13
+					},
+					"frame": {
+						"x": 383,
+						"y": 1332,
+						"w": 4,
+						"h": 13
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 0,
+						"w": 12,
+						"h": 7
+					},
+					"frame": {
+						"x": 131,
+						"y": 575,
+						"w": 12,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Projectiles/Kla'ed - Big Bullet/Kla'ed - Big Bullet-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 8,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 8,
+						"h": 11
+					},
+					"frame": {
+						"x": 475,
+						"y": 265,
+						"w": 8,
+						"h": 11
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 0,
+						"w": 4,
+						"h": 7
+					},
+					"frame": {
+						"x": 457,
+						"y": 1156,
+						"w": 4,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 0,
+						"w": 4,
+						"h": 7
+					},
+					"frame": {
+						"x": 457,
+						"y": 1156,
+						"w": 4,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Support ship - Engine/Kla'ed - Support ship - Engine-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 8
+					},
+					"frame": {
+						"x": 485,
+						"y": 387,
+						"w": 8,
+						"h": 8
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 7
+					},
+					"frame": {
+						"x": 476,
+						"y": 655,
+						"w": 8,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 7
+					},
+					"frame": {
+						"x": 405,
+						"y": 1124,
+						"w": 8,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Engine/Kla'ed - Frigate - Engine/Kla'ed - Frigate - Engine-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 0,
+						"w": 8,
+						"h": 7
+					},
+					"frame": {
+						"x": 486,
+						"y": 805,
+						"w": 8,
+						"h": 7
+					}
+				},
+				{
+					"filename": "Shield/Kla'ed - Torpedo Ship - Shield/Kla'ed - Torpedo Ship - Shield-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 4,
+						"w": 8,
+						"h": 7
+					},
+					"frame": {
+						"x": 485,
+						"y": 814,
+						"w": 8,
+						"h": 7
 					}
 				}
 			]
@@ -6210,6 +6315,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:daa3994804834395c9fda97ff3a4f726:bd2a85194c2cbbe7151254419e68468b:0ce9253a0c20247e55acb034fb17a84c$"
+		"smartupdate": "$TexturePacker:SmartUpdate:d59ab3ee9bc838233a83902454c5488f:6584d04cce4ad5f5f88ff07c4502ffc3:0ce9253a0c20247e55acb034fb17a84c$"
 	}
 }

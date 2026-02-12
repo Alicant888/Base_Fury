@@ -122,7 +122,7 @@ export const SPRITE_FRAMES = {
   torpedoShipWeaponPrefix: "Weapons/Kla'ed - Torpedo Ship - Weapons/Kla'ed - Torpedo Ship - Weapons-",
   torpedoShipWeaponSuffix: ".png",
   torpedoShipWeaponStart: 0,
-  torpedoShipWeaponEnd: 9,
+  torpedoShipWeaponEnd: 14,
 
   torpedoProjectilePrefix: "Projectiles/Kla'ed - Torpedo/Kla'ed - Torpedo-",
   torpedoProjectileSuffix: ".png",
