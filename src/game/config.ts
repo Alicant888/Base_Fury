@@ -165,6 +165,32 @@ export const SPRITE_FRAMES = {
   bigBulletProjectileStart: 0,
   bigBulletProjectileEnd: 3,
 
+  battlecruiserBase: "Base/Kla'ed - Battlecruiser - Base.png",
+  battlecruiserEnginePrefix: "Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-",
+  battlecruiserEngineSuffix: ".png",
+  battlecruiserEngineStart: 0,
+  battlecruiserEngineEnd: 35,
+
+  battlecruiserWeaponPrefix: "Weapons/Kla'ed - Battlecruiser - Weapons/Kla'ed - Battlecruiser - Weapons-",
+  battlecruiserWeaponSuffix: ".png",
+  battlecruiserWeaponStart: 0,
+  battlecruiserWeaponEnd: 29,
+
+  battlecruiserShieldPrefix: "Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-",
+  battlecruiserShieldSuffix: ".png",
+  battlecruiserShieldStart: 0,
+  battlecruiserShieldEnd: 9,
+
+  battlecruiserDestructionPrefix: "Destruction/Kla'ed - Battlecruiser - Destruction/Kla'ed - Battlecruiser - Destruction-",
+  battlecruiserDestructionSuffix: ".png",
+  battlecruiserDestructionStart: 0,
+  battlecruiserDestructionEnd: 9,
+
+  waveProjectilePrefix: "Projectiles/Kla'ed - Wave/Kla'ed - Wave-",
+  waveProjectileSuffix: ".png",
+  waveProjectileStart: 0,
+  waveProjectileEnd: 5,
+
   // Shield pickup icon (atlas: FX)
   shieldPickupPrefix:
     "PickupsPack/Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-",

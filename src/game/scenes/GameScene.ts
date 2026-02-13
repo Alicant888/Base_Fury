@@ -1261,6 +1261,8 @@ export class GameScene extends Phaser.Scene {
     const frame =
       kind === "fighter"
         ? `${SPRITE_FRAMES.fighterDestructionPrefix}${SPRITE_FRAMES.fighterDestructionStart}${SPRITE_FRAMES.fighterDestructionSuffix}`
+        : kind === "battlecruiser"
+          ? `${SPRITE_FRAMES.battlecruiserDestructionPrefix}${SPRITE_FRAMES.battlecruiserDestructionStart}${SPRITE_FRAMES.battlecruiserDestructionSuffix}`
         : kind === "frigate"
           ? `${SPRITE_FRAMES.frigateDestructionPrefix}${SPRITE_FRAMES.frigateDestructionStart}${SPRITE_FRAMES.frigateDestructionSuffix}`
         : kind === "torpedo"
@@ -1272,6 +1274,8 @@ export class GameScene extends Phaser.Scene {
     const animKey =
       kind === "fighter"
         ? "fighter_explode"
+        : kind === "battlecruiser"
+          ? "battlecruiser_explode"
         : kind === "frigate"
           ? "frigate_explode"
           : kind === "torpedo"
@@ -1341,6 +1345,20 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
+    if (!this.anims.exists("battlecruiser_explode")) {
+      this.anims.create({
+        key: "battlecruiser_explode",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.battlecruiserDestructionStart,
+          end: SPRITE_FRAMES.battlecruiserDestructionEnd,
+          prefix: SPRITE_FRAMES.battlecruiserDestructionPrefix,
+          suffix: SPRITE_FRAMES.battlecruiserDestructionSuffix,
+        }),
+        frameRate: 20,
+        repeat: 0,
+      });
+    }
+
     if (!this.anims.exists("enemy_engine")) {
       this.anims.create({
         key: "enemy_engine",
@@ -1397,6 +1415,42 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
+    // Battlecruiser engine flames are 3-part frames: left/middle/right (12 frames total).
+    const battlecruiserEngineFrames = 12;
+    const battlecruiserEngineL: number[] = [];
+    const battlecruiserEngineM: number[] = [];
+    const battlecruiserEngineR: number[] = [];
+    for (let f = 0; f < battlecruiserEngineFrames; f += 1) {
+      battlecruiserEngineL.push(f * 3);
+      battlecruiserEngineM.push(f * 3 + 1);
+      battlecruiserEngineR.push(f * 3 + 2);
+    }
+
+    this.createLoopAnimFromIndices(
+      "battlecruiser_engine_left",
+      ATLAS_KEYS.enemy,
+      SPRITE_FRAMES.battlecruiserEnginePrefix,
+      battlecruiserEngineL,
+      SPRITE_FRAMES.battlecruiserEngineSuffix,
+      14,
+    );
+    this.createLoopAnimFromIndices(
+      "battlecruiser_engine_mid",
+      ATLAS_KEYS.enemy,
+      SPRITE_FRAMES.battlecruiserEnginePrefix,
+      battlecruiserEngineM,
+      SPRITE_FRAMES.battlecruiserEngineSuffix,
+      14,
+    );
+    this.createLoopAnimFromIndices(
+      "battlecruiser_engine_right",
+      ATLAS_KEYS.enemy,
+      SPRITE_FRAMES.battlecruiserEnginePrefix,
+      battlecruiserEngineR,
+      SPRITE_FRAMES.battlecruiserEngineSuffix,
+      14,
+    );
+
     if (!this.anims.exists("enemy_weapon_flame")) {
       this.anims.create({
         key: "enemy_weapon_flame",
@@ -1437,6 +1491,25 @@ export class GameScene extends Phaser.Scene {
         frameRate: 18,
         repeat: 0,
       });
+    }
+
+    if (!this.anims.exists("battlecruiser_weapon")) {
+      // Avoid creating an empty animation if the atlas doesn't have the frames yet.
+      const tex = this.textures.get(ATLAS_KEYS.enemy);
+      const battlecruiserWeaponFrames: Array<{ key: string; frame: string }> = [];
+      for (let i = SPRITE_FRAMES.battlecruiserWeaponStart; i <= SPRITE_FRAMES.battlecruiserWeaponEnd; i += 1) {
+        const name = `${SPRITE_FRAMES.battlecruiserWeaponPrefix}${i}${SPRITE_FRAMES.battlecruiserWeaponSuffix}`;
+        if (tex?.has(name)) battlecruiserWeaponFrames.push({ key: ATLAS_KEYS.enemy, frame: name });
+      }
+
+      if (battlecruiserWeaponFrames.length > 0) {
+        this.anims.create({
+          key: "battlecruiser_weapon",
+          frames: battlecruiserWeaponFrames as unknown as Phaser.Types.Animations.AnimationFrame[],
+          frameRate: 18,
+          repeat: 0,
+        });
+      }
     }
 
     if (!this.anims.exists("torpedo_ship_weapon")) {
@@ -1493,6 +1566,16 @@ export class GameScene extends Phaser.Scene {
       16,
     );
 
+    this.createLoopAnimIfFrames(
+      "enemy_wave",
+      ATLAS_KEYS.enemy,
+      SPRITE_FRAMES.waveProjectilePrefix,
+      SPRITE_FRAMES.waveProjectileStart,
+      SPRITE_FRAMES.waveProjectileEnd,
+      SPRITE_FRAMES.waveProjectileSuffix,
+      16,
+    );
+
     if (!this.anims.exists("enemy_shield")) {
       this.anims.create({
         key: "enemy_shield",
@@ -1543,6 +1626,20 @@ export class GameScene extends Phaser.Scene {
           end: SPRITE_FRAMES.frigateShieldEnd,
           prefix: SPRITE_FRAMES.frigateShieldPrefix,
           suffix: SPRITE_FRAMES.frigateShieldSuffix,
+        }),
+        frameRate: 18,
+        repeat: -1,
+      });
+    }
+
+    if (!this.anims.exists("battlecruiser_shield")) {
+      this.anims.create({
+        key: "battlecruiser_shield",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.battlecruiserShieldStart,
+          end: SPRITE_FRAMES.battlecruiserShieldEnd,
+          prefix: SPRITE_FRAMES.battlecruiserShieldPrefix,
+          suffix: SPRITE_FRAMES.battlecruiserShieldSuffix,
         }),
         frameRate: 18,
         repeat: -1,

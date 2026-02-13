@@ -66,6 +66,15 @@ Enemy Frigate (atlas: `Enemy`)
 - `Shield/Kla'ed - Frigate - Shield/Kla'ed - Frigate - Shield-0.png` … `Shield/Kla'ed - Frigate - Shield/Kla'ed - Frigate - Shield-9.png`
 - `Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-0.png` … `Destruction/Kla'ed - Frigate - Destruction/Kla'ed - Frigate - Destruction-8.png`
 
+Enemy Battlecruiser (atlas: `Enemy`)
+
+- `Base/Kla'ed - Battlecruiser - Base.png`
+- `Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-0.png` … `Engine/Kla'ed - Battlecruiser - Engine/Kla'ed - Battlecruiser - Engine-35.png`
+- `Weapons/Kla'ed - Battlecruiser - Weapons/Kla'ed - Battlecruiser - Weapons-0.png` … `Weapons/Kla'ed - Battlecruiser - Weapons/Kla'ed - Battlecruiser - Weapons-29.png`
+- `Projectiles/Kla'ed - Wave/Kla'ed - Wave-0.png` … `Projectiles/Kla'ed - Wave/Kla'ed - Wave-5.png`
+- `Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-0.png` … `Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-9.png`
+- `Destruction/Kla'ed - Battlecruiser - Destruction/Kla'ed - Battlecruiser - Destruction-0.png` … `Destruction/Kla'ed - Battlecruiser - Destruction/Kla'ed - Battlecruiser - Destruction-9.png`
+
 FX (atlas: `FX`)
 
 - `Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-0.png` … `Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-9.png`

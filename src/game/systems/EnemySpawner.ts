@@ -22,18 +22,21 @@ export class EnemySpawner {
     const x = Phaser.Math.Between(24, GAME_WIDTH - 24);
     const y = -24;
     const speedY = Phaser.Math.Between(90, 160);
-    // Spawn Torpedo Ship rarely to make Frigate debugging easier.
+    // Spawn Frigate rarely to make Battlecruiser debugging easier.
     const r = Phaser.Math.FloatBetween(0, 1);
-    const kind: EnemyKind = r < 0.01 ? "fighter" : r < 0.02 ? "scout" : r < 0.03 ? "torpedo" : "frigate";
+    const kind: EnemyKind =
+      r < 0.01 ? "frigate" : r < 0.02 ? "torpedo" : r < 0.03 ? "fighter" : r < 0.04 ? "scout" : "battlecruiser";
 
     const hasShield =
-      kind === "frigate"
-        ? Phaser.Math.FloatBetween(0, 1) < 0.5
-        : kind === "torpedo"
+      kind === "battlecruiser"
+        ? Phaser.Math.FloatBetween(0, 1) < 0.1
+        : kind === "frigate"
           ? Phaser.Math.FloatBetween(0, 1) < 0.5
-          : kind === "fighter"
-            ? Phaser.Math.FloatBetween(0, 1) < 0.01
-            : Phaser.Math.FloatBetween(0, 1) < 0.05;
+          : kind === "torpedo"
+            ? Phaser.Math.FloatBetween(0, 1) < 0.5
+            : kind === "fighter"
+              ? Phaser.Math.FloatBetween(0, 1) < 0.01
+              : Phaser.Math.FloatBetween(0, 1) < 0.05;
 
     const enemy = this.enemies.get(x, y) as Enemy | null;
     if (!enemy) return;
