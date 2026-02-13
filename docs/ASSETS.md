@@ -75,6 +75,15 @@ Enemy Battlecruiser (atlas: `Enemy`)
 - `Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-0.png` … `Shield/Kla'ed - Battlecruiser - Shield/Kla'ed - Battlecruiser - Shield-9.png`
 - `Destruction/Kla'ed - Battlecruiser - Destruction/Kla'ed - Battlecruiser - Destruction-0.png` … `Destruction/Kla'ed - Battlecruiser - Destruction/Kla'ed - Battlecruiser - Destruction-9.png`
 
+Enemy Dreadnought (atlas: `Enemy`)
+
+- `Base/Kla'ed - Dreadnought - Base.png`
+- `Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-0.png` … `Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-9.png`
+- `Weapons/Kla'ed - Dreadnought - Weapons/Kla'ed - Dreadnought - Weapons-0.png` … `Weapons/Kla'ed - Dreadnought - Weapons/Kla'ed - Dreadnought - Weapons-59.png`
+- `Projectiles/Kla'ed - Ray/Kla'ed - Ray-0.png` … `Projectiles/Kla'ed - Ray/Kla'ed - Ray-3.png`
+- `Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-0.png` … `Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-9.png`
+- `Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-0.png` … `Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-9.png`
+
 FX (atlas: `FX`)
 
 - `Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-0.png` … `Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-9.png`

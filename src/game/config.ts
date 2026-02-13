@@ -191,6 +191,32 @@ export const SPRITE_FRAMES = {
   waveProjectileStart: 0,
   waveProjectileEnd: 5,
 
+  dreadnoughtBase: "Base/Kla'ed - Dreadnought - Base.png",
+  dreadnoughtEnginePrefix: "Engine/Kla'ed - Dreadnought - Engine/Kla'ed - Dreadnought - Engine-",
+  dreadnoughtEngineSuffix: ".png",
+  dreadnoughtEngineStart: 0,
+  dreadnoughtEngineEnd: 9,
+
+  dreadnoughtWeaponPrefix: "Weapons/Kla'ed - Dreadnought - Weapons/Kla'ed - Dreadnought - Weapons-",
+  dreadnoughtWeaponSuffix: ".png",
+  dreadnoughtWeaponStart: 0,
+  dreadnoughtWeaponEnd: 59,
+
+  dreadnoughtShieldPrefix: "Shield/Kla'ed - Dreadnought - Shield/Kla'ed - Dreadnought - Shield-",
+  dreadnoughtShieldSuffix: ".png",
+  dreadnoughtShieldStart: 0,
+  dreadnoughtShieldEnd: 9,
+
+  dreadnoughtDestructionPrefix: "Destruction/Kla'ed - Dreadnought - Destruction/Kla'ed - Dreadnought - Destruction-",
+  dreadnoughtDestructionSuffix: ".png",
+  dreadnoughtDestructionStart: 0,
+  dreadnoughtDestructionEnd: 9,
+
+  rayProjectilePrefix: "Projectiles/Kla'ed - Ray/Kla'ed - Ray-",
+  rayProjectileSuffix: ".png",
+  rayProjectileStart: 0,
+  rayProjectileEnd: 3,
+
   // Shield pickup icon (atlas: FX)
   shieldPickupPrefix:
     "PickupsPack/Shield Generators/Pickup Icon - Shield Generator - All around shield/Pickup Icon - Shield Generator - All around shield-",

@@ -1261,6 +1261,8 @@ export class GameScene extends Phaser.Scene {
     const frame =
       kind === "fighter"
         ? `${SPRITE_FRAMES.fighterDestructionPrefix}${SPRITE_FRAMES.fighterDestructionStart}${SPRITE_FRAMES.fighterDestructionSuffix}`
+        : kind === "dreadnought"
+          ? `${SPRITE_FRAMES.dreadnoughtDestructionPrefix}${SPRITE_FRAMES.dreadnoughtDestructionStart}${SPRITE_FRAMES.dreadnoughtDestructionSuffix}`
         : kind === "battlecruiser"
           ? `${SPRITE_FRAMES.battlecruiserDestructionPrefix}${SPRITE_FRAMES.battlecruiserDestructionStart}${SPRITE_FRAMES.battlecruiserDestructionSuffix}`
         : kind === "frigate"
@@ -1274,6 +1276,8 @@ export class GameScene extends Phaser.Scene {
     const animKey =
       kind === "fighter"
         ? "fighter_explode"
+        : kind === "dreadnought"
+          ? "dreadnought_explode"
         : kind === "battlecruiser"
           ? "battlecruiser_explode"
         : kind === "frigate"
@@ -1359,6 +1363,20 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
+    if (!this.anims.exists("dreadnought_explode")) {
+      this.anims.create({
+        key: "dreadnought_explode",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.dreadnoughtDestructionStart,
+          end: SPRITE_FRAMES.dreadnoughtDestructionEnd,
+          prefix: SPRITE_FRAMES.dreadnoughtDestructionPrefix,
+          suffix: SPRITE_FRAMES.dreadnoughtDestructionSuffix,
+        }),
+        frameRate: 20,
+        repeat: 0,
+      });
+    }
+
     if (!this.anims.exists("enemy_engine")) {
       this.anims.create({
         key: "enemy_engine",
@@ -1409,6 +1427,20 @@ export class GameScene extends Phaser.Scene {
           end: SPRITE_FRAMES.frigateEngineEnd,
           prefix: SPRITE_FRAMES.frigateEnginePrefix,
           suffix: SPRITE_FRAMES.frigateEngineSuffix,
+        }),
+        frameRate: 14,
+        repeat: -1,
+      });
+    }
+
+    if (!this.anims.exists("dreadnought_engine")) {
+      this.anims.create({
+        key: "dreadnought_engine",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.dreadnoughtEngineStart,
+          end: SPRITE_FRAMES.dreadnoughtEngineEnd,
+          prefix: SPRITE_FRAMES.dreadnoughtEnginePrefix,
+          suffix: SPRITE_FRAMES.dreadnoughtEngineSuffix,
         }),
         frameRate: 14,
         repeat: -1,
@@ -1512,6 +1544,27 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
+    if (!this.anims.exists("dreadnought_weapon")) {
+      // Avoid creating an empty animation if the atlas doesn't have the frames yet.
+      const tex = this.textures.get(ATLAS_KEYS.enemy);
+      const dreadnoughtWeaponFrames: Array<{ key: string; frame: string }> = [];
+      for (let i = SPRITE_FRAMES.dreadnoughtWeaponStart; i <= SPRITE_FRAMES.dreadnoughtWeaponEnd; i += 1) {
+        const name = `${SPRITE_FRAMES.dreadnoughtWeaponPrefix}${i}${SPRITE_FRAMES.dreadnoughtWeaponSuffix}`;
+        if (tex?.has(name)) dreadnoughtWeaponFrames.push({ key: ATLAS_KEYS.enemy, frame: name });
+      }
+
+      if (dreadnoughtWeaponFrames.length > 0) {
+        this.anims.create({
+          key: "dreadnought_weapon",
+          frames: dreadnoughtWeaponFrames as unknown as Phaser.Types.Animations.AnimationFrame[],
+          // 7 weapon frames between shots. At 28fps that is 0.25s,
+          // which matches a full cycle of the Ray animation (4 frames @ 16fps).
+          frameRate: 28,
+          repeat: 0,
+        });
+      }
+    }
+
     if (!this.anims.exists("torpedo_ship_weapon")) {
       // Avoid creating an empty animation if the atlas doesn't have the frames yet.
       const tex = this.textures.get(ATLAS_KEYS.enemy);
@@ -1573,6 +1626,16 @@ export class GameScene extends Phaser.Scene {
       SPRITE_FRAMES.waveProjectileStart,
       SPRITE_FRAMES.waveProjectileEnd,
       SPRITE_FRAMES.waveProjectileSuffix,
+      16,
+    );
+
+    this.createLoopAnimIfFrames(
+      "enemy_ray",
+      ATLAS_KEYS.enemy,
+      SPRITE_FRAMES.rayProjectilePrefix,
+      SPRITE_FRAMES.rayProjectileStart,
+      SPRITE_FRAMES.rayProjectileEnd,
+      SPRITE_FRAMES.rayProjectileSuffix,
       16,
     );
 
@@ -1640,6 +1703,20 @@ export class GameScene extends Phaser.Scene {
           end: SPRITE_FRAMES.battlecruiserShieldEnd,
           prefix: SPRITE_FRAMES.battlecruiserShieldPrefix,
           suffix: SPRITE_FRAMES.battlecruiserShieldSuffix,
+        }),
+        frameRate: 18,
+        repeat: -1,
+      });
+    }
+
+    if (!this.anims.exists("dreadnought_shield")) {
+      this.anims.create({
+        key: "dreadnought_shield",
+        frames: this.anims.generateFrameNames(ATLAS_KEYS.enemy, {
+          start: SPRITE_FRAMES.dreadnoughtShieldStart,
+          end: SPRITE_FRAMES.dreadnoughtShieldEnd,
+          prefix: SPRITE_FRAMES.dreadnoughtShieldPrefix,
+          suffix: SPRITE_FRAMES.dreadnoughtShieldSuffix,
         }),
         frameRate: 18,
         repeat: -1,
