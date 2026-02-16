@@ -55,7 +55,10 @@ const DREADNOUGHT_ALIGN_EPS_PX = 3;
 const DREADNOUGHT_BOSS_EDGE_PADDING_X = 4;
 // Dreadnought front has angled sides; use a narrower hitbox to avoid "early" side hits in transparent corners.
 const DREADNOUGHT_HITBOX_W_MULT = 0.55;
-const DREADNOUGHT_HITBOX_H_MULT = 0.7;
+const DREADNOUGHT_HITBOX_H_MULT = 0.5;
+// Shield is a round bubble and should absorb shots even at the edges.
+// Use a circle body while the shield is active (not suppressed).
+const DREADNOUGHT_SHIELD_BODY_RADIUS_MULT = 0.9;
 
 const DREADNOUGHT_WEAPON_FIRE_FRAME_27 = `${SPRITE_FRAMES.dreadnoughtWeaponPrefix}27${SPRITE_FRAMES.dreadnoughtWeaponSuffix}`;
 const DREADNOUGHT_WEAPON_FIRE_FRAME_34 = `${SPRITE_FRAMES.dreadnoughtWeaponPrefix}34${SPRITE_FRAMES.dreadnoughtWeaponSuffix}`;
@@ -233,6 +236,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const hitboxWMult = isDreadnought ? DREADNOUGHT_HITBOX_W_MULT : 0.7;
     const hitboxHMult = isDreadnought ? DREADNOUGHT_HITBOX_H_MULT : 0.7;
     body.setSize(this.width * hitboxWMult, this.height * hitboxHMult, true);
+    this.syncDreadnoughtCollisionBody();
 
     // Engine loop.
     const engineFrame = isBattlecruiser
@@ -470,6 +474,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.hp = Math.max(0, this.hp - remaining);
     }
 
+    // Dreadnought shield is a round bubble: keep collision body in sync with shield state.
+    this.syncDreadnoughtCollisionBody();
+
     return this.hp <= 0;
   }
 
@@ -534,6 +541,28 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     // Weapon frames are trimmed differently; placing it at the same position prevents it
     // from looking like a second ship that spawns ahead of the enemy.
     this.weaponFx.setPosition(this.x, this.y);
+  }
+
+  private syncDreadnoughtCollisionBody() {
+    if (this.kind !== "dreadnought") return;
+    const body = this.body as Phaser.Physics.Arcade.Body | null;
+    if (!body) return;
+
+    // When shield is active, use a circle body to match the bubble and absorb edge hits.
+    if (this.shieldHp > 0 && !this.shieldSuppressed) {
+      const w = this.width || 0;
+      const h = this.height || 0;
+      const baseRadius = Math.max(w, h) * 0.5;
+      const radius = Math.max(1, Math.round(baseRadius * DREADNOUGHT_SHIELD_BODY_RADIUS_MULT));
+      const offsetX = w * 0.5 - radius + DREADNOUGHT_SHIELD_OFFSET_X;
+      const offsetY = h * 0.5 - radius + DREADNOUGHT_SHIELD_OFFSET_Y;
+      body.setCircle(radius, offsetX, offsetY);
+      body.updateFromGameObject();
+      return;
+    }
+
+    // Shield down (suppressed) or broken: use a narrower hull rectangle to avoid early corner hits.
+    body.setSize(this.width * DREADNOUGHT_HITBOX_W_MULT, this.height * DREADNOUGHT_HITBOX_H_MULT, true);
   }
 
   private breakShield() {
@@ -678,6 +707,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.shieldFx.setFlipY(true);
         this.shieldFx.play("dreadnought_shield", true);
       }
+      this.syncDreadnoughtCollisionBody();
 
       this.isFiring = false;
       this.dreadnoughtState = "idle";
@@ -701,6 +731,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.shieldSuppressed = true;
       this.shieldFx.setVisible(false);
       this.shieldFx.anims.stop();
+      this.syncDreadnoughtCollisionBody();
 
       this.weaponFx.setVisible(false); // show only when actually firing
       this.dreadnoughtState = "aligning";
