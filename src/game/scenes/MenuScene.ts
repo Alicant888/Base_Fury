@@ -18,19 +18,6 @@ export class MenuScene extends Phaser.Scene {
     const scale = Math.max(GAME_WIDTH / bg.width, GAME_HEIGHT / bg.height);
     bg.setScale(scale);
 
-    // Title.
-    this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "SPACE FURY", {
-        fontFamily: "monospace",
-        fontSize: "52px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 12,
-        shadow: { color: "#000000", fill: true, offsetX: 0, offsetY: 4, blur: 6 },
-      })
-      .setOrigin(0.5)
-      .setDepth(2);
-
     // Menu music: start immediately on load, stop on START click.
     // Note: some environments may block autoplay with sound.
     try {

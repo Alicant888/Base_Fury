@@ -31,7 +31,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.multiatlas(ATLAS_KEYS.bg, "/assets/atlases/backgrounds.json", "/assets/atlases/");
 
     // Menu background (static) + menu music.
-    this.load.image(IMAGE_KEYS.menuBackground, "/assets/start_bcg.png");
+    this.load.image(IMAGE_KEYS.menuBackground, "/assets/start.webp");
     this.load.audio(AUDIO_KEYS.startMenuMusic, "/assets/audio/music/start_menu.wav");
     this.load.audio(AUDIO_KEYS.gameMusic, "/assets/audio/music/music.wav");
 

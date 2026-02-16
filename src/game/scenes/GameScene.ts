@@ -42,18 +42,18 @@ const DEPTH_WEAPON = 4.8; // under the ship, still under the shield.
 const ACTIVE_BG_SET: "asteroids" | "planets" = "planets";
 
 // Base background (always visible).
-const BG_SCROLL_SPEED_BCG = 1;
+const BG_SCROLL_SPEED_BCG = 0.01;
 
 // Asteroids set (reserved for certain levels).
-const ASTEROIDS_SCROLL_SPEED_L4 = 2;
+const ASTEROIDS_SCROLL_SPEED_L4 = 1;
 const ASTEROIDS_SCROLL_SPEED_L5 = 2;
-const ASTEROIDS_SCROLL_SPEED_L6 = 3;
+const ASTEROIDS_SCROLL_SPEED_L6 = 4;
 
 // Planets set should scroll 3x slower than the Asteroids set.
-const PLANETS_SCROLL_SPEED_L0 = 0;
-const PLANETS_SCROLL_SPEED_L1 = ASTEROIDS_SCROLL_SPEED_L4 / 3;
-const PLANETS_SCROLL_SPEED_L2 = ASTEROIDS_SCROLL_SPEED_L5 / 3;
-const PLANETS_SCROLL_SPEED_L3 = ASTEROIDS_SCROLL_SPEED_L6 / 3;
+const PLANETS_SCROLL_SPEED_L0 = 0.02;
+const PLANETS_SCROLL_SPEED_L1 = 0.03;
+const PLANETS_SCROLL_SPEED_L2 = 0.04;
+const PLANETS_SCROLL_SPEED_L3 = 0.06;
 
 const BG_OVERLAY_LAYERS = {
   asteroids: [
@@ -153,6 +153,7 @@ export class GameScene extends Phaser.Scene {
   private bgDust!: Phaser.GameObjects.TileSprite;
   private bgL6!: Phaser.GameObjects.TileSprite;
   private bgL3!: Phaser.GameObjects.TileSprite;
+  private bgOverlayMaxScrollY: [number, number, number, number] = [0, 0, 0, 0];
 
   private player!: Player;
   private bullets!: Phaser.Physics.Arcade.Group;
@@ -239,19 +240,34 @@ export class GameScene extends Phaser.Scene {
 
     // Background (parallax).
     // Base layer: always BCG.
-    this.bgDust = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, BG_FRAMES.bcg).setOrigin(0).setDepth(0);
+    // Keep all background layers below gameplay objects (bullets, enemies, player, etc).
+    this.bgDust = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, BG_FRAMES.bcg).setOrigin(0).setDepth(-10);
 
     // Overlay set: Asteroids (L4-L6) or Planets (L0-L3).
     // NOTE: Currently active set is "Planets", so L4/L5/L6 are disabled.
     const overlays = BG_OVERLAY_LAYERS[ACTIVE_BG_SET];
-    this.bgNebula = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[0].frame).setOrigin(0).setDepth(1);
-    this.bgStar = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[1].frame).setOrigin(0).setDepth(2);
-    this.bgL6 = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[2].frame).setOrigin(0).setDepth(3);
+    this.bgNebula = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[0].frame).setOrigin(0).setDepth(-9);
+    this.bgStar = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[1].frame).setOrigin(0).setDepth(-8);
+    this.bgL6 = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[2].frame).setOrigin(0).setDepth(-7);
 
     const topLayer = overlays[3];
     const topLayerFrame = topLayer ? topLayer.frame : overlays[2].frame;
-    this.bgL3 = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, topLayerFrame).setOrigin(0).setDepth(4);
+    this.bgL3 = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, topLayerFrame).setOrigin(0).setDepth(-6);
     this.bgL3.setVisible(!!topLayer);
+
+    // For Planets: scroll only once (no looping). Clamp to the largest offset that still
+    // shows a continuous portion of the texture without wrapping within the viewport.
+    const maxScrollForFrame = (frameName: string): number => {
+      const frame = this.textures.getFrame(ATLAS_KEYS.bg, frameName);
+      const h = frame?.height ?? GAME_HEIGHT;
+      return Math.max(0, h - GAME_HEIGHT);
+    };
+    this.bgOverlayMaxScrollY = [
+      maxScrollForFrame(overlays[0].frame),
+      maxScrollForFrame(overlays[1].frame),
+      maxScrollForFrame(overlays[2].frame),
+      topLayer ? maxScrollForFrame(topLayer.frame) : 0,
+    ];
 
     this.physics.world.setBounds(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
@@ -623,11 +639,27 @@ export class GameScene extends Phaser.Scene {
     this.bgDust.tilePositionY -= BG_SCROLL_SPEED_BCG * t; // BCG (base)
 
     const overlays = BG_OVERLAY_LAYERS[ACTIVE_BG_SET];
-    this.bgNebula.tilePositionY -= overlays[0].speed * t;
-    this.bgStar.tilePositionY -= overlays[1].speed * t;
-    this.bgL6.tilePositionY -= overlays[2].speed * t;
-    const topLayer = overlays[3];
-    if (topLayer) this.bgL3.tilePositionY -= topLayer.speed * t;
+    const planetsOneShot = ACTIVE_BG_SET === "planets";
+
+    const scrollLayerOnce = (ts: Phaser.GameObjects.TileSprite, speed: number, maxScroll: number) => {
+      if (speed === 0) return;
+      const next = ts.tilePositionY - speed * t;
+      ts.tilePositionY = Math.max(-maxScroll, next);
+    };
+
+    if (planetsOneShot) {
+      scrollLayerOnce(this.bgNebula, overlays[0].speed, this.bgOverlayMaxScrollY[0]);
+      scrollLayerOnce(this.bgStar, overlays[1].speed, this.bgOverlayMaxScrollY[1]);
+      scrollLayerOnce(this.bgL6, overlays[2].speed, this.bgOverlayMaxScrollY[2]);
+      const topLayer = overlays[3];
+      if (topLayer) scrollLayerOnce(this.bgL3, topLayer.speed, this.bgOverlayMaxScrollY[3]);
+    } else {
+      this.bgNebula.tilePositionY -= overlays[0].speed * t;
+      this.bgStar.tilePositionY -= overlays[1].speed * t;
+      this.bgL6.tilePositionY -= overlays[2].speed * t;
+      const topLayer = overlays[3];
+      if (topLayer) this.bgL3.tilePositionY -= topLayer.speed * t;
+    }
 
     // Pointer drag takes priority; keyboard works when not dragging.
     if (this.draggingPointerId !== null && this.hasDragTarget) {
