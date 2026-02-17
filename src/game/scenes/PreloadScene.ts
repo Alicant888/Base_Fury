@@ -33,7 +33,7 @@ export class PreloadScene extends Phaser.Scene {
     // Menu background (static) + menu music.
     this.load.image(IMAGE_KEYS.menuBackground, "/assets/start.webp");
     this.load.audio(AUDIO_KEYS.startMenuMusic, "/assets/audio/music/start_menu.wav");
-    this.load.audio(AUDIO_KEYS.gameMusic, "/assets/audio/music/music.wav");
+    this.load.audio(AUDIO_KEYS.gameMusic, "/assets/audio/music/2.wav");
 
     // SFX
     this.load.audio(AUDIO_KEYS.click, "/assets/audio/sfx/click.wav");
@@ -41,6 +41,9 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio(AUDIO_KEYS.explosionScout, "/assets/audio/sfx/explosion_scout.wav");
     this.load.audio(AUDIO_KEYS.impactSmall, "/assets/audio/sfx/impact_small.wav");
     this.load.audio(AUDIO_KEYS.laserShort, "/assets/audio/sfx/Mhot.wav");
+    this.load.audio(AUDIO_KEYS.gShot, "/assets/audio/sfx/Gshot2.wav");
+    this.load.audio(AUDIO_KEYS.zpShot, "/assets/audio/sfx/Zp.wav");
+    this.load.audio(AUDIO_KEYS.bigsShot, "/assets/audio/sfx/Bigs.wav");
     this.load.audio(AUDIO_KEYS.laserScout, "/assets/audio/sfx/laser_scout.wav");
     this.load.audio(AUDIO_KEYS.torpedoShot, "/assets/audio/sfx/Torpedo.wav");
     this.load.audio(AUDIO_KEYS.bcShot, "/assets/audio/sfx/Bc.wav");

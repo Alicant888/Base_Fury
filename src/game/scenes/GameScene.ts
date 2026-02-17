@@ -147,6 +147,19 @@ const BIG_SPACE_GUN_PROJECTILE_FROM_WEAPON_OFFSET_Y = -10;
 // Fire a single centered projectile on this weapon frame:
 const BIG_SPACE_GUN_WEAPON_FIRE_FRAME = `${SPRITE_FRAMES.bigSpaceGunWeaponPrefix}7${SPRITE_FRAMES.bigSpaceGunWeaponSuffix}`;
 
+// TUNE PICKUP DROP CHANCES HERE (0.0..1.0)
+const DROP_CHANCE_BIG_SPACE_GUN = 0.3;
+const DROP_CHANCE_ZAPPER = 0.01;
+const DROP_CHANCE_ROCKET = 0.01;
+const DROP_CHANCE_AUTO_CANNONS = 0.01;
+const DROP_CHANCE_BASE_ENGINE = 0.01;
+const DROP_CHANCE_SUPERCHARGED_ENGINE = 0.01;
+const DROP_CHANCE_BURST_ENGINE = 0.01;
+const DROP_CHANCE_BIG_PULSE_ENGINE = 0.01;
+const DROP_CHANCE_HEALTH = 0.03;
+const DROP_CHANCE_FIRING_RATE = 0.04;
+const DROP_CHANCE_SHIELD = 0.04;
+
 export class GameScene extends Phaser.Scene {
   private bgStar!: Phaser.GameObjects.TileSprite;
   private bgNebula!: Phaser.GameObjects.TileSprite;
@@ -832,7 +845,7 @@ export class GameScene extends Phaser.Scene {
 
     const fired = this.spawnZapperProjectile(x, y);
     if (fired && side === "left") {
-      this.playSfx(AUDIO_KEYS.laserShort, 0.3);
+      this.playSfx(AUDIO_KEYS.zpShot, 0.3);
     }
   }
 
@@ -853,7 +866,7 @@ export class GameScene extends Phaser.Scene {
     const y = wy + BIG_SPACE_GUN_PROJECTILE_FROM_WEAPON_OFFSET_Y;
 
     const fired = this.spawnBigSpaceGunProjectile(x, y);
-    if (fired) this.playSfx(AUDIO_KEYS.laserShort, 0.33);
+    if (fired) this.playSfx(AUDIO_KEYS.bigsShot, 0.63);
   }
 
   private fireRocketsPair() {
@@ -874,7 +887,7 @@ export class GameScene extends Phaser.Scene {
     const firedL = this.spawnRocketProjectile(lx, ly);
     const firedR = this.spawnRocketProjectile(rx, ry);
     if (firedL || firedR) {
-      this.playSfx(AUDIO_KEYS.laserShort, 0.28);
+      this.playSfx(AUDIO_KEYS.torpedoShot, 0.18);
     }
   }
 
@@ -891,8 +904,9 @@ export class GameScene extends Phaser.Scene {
     const y = wy + AUTO_CANNON_BULLET_FROM_WEAPON_OFFSET_Y;
 
     const fired = this.spawnAutoCannonBullet(x, y);
-    if (fired && side === "left") {
-      this.playSfx(AUDIO_KEYS.laserShort, 0.3);
+    if (fired) {
+      // Auto Cannons SFX is tied to actual fire frames (left and right).
+      this.playSfx(AUDIO_KEYS.gShot, 0.1);
     }
   }
 
@@ -1353,31 +1367,42 @@ export class GameScene extends Phaser.Scene {
   private maybeSpawnPickup(x: number, y: number) {
     if (this.isGameOver) return;
 
-    // Spawn at most one pickup to avoid clutter, using exact probabilities:
-    // Weapons (each): 1%
-    // - Big Space Gun: 1%
-    // - Zapper: 1%
-    // - Rocket: 1%
-    // - Auto Cannons: 1%
-    // - Base engine: 1%
-    // - Supercharged engine: 1%
-    // - Burst engine: 1%
-    // - Big Pulse engine: 1%
-    // - Health: 3%
-    // - Firing rate: 4%
-    // - Shield: 4%
+    // Spawn at most one pickup (cumulative thresholds).
     const r = Phaser.Math.FloatBetween(0, 1);
-    if (r < 0.01) this.spawnBigSpaceGunPickup(x, y);
-    else if (r < 0.02) this.spawnZapperPickup(x, y);
-    else if (r < 0.03) this.spawnRocketPickup(x, y);
-    else if (r < 0.04) this.spawnAutoCannonsPickup(x, y);
-    else if (r < 0.05) this.spawnBaseEnginePickup(x, y);
-    else if (r < 0.06) this.spawnSuperchargedEnginePickup(x, y);
-    else if (r < 0.07) this.spawnBurstEnginePickup(x, y);
-    else if (r < 0.08) this.spawnBigPulseEnginePickup(x, y);
-    else if (r < 0.11) this.spawnHealthPickup(x, y);
-    else if (r < 0.15) this.spawnFiringRatePickup(x, y);
-    else if (r < 0.19) this.spawnShieldPickup(x, y);
+    let threshold = 0;
+
+    threshold += DROP_CHANCE_BIG_SPACE_GUN;
+    if (r < threshold) return this.spawnBigSpaceGunPickup(x, y);
+
+    threshold += DROP_CHANCE_ZAPPER;
+    if (r < threshold) return this.spawnZapperPickup(x, y);
+
+    threshold += DROP_CHANCE_ROCKET;
+    if (r < threshold) return this.spawnRocketPickup(x, y);
+
+    threshold += DROP_CHANCE_AUTO_CANNONS;
+    if (r < threshold) return this.spawnAutoCannonsPickup(x, y);
+
+    threshold += DROP_CHANCE_BASE_ENGINE;
+    if (r < threshold) return this.spawnBaseEnginePickup(x, y);
+
+    threshold += DROP_CHANCE_SUPERCHARGED_ENGINE;
+    if (r < threshold) return this.spawnSuperchargedEnginePickup(x, y);
+
+    threshold += DROP_CHANCE_BURST_ENGINE;
+    if (r < threshold) return this.spawnBurstEnginePickup(x, y);
+
+    threshold += DROP_CHANCE_BIG_PULSE_ENGINE;
+    if (r < threshold) return this.spawnBigPulseEnginePickup(x, y);
+
+    threshold += DROP_CHANCE_HEALTH;
+    if (r < threshold) return this.spawnHealthPickup(x, y);
+
+    threshold += DROP_CHANCE_FIRING_RATE;
+    if (r < threshold) return this.spawnFiringRatePickup(x, y);
+
+    threshold += DROP_CHANCE_SHIELD;
+    if (r < threshold) return this.spawnShieldPickup(x, y);
   }
 
   private triggerGameOver() {

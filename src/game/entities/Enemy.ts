@@ -24,6 +24,9 @@ const ENEMY_ENGINE_OFFSET_Y = 28;
 // TUNE HITBOX MULTIPLIER HERE (Fighter):
 const FIGHTER_HITBOX_W_MULT = 0.7;
 const FIGHTER_HITBOX_H_MULT = 0.3;
+// TUNE HITBOX MULTIPLIER HERE (Scout):
+const SCOUT_HITBOX_W_MULT = 0.5;
+const SCOUT_HITBOX_H_MULT = 0.1;
 
 const FRIGATE_HP = 3;
 const FRIGATE_SHIELD_HP = 3;
@@ -256,7 +259,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
             ? TORPEDO_SHIP_HITBOX_W_MULT
             : isFighter
               ? FIGHTER_HITBOX_W_MULT
-            : 0.7;
+            : SCOUT_HITBOX_W_MULT;
     const hitboxHMult = isDreadnought
       ? DREADNOUGHT_HITBOX_H_MULT
       : isBattlecruiser
@@ -267,7 +270,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
             ? TORPEDO_SHIP_HITBOX_H_MULT
             : isFighter
               ? FIGHTER_HITBOX_H_MULT
-            : 0.7;
+            : SCOUT_HITBOX_H_MULT;
     body.setSize(this.width * hitboxWMult, this.height * hitboxHMult, true);
     this.syncDreadnoughtCollisionBody();
 
