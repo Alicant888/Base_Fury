@@ -4,10 +4,10 @@ import { GAME_WIDTH } from "../config";
 
 // Enemy spawn chances (per spawn tick).
 const DREADNOUGHT_SPAWN_CHANCE = 0.0001; // 0.01%
-const BATTLECRUISER_SPAWN_CHANCE = 0.2; // 20%
-const FRIGATE_SPAWN_CHANCE = 0.01; // 1%
-const TORPEDO_SPAWN_CHANCE = 0.01; // 1%
-const FIGHTER_SPAWN_CHANCE = 0.01; // 1%
+const BATTLECRUISER_SPAWN_CHANCE = 0.0001; // 0.01%
+const FRIGATE_SPAWN_CHANCE = 0.0001; // 30%
+const TORPEDO_SPAWN_CHANCE = 0.0001; // 0.01%
+const FIGHTER_SPAWN_CHANCE = 0.0001; // 0.01%
 
 export class EnemySpawner {
   private nextSpawnAt = 0;

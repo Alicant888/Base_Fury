@@ -15,6 +15,7 @@ export const AUDIO_KEYS = {
   impactSmall: "sfx_impact_small",
   laserShort: "sfx_laser_short",
   laserScout: "sfx_laser_scout",
+  torpedoShot: "sfx_torpedo_shot",
   bcShot: "sfx_bc_shot",
   dnShot: "sfx_dn_shot",
 } as const;

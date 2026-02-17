@@ -17,7 +17,13 @@ const TORPEDO_SHIP_TORPEDO_DEPTH = 5;
 const TORPEDO_SHIP_SALVO_BASE_Y_FACTOR = 0.15;
 const TORPEDO_SHIP_ENGINE_EDGE_MARGIN_PX = 6;
 const TORPEDO_SHIP_ENGINE_SCALE = 0.7; // -30%
+// TUNE HITBOX MULTIPLIER HERE (Torpedo Ship):
+const TORPEDO_SHIP_HITBOX_W_MULT = 0.7;
+const TORPEDO_SHIP_HITBOX_H_MULT = 0.1;
 const ENEMY_ENGINE_OFFSET_Y = 28;
+// TUNE HITBOX MULTIPLIER HERE (Fighter):
+const FIGHTER_HITBOX_W_MULT = 0.7;
+const FIGHTER_HITBOX_H_MULT = 0.3;
 
 const FRIGATE_HP = 3;
 const FRIGATE_SHIELD_HP = 3;
@@ -25,6 +31,9 @@ const FRIGATE_BULLET_DAMAGE = 2;
 const FRIGATE_BULLET_DEPTH = 5;
 const FRIGATE_SALVO_BASE_Y_FACTOR = 0.15;
 const FRIGATE_BIG_BULLET_SCALE = 0.6;
+// TUNE HITBOX MULTIPLIER HERE (Frigate):
+const FRIGATE_HITBOX_W_MULT = 0.7;
+const FRIGATE_HITBOX_H_MULT = 0.1;
 
 const BATTLECRUISER_HP = 30;
 const BATTLECRUISER_SHIELD_HP = 30;
@@ -237,8 +246,28 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, isDreadnought ? 0 : speedY);
 
     // Smaller, forgiving hitbox.
-    const hitboxWMult = isDreadnought ? DREADNOUGHT_HITBOX_W_MULT : isBattlecruiser ? BATTLECRUISER_HITBOX_W_MULT : 0.7;
-    const hitboxHMult = isDreadnought ? DREADNOUGHT_HITBOX_H_MULT : isBattlecruiser ? BATTLECRUISER_HITBOX_H_MULT : 0.7;
+    const hitboxWMult = isDreadnought
+      ? DREADNOUGHT_HITBOX_W_MULT
+      : isBattlecruiser
+        ? BATTLECRUISER_HITBOX_W_MULT
+        : isFrigate
+          ? FRIGATE_HITBOX_W_MULT
+          : isTorpedo
+            ? TORPEDO_SHIP_HITBOX_W_MULT
+            : isFighter
+              ? FIGHTER_HITBOX_W_MULT
+            : 0.7;
+    const hitboxHMult = isDreadnought
+      ? DREADNOUGHT_HITBOX_H_MULT
+      : isBattlecruiser
+        ? BATTLECRUISER_HITBOX_H_MULT
+        : isFrigate
+          ? FRIGATE_HITBOX_H_MULT
+          : isTorpedo
+            ? TORPEDO_SHIP_HITBOX_H_MULT
+            : isFighter
+              ? FIGHTER_HITBOX_H_MULT
+            : 0.7;
     body.setSize(this.width * hitboxWMult, this.height * hitboxHMult, true);
     this.syncDreadnoughtCollisionBody();
 
@@ -751,14 +780,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     if (this.kind === "torpedo") {
       const firedShots = new Array(TORPEDO_SHIP_SALVO_SHOTS.length).fill(false);
-      let playedSfx = false;
 
-      const tryPlaySfx = () => {
-        if (playedSfx) return;
-        playedSfx = true;
+      const playShotSfx = () => {
         if (!this.scene.registry.get("audioUnlocked")) return;
         try {
-          this.scene.sound.play(AUDIO_KEYS.laserScout, { volume: 0.45 });
+          this.scene.sound.play(AUDIO_KEYS.torpedoShot, { volume: 0.15 });
         } catch {
           // ignore
         }
@@ -790,7 +816,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
               damage: TORPEDO_SHIP_TORPEDO_DAMAGE,
               depth: TORPEDO_SHIP_TORPEDO_DEPTH,
             });
-            if (fired) tryPlaySfx();
+            if (fired) playShotSfx();
           }
         },
       );
@@ -936,11 +962,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (this.kind === "fighter") {
       let firedRight = false;
       let firedLeft = false;
-      let playedSfx = false;
 
-      const tryPlaySfx = () => {
-        if (playedSfx) return;
-        playedSfx = true;
+      const playShotSfx = () => {
         if (!this.scene.registry.get("audioUnlocked")) return;
         try {
           this.scene.sound.play(AUDIO_KEYS.laserScout, { volume: 0.35 });
@@ -962,14 +985,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
           if (frameKey === FIGHTER_WEAPON_FIRE_RIGHT_FRAME && !firedRight) {
             firedRight = true;
             const fired = this.spawnEnemyBulletAt(x + FIGHTER_BULLET_OFFSET_X, y);
-            if (fired) tryPlaySfx();
+            if (fired) playShotSfx();
             return;
           }
 
           if (frameKey === FIGHTER_WEAPON_FIRE_LEFT_FRAME && !firedLeft) {
             firedLeft = true;
             const fired = this.spawnEnemyBulletAt(x - FIGHTER_BULLET_OFFSET_X, y);
-            if (fired) tryPlaySfx();
+            if (fired) playShotSfx();
           }
         },
       );
