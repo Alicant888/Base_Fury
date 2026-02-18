@@ -12,7 +12,7 @@ export default function Success() {
 
       const result = await sdk.actions.composeCast({
         text: text,
-        embeds: [process.env.NEXT_PUBLIC_URL || ""]
+        embeds: [farcasterConfig.miniapp.homeUrl]
       });
 
       // result.cast can be null if user cancels

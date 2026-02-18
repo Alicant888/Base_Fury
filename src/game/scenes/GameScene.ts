@@ -8,7 +8,7 @@ import { BigSpaceGunProjectile } from "../entities/BigSpaceGunProjectile";
 import { Bullet } from "../entities/Bullet";
 import { BurstEnginePickup } from "../entities/BurstEnginePickup";
 import { Asteroid } from "../entities/Asteroid";
-import { Enemy, type EnemyKind } from "../entities/Enemy";
+import { Enemy, type EnemyKind, getEnemyXp } from "../entities/Enemy";
 import { EnemyBullet } from "../entities/EnemyBullet";
 import { FiringRatePickup } from "../entities/FiringRatePickup";
 import { HealthPickup } from "../entities/HealthPickup";
@@ -39,17 +39,17 @@ const DEPTH_WEAPON = 4.8; // under the ship, still under the shield.
 // Background sets (overlays; BCG is always the base layer):
 // - Asteroids: L4 + L5 + L6 (reserved for some levels)
 // - Planets: L0 (static) + L1 + L2 + L3 (currently active for testing)
-const ACTIVE_BG_SET: "asteroids" | "planets" = "planets";
+const ACTIVE_BG_SET: "asteroids" | "planets" = "asteroids";
 
 // Base background (always visible).
 const BG_SCROLL_SPEED_BCG = 0.01;
 
 // Asteroids set (reserved for certain levels).
-const ASTEROIDS_SCROLL_SPEED_L4 = 1;
-const ASTEROIDS_SCROLL_SPEED_L5 = 2;
-const ASTEROIDS_SCROLL_SPEED_L6 = 4;
+const ASTEROIDS_SCROLL_SPEED_L4 = 0.1;
+const ASTEROIDS_SCROLL_SPEED_L5 = 0.2;
+const ASTEROIDS_SCROLL_SPEED_L6 = 0.4;
 
-// Planets set should scroll 3x slower than the Asteroids set.
+
 const PLANETS_SCROLL_SPEED_L0 = 0.02;
 const PLANETS_SCROLL_SPEED_L1 = 0.03;
 const PLANETS_SCROLL_SPEED_L2 = 0.04;
@@ -200,6 +200,9 @@ export class GameScene extends Phaser.Scene {
   private hp = 5;
   private readonly maxHp = 5;
   private kills = 0;
+  private score = 0;
+  private scoreText!: Phaser.GameObjects.Text;
+  private pauseBackButton!: Phaser.GameObjects.Image;
   private isGameOver = false;
   private shieldHits = 0;
   private shieldFx?: Phaser.GameObjects.Sprite;
@@ -226,6 +229,9 @@ export class GameScene extends Phaser.Scene {
   private bigSpaceGunWeaponSprite?: Phaser.GameObjects.Sprite;
   private lastRocketShotAt = 0;
 
+  private isPausedByInput = false;
+  private pausedText?: Phaser.GameObjects.Text;
+
   constructor() {
     super("GameScene");
   }
@@ -238,6 +244,7 @@ export class GameScene extends Phaser.Scene {
     // Reset run state (Scene instances are reused between starts).
     this.hp = this.maxHp;
     this.kills = 0;
+    this.score = 0;
     this.isGameOver = false;
     this.shieldHits = 0;
     this.fireRateMultiplier = 1;
@@ -650,6 +657,9 @@ export class GameScene extends Phaser.Scene {
 
     this.scale.on(Phaser.Scale.Events.RESIZE, resize);
 
+    // Start game in paused state until user touches screen.
+    this.pauseGame();
+
     // Cleanup on scene shutdown.
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.scale.off(Phaser.Scale.Events.RESIZE, resize);
@@ -670,6 +680,7 @@ export class GameScene extends Phaser.Scene {
 
   update(time: number, delta: number) {
     if (this.isGameOver) return;
+    if (this.isPausedByInput) return;
 
     // Provide player X for boss AI (safe + cheap).
     this.registry.set("playerX", this.player.x);
@@ -730,6 +741,13 @@ export class GameScene extends Phaser.Scene {
 
   private setupPointerDrag() {
     const onPointerDown = (pointer: Phaser.Input.Pointer) => {
+      // Ignore clicks on UI elements (like the back button)
+      const gameObjects = this.input.hitTestPointer(pointer);
+      const clickedUI = gameObjects.some((obj) => obj === this.pauseBackButton);
+
+      if (clickedUI) return;
+
+      this.resumeGame();
       if (this.draggingPointerId !== null) return;
       this.draggingPointerId = pointer.id;
       this.dragOffset.set(pointer.x - this.player.x, pointer.y - this.player.y);
@@ -742,6 +760,7 @@ export class GameScene extends Phaser.Scene {
       if (pointer.id === this.draggingPointerId) {
         this.draggingPointerId = null;
         this.hasDragTarget = false;
+        this.pauseGame();
       }
     };
 
@@ -999,6 +1018,8 @@ export class GameScene extends Phaser.Scene {
       this.spawnExplosion(enemy.x, enemy.y, enemy.getKind());
       this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
       this.kills += 1;
+      this.score += getEnemyXp(enemy.getKind());
+      this.scoreText.setText(`${this.score}`);
 
       this.maybeSpawnPickup(enemy.x, enemy.y);
     }
@@ -1019,6 +1040,8 @@ export class GameScene extends Phaser.Scene {
       this.spawnExplosion(enemy.x, enemy.y, enemy.getKind());
       this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
       this.kills += 1;
+      this.score += getEnemyXp(enemy.getKind());
+      this.scoreText.setText(`${this.score}`);
 
       this.maybeSpawnPickup(enemy.x, enemy.y);
     }
@@ -1039,6 +1062,8 @@ export class GameScene extends Phaser.Scene {
       this.spawnExplosion(enemy.x, enemy.y, enemy.getKind());
       this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
       this.kills += 1;
+      this.score += getEnemyXp(enemy.getKind());
+      this.scoreText.setText(`${this.score}`);
 
       this.maybeSpawnPickup(enemy.x, enemy.y);
     }
@@ -1059,6 +1084,8 @@ export class GameScene extends Phaser.Scene {
       this.spawnExplosion(enemy.x, enemy.y, enemy.getKind());
       this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
       this.kills += 1;
+      this.score += getEnemyXp(enemy.getKind());
+      this.scoreText.setText(`${this.score}`);
 
       this.maybeSpawnPickup(enemy.x, enemy.y);
     }
@@ -1185,8 +1212,17 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
-    // +20% fire rate => delay * 0.8
-    this.setFireRateMultiplier(0.8);
+    // Stack firing rate increase up to 100% (double speed => 0.5 delay multiplier).
+    // Each pickup reduces delay by 0.1 (10%).
+    const newMultiplier = Math.max(0.5, this.fireRateMultiplier - 0.1);
+    this.setFireRateMultiplier(newMultiplier);
+  }
+
+  private deactivateAllAdditionalWeapons() {
+    this.hasAutoCannons = false;
+    this.hasRockets = false;
+    this.hasZapper = false;
+    this.hasBigSpaceGun = false;
   }
 
   private onAutoCannonsPickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
@@ -2344,22 +2380,36 @@ export class GameScene extends Phaser.Scene {
   private createUI() {
     const uiDepth = 20;
 
-    const back = this.add
-      .image(10, 10, ATLAS_KEYS.ui, UI_FRAMES.iconBack)
-      .setOrigin(0, 0)
-      .setDepth(uiDepth)
+    this.pausedText = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "PAUSED", {
+        fontFamily: "Orbitron",
+        fontSize: "48px",
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 6,
+      })
+      .setOrigin(0.5)
+      .setDepth(uiDepth + 1)
+      .setVisible(false);
+
+    // Pause Back Button (below PAUSED)
+    this.pauseBackButton = this.add
+      .image(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 80, ATLAS_KEYS.ui, UI_FRAMES.iconBack)
+      .setOrigin(0.5)
+      .setDepth(uiDepth + 1)
+      .setVisible(false)
       .setInteractive({ useHandCursor: true });
 
-    back.on("pointerup", () => {
+    this.pauseBackButton.on("pointerup", () => {
       this.playSfx(AUDIO_KEYS.click, 0.7);
       this.scene.start("MenuScene");
     });
 
     // Lives: 5 mini ship icons. One disappears per hit (HP loss).
-    const startX = 48;
-    const y = 14;
+    const startX = 20;
+    const y = 20;
     const scale = 0.75;
-    const spacing = 20;
+    const spacing = 30;
 
     this.lifeIcons.forEach((i) => i.destroy());
     this.lifeIcons = [];
@@ -2372,6 +2422,18 @@ export class GameScene extends Phaser.Scene {
         .setScale(scale);
       this.lifeIcons.push(icon);
     }
+
+    // Score Text (Top Right)
+    this.scoreText = this.add
+      .text(GAME_WIDTH - 20, 20, "0", {
+        fontFamily: "Orbitron",
+        fontSize: "24px",
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 4,
+      })
+      .setOrigin(1, 0)
+      .setDepth(uiDepth);
   }
 
   private updateLivesUI() {
@@ -2446,6 +2508,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private activateAutoCannons() {
+    this.deactivateAllAdditionalWeapons();
     this.hasAutoCannons = true;
 
     const weaponFrame = `${SPRITE_FRAMES.autoCannonWeaponPrefix}${SPRITE_FRAMES.autoCannonWeaponStart}${SPRITE_FRAMES.autoCannonWeaponSuffix}`;
@@ -2478,6 +2541,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private activateRockets() {
+    this.deactivateAllAdditionalWeapons();
     this.hasRockets = true;
     this.lastRocketShotAt = 0;
 
@@ -2511,6 +2575,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private activateZapper() {
+    this.deactivateAllAdditionalWeapons();
     this.hasZapper = true;
 
     const weaponFrame = `${SPRITE_FRAMES.zapperWeaponPrefix}${SPRITE_FRAMES.zapperWeaponStart}${SPRITE_FRAMES.zapperWeaponSuffix}`;
@@ -2541,6 +2606,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private activateBigSpaceGun() {
+    this.deactivateAllAdditionalWeapons();
     this.hasBigSpaceGun = true;
 
     const weaponFrame = `${SPRITE_FRAMES.bigSpaceGunWeaponPrefix}${SPRITE_FRAMES.bigSpaceGunWeaponStart}${SPRITE_FRAMES.bigSpaceGunWeaponSuffix}`;
@@ -2858,5 +2924,29 @@ export class GameScene extends Phaser.Scene {
     this.engineFlameR?.destroy();
     this.engineFlameR = undefined;
     this.activeEngineType = null;
+  }
+
+  private pauseGame() {
+    if (this.isGameOver) return;
+    if (this.isPausedByInput) return;
+    this.isPausedByInput = true;
+    this.physics.pause();
+    this.anims.pauseAll();
+    this.tweens.pauseAll();
+    this.time.paused = true;
+    this.pausedText?.setVisible(true);
+    this.pauseBackButton?.setVisible(true);
+  }
+
+  private resumeGame() {
+    if (this.isGameOver) return;
+    if (!this.isPausedByInput) return;
+    this.isPausedByInput = false;
+    this.physics.resume();
+    this.anims.resumeAll();
+    this.tweens.resumeAll();
+    this.time.paused = false;
+    this.pausedText?.setVisible(false);
+    this.pauseBackButton?.setVisible(false);
   }
 }

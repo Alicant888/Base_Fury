@@ -130,7 +130,27 @@ const TORPEDO_SHIP_SALVO_SHOTS: TorpedoShipShotConfig[] = [
   { frameIndex: 12, offsetX: 20, offsetY: 0 },
 ];
 
+export const getEnemyXp = (kind: EnemyKind): number => {
+  switch (kind) {
+    case "scout":
+      return 1;
+    case "fighter":
+      return FIGHTER_HP;
+    case "torpedo":
+      return TORPEDO_SHIP_HP;
+    case "frigate":
+      return FRIGATE_HP;
+    case "battlecruiser":
+      return BATTLECRUISER_HP;
+    case "dreadnought":
+      return DREADNOUGHT_HP;
+  }
+};
+
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
+  public getKind(): EnemyKind {
+    return this.kind;
+  }
   private engineFx: Phaser.GameObjects.Sprite;
   private engineFxL?: Phaser.GameObjects.Sprite;
   private engineFxR?: Phaser.GameObjects.Sprite;
@@ -514,10 +534,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.syncDreadnoughtCollisionBody();
 
     return this.hp <= 0;
-  }
-
-  getKind(): EnemyKind {
-    return this.kind;
   }
 
   getCollisionDamage(): number {

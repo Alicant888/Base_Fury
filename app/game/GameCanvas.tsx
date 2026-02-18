@@ -49,6 +49,8 @@ export function GameCanvas() {
         inset: 0,
         width: "100dvw",
         height: "100dvh",
+        paddingTop: "env(safe-area-inset-top)",
+        boxSizing: "border-box",
         overflow: "hidden",
         background: "#000",
         touchAction: "none",
