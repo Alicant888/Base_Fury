@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import type { Asteroid } from "../entities/Asteroid";
 import { GAME_WIDTH } from "../config";
 

@@ -1,5 +1,5 @@
-import Phaser from "phaser";
-import { ATLAS_KEYS, AUDIO_KEYS, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS, UI_FRAMES } from "../config";
+import * as Phaser from "phaser";
+import { ATLAS_KEYS, AUDIO_KEYS, IMAGE_KEYS, UI_FRAMES } from "../config";
 
 export class MenuScene extends Phaser.Scene {
   private startButton!: Phaser.GameObjects.Image;
@@ -13,10 +13,8 @@ export class MenuScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor("#000000");
 
     // Static menu background image.
-    const bg = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, IMAGE_KEYS.menuBackground).setDepth(0);
+    const bg = this.add.image(0, 0, IMAGE_KEYS.menuBackground).setDepth(0);
     bg.setOrigin(0.5);
-    const scale = Math.max(GAME_WIDTH / bg.width, GAME_HEIGHT / bg.height);
-    bg.setScale(scale);
 
     // Menu music: start immediately on load, stop on START click.
     // Note: some environments may block autoplay with sound.
@@ -28,21 +26,13 @@ export class MenuScene extends Phaser.Scene {
     }
 
     // START button with pointer states.
-    const padding = 24;
-    const btnTargetWidth = GAME_WIDTH - padding * 2;
-    const btnY = GAME_HEIGHT - padding; // bottom padding (we'll subtract half height below)
     this.startButton = this.add
-      .image(GAME_WIDTH / 2, btnY, ATLAS_KEYS.ui, UI_FRAMES.btnLargeNormal)
+      .image(0, 0, ATLAS_KEYS.ui, UI_FRAMES.btnLargeNormal)
       .setInteractive({ useHandCursor: true })
       .setDepth(2);
 
-    // Stretch-to-width while keeping aspect ratio.
-    const btnScale = btnTargetWidth / this.startButton.width;
-    this.startButton.setScale(btnScale);
-    this.startButton.setY(GAME_HEIGHT - padding - this.startButton.displayHeight / 2);
-
-    this.add
-      .text(GAME_WIDTH / 2, this.startButton.y, "START", {
+    const startLabel = this.add
+      .text(0, 0, "START", {
         fontFamily: "monospace",
         fontSize: "20px",
         color: "#ffffff",
@@ -51,6 +41,36 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(3);
+
+    const layout = (width: number, height: number) => {
+      bg.setPosition(width / 2, height / 2);
+      // Cover the screen: scale based on the dimension that needs more coverage.
+      // If screen is wider than image (relative to height), scale by width.
+      // If screen is taller than image (relative to width), scale by height.
+      const scaleX = width / bg.width;
+      const scaleY = height / bg.height;
+      const scale = Math.max(scaleX, scaleY);
+      bg.setScale(scale);
+
+      const padding = 24;
+      // Button width logic: max 80% of width, but clamp to reasonable max size if needed.
+      // Let's stick to 80% of width for now as requested.
+      const btnTargetWidth = Math.min((width - padding * 2) * 0.8, 400); 
+      const btnScale = btnTargetWidth / this.startButton.width;
+      this.startButton.setScale(btnScale);
+      
+      const btnY = height - padding - (this.startButton.height * btnScale) / 2;
+      this.startButton.setPosition(width / 2, btnY);
+      startLabel.setPosition(width / 2, btnY);
+      startLabel.setScale(btnScale); // Scale text too? Or keep fixed? Fixed is better usually, but let's keep it simple.
+    };
+
+    layout(this.scale.width, this.scale.height);
+
+    const onResize = (gameSize: Phaser.Structs.Size) => {
+      layout(gameSize.width, gameSize.height);
+    };
+    this.scale.on(Phaser.Scale.Events.RESIZE, onResize);
 
     this.startButton.on("pointerdown", () => {
       this.startButton.setFrame(UI_FRAMES.btnLargePressed);
@@ -62,6 +82,7 @@ export class MenuScene extends Phaser.Scene {
 
     // Cleanup on scene shutdown.
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, onResize);
       this.menuMusic?.stop();
       this.menuMusic?.destroy();
       this.menuMusic = undefined;

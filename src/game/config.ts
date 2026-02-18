@@ -1,5 +1,5 @@
 export const GAME_WIDTH = 360;
-export const GAME_HEIGHT = 640;
+export const GAME_HEIGHT = 800;
 
 // Non-atlas assets served from /public/assets/.
 export const IMAGE_KEYS = {
@@ -403,4 +403,3 @@ export const SPRITE_FRAMES = {
   playerShieldStart: 0,
   playerShieldEnd: 9,
 } as const;
-

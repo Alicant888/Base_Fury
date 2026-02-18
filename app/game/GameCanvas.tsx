@@ -47,8 +47,8 @@ export function GameCanvas() {
       style={{
         position: "fixed",
         inset: 0,
-        width: "100vw",
-        height: "100vh",
+        width: "100dvw",
+        height: "100dvh",
         overflow: "hidden",
         background: "#000",
         touchAction: "none",

@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import { GAME_HEIGHT } from "../config";
 
 const BULLET_SPEED = 420;

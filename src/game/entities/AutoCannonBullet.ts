@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import { ATLAS_KEYS, GAME_HEIGHT, SPRITE_FRAMES } from "../config";
 
 const AUTO_CANNON_BULLET_SPEED = 420;

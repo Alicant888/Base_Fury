@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH } from "./config";
 import { GameScene } from "./scenes/GameScene";
 import { MenuScene } from "./scenes/MenuScene";
@@ -33,10 +33,10 @@ export function createGame(parent: HTMLElement): Phaser.Game {
       },
     },
     scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: GAME_WIDTH,
-      height: GAME_HEIGHT,
+      mode: Phaser.Scale.RESIZE,
+      autoCenter: Phaser.Scale.NO_CENTER,
+      width: typeof window !== "undefined" ? window.innerWidth : GAME_WIDTH,
+      height: typeof window !== "undefined" ? window.innerHeight : GAME_HEIGHT,
     },
     scene: [PreloadScene, MenuScene, GameScene],
   };

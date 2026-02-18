@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import type { Enemy, EnemyKind } from "../entities/Enemy";
 import { GAME_WIDTH } from "../config";
 
@@ -87,4 +87,3 @@ export class EnemySpawner {
     enemy.spawn(x, y, speedY, this.enemyBullets, kind, hasShield);
   }
 }
-

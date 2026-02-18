@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import { BaseEnginePickup } from "../entities/BaseEnginePickup";
 import { AutoCannonBullet } from "../entities/AutoCannonBullet";
 import { AutoCannonsPickup } from "../entities/AutoCannonsPickup";
@@ -231,6 +231,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.scale.scaleMode = Phaser.Scale.FIT;
+    this.scale.resize(GAME_WIDTH, GAME_HEIGHT);
     this.cameras.main.setBackgroundColor("#000000");
 
     // Reset run state (Scene instances are reused between starts).
@@ -625,8 +627,33 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
+    // Handle resizing (FIT simulation).
+    const resize = (gameSize: Phaser.Structs.Size) => {
+      const width = gameSize.width;
+      const height = gameSize.height;
+
+      this.cameras.main.setViewport(0, 0, width, height);
+
+      const scaleX = width / GAME_WIDTH;
+      const scaleY = height / GAME_HEIGHT;
+      
+      // User requested to remove "resize by width" in game scene, so we scale by height only.
+      // This ensures the game always fills the vertical space, even if it means cropping width on very narrow screens.
+      const scale = scaleY;
+
+      this.cameras.main.setZoom(scale);
+      this.cameras.main.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
+    };
+
+    // Initial resize.
+    resize(this.scale.gameSize);
+
+    this.scale.on(Phaser.Scale.Events.RESIZE, resize);
+
     // Cleanup on scene shutdown.
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, resize);
+
       this.destroyWeaponFireEvents();
 
       this.gameMusic?.stop();
@@ -2833,4 +2860,3 @@ export class GameScene extends Phaser.Scene {
     this.activeEngineType = null;
   }
 }
-

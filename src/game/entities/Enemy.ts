@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import * as Phaser from "phaser";
 import { EnemyBullet, type EnemyProjectileFireOptions } from "./EnemyBullet";
 import { ATLAS_KEYS, AUDIO_KEYS, GAME_HEIGHT, GAME_WIDTH, SPRITE_FRAMES } from "../config";
 
@@ -1049,4 +1049,3 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 }
-

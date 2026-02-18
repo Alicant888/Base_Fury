@@ -15,7 +15,7 @@ export const farcasterConfig = {
   },
   miniapp: {
     version: "1",
-    name: "Cubey", 
+    name: "Base Fury", 
     subtitle: "Your AI Ad Companion", 
     description: "Ads",
     screenshotUrls: [`${ROOT_URL}/screenshot-portrait.png`],
