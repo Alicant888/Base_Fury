@@ -71,6 +71,17 @@ export const UI_FRAMES = {
   plateWeapon: "ui_plate_weapon",
 } as const;
 
+export const UI_COLORS = {
+  mainBg: 0x0E1A22,
+  mainOutline: 0x00E0FF,
+  hoverOutline: 0x33F0FF,
+  pressedOutline: 0x00B8D4,
+  text: "#CFE9F2",
+  accent: 0xFF2FD1,
+  ok: 0x00FF9C,
+  danger: 0xFF3B3B,
+} as const;
+
 // Gameplay sprite frames we use (must exist in the atlases).
 export const SPRITE_FRAMES = {
   playerShip: "Main Ship - Bases/Main Ship - Base - Full health.png",

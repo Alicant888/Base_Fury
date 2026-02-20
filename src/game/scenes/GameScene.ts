@@ -22,6 +22,7 @@ import { ShieldPickup } from "../entities/ShieldPickup";
 import { AsteroidSpawner } from "../systems/AsteroidSpawner";
 import { EnemySpawner } from "../systems/EnemySpawner";
 import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, SPRITE_FRAMES, UI_FRAMES } from "../config";
+import { Button } from "../ui/Button";
 
 const BASE_FIRE_RATE_MS = 375; // ~2.67 shots/sec
 const BASE_MOVE_SPEED_PX_PER_SEC = 280;
@@ -1554,7 +1555,6 @@ export class GameScene extends Phaser.Scene {
 
     const depth = 100;
     const padding = 18;
-    const buttonGap = 14;
 
     // Interactive dim blocks clicks to underlying UI (e.g. back button).
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.65).setOrigin(0).setDepth(depth).setInteractive();
@@ -1585,65 +1585,40 @@ export class GameScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(depth + 2);
 
-    const btnY = GAME_HEIGHT - padding - 20; // ~button half-height
-    const btnFrameW = 128;
-    const leftX = GAME_WIDTH / 2 - buttonGap / 2 - btnFrameW / 2;
-    const rightX = GAME_WIDTH / 2 + buttonGap / 2 + btnFrameW / 2;
+    const btnY = GAME_HEIGHT - padding - 80; // Moved up a bit
 
-    const playAgainBtn = this.add
-      .image(leftX, btnY, ATLAS_KEYS.ui, UI_FRAMES.btnSmallNormal)
-      .setInteractive({ useHandCursor: true })
-      .setDepth(depth + 1);
+    const playAgainBtn = new Button({
+      scene: this,
+      x: GAME_WIDTH / 2 - 80, // Offset left
+      y: btnY,
+      text: "RETRY",
+      width: 140,
+      height: 50,
+      type: "ok",
+      onClick: () => {
+        this.playSfx(AUDIO_KEYS.click, 0.7);
+        dim.destroy();
+        panel.destroy();
+        this.scene.restart();
+      }
+    }).setDepth(depth + 2);
 
-    const exitBtn = this.add
-      .image(rightX, btnY, ATLAS_KEYS.ui, UI_FRAMES.btnSmallNormal)
-      .setInteractive({ useHandCursor: true })
-      .setDepth(depth + 1);
-
-    this.add
-      .text(playAgainBtn.x, playAgainBtn.y, "PLAY AGAIN", {
-        fontFamily: "Orbitron",
-        fontSize: "14px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-      })
-      .setOrigin(0.5)
-      .setDepth(depth + 2);
-
-    this.add
-      .text(exitBtn.x, exitBtn.y, "EXIT", {
-        fontFamily: "Orbitron",
-        fontSize: "14px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-      })
-      .setOrigin(0.5)
-      .setDepth(depth + 2);
-
-    const press = (btn: Phaser.GameObjects.Image) => btn.setFrame(UI_FRAMES.btnSmallPressed);
-    const release = (btn: Phaser.GameObjects.Image) => btn.setFrame(UI_FRAMES.btnSmallNormal);
-
-    playAgainBtn.on("pointerdown", () => press(playAgainBtn));
-    playAgainBtn.on("pointerout", () => release(playAgainBtn));
-    playAgainBtn.on("pointerup", () => {
-      release(playAgainBtn);
-      this.playSfx(AUDIO_KEYS.click, 0.7);
-      dim.destroy();
-      panel.destroy();
-      this.scene.restart();
-    });
-
-    exitBtn.on("pointerdown", () => press(exitBtn));
-    exitBtn.on("pointerout", () => release(exitBtn));
-    exitBtn.on("pointerup", () => {
-      release(exitBtn);
-      this.playSfx(AUDIO_KEYS.click, 0.7);
-      dim.destroy();
-      panel.destroy();
-      this.scene.start("MenuScene");
-    });
+    const exitBtn = new Button({
+      scene: this,
+      x: GAME_WIDTH / 2 + 80, // Offset right
+      y: btnY,
+      text: "EXIT",
+      width: 140,
+      height: 50,
+      type: "danger",
+      onClick: () => {
+        this.playSfx(AUDIO_KEYS.click, 0.7);
+        dim.destroy();
+        panel.destroy();
+        this.gameMusic?.stop();
+        this.scene.start("MenuScene");
+      }
+    }).setDepth(depth + 2);
   }
 
   private spawnExplosion(x: number, y: number, kind: EnemyKind) {
@@ -2503,46 +2478,26 @@ export class GameScene extends Phaser.Scene {
     // Center Pause button
     const rightX = GAME_WIDTH / 2;
 
-    // Helper for creating buttons
-    const createBtn = (x: number, frame: string, onClick: () => void) => {
-      const container = this.add.container(x, btnY).setDepth(depth);
-      // Scale background to fit buttons (128 * 0.6 = ~77px width)
-      const bg = this.add.image(0, 0, ATLAS_KEYS.ui, UI_FRAMES.btnSmallNormal).setScale(0.6, 1);
-      const icon = this.add.image(0, 0, ATLAS_KEYS.ui, frame).setScale(0.8);
-      container.add([bg, icon]);
-      // Set size based on scaled background
-      container.setSize(bg.width * 0.6, bg.height);
-      container.setInteractive({ useHandCursor: true });
-
-      const press = () => {
-        bg.setFrame(UI_FRAMES.btnSmallPressed);
-        icon.y = 2;
-      };
-      const release = () => {
-        bg.setFrame(UI_FRAMES.btnSmallNormal);
-        icon.y = 0;
-      };
-
-      container.on("pointerdown", press);
-      container.on("pointerout", release);
-      container.on("pointerup", () => {
-        release();
-        onClick();
-      });
-
-      this.bottomUIButtons.push(container);
-      return container;
-    };
-
     // Pause (Center)
-    this.pauseBtn = createBtn(rightX, UI_FRAMES.iconPause, () => {
-      this.playSfx(AUDIO_KEYS.click, 0.7);
-      if (this.isPausedByInput) {
-        this.resumeGame();
-      } else {
-        this.pauseGame();
+    this.pauseBtn = new Button({
+      scene: this,
+      x: rightX,
+      y: btnY,
+      icon: UI_FRAMES.iconPause,
+      width: 80,
+      height: 60,
+      iconScale: 0.8,
+      onClick: () => {
+        this.playSfx(AUDIO_KEYS.click, 0.7);
+        if (this.isPausedByInput) {
+          this.resumeGame();
+        } else {
+          this.pauseGame();
+        }
       }
     });
+    this.pauseBtn.setDepth(depth);
+    this.bottomUIButtons.push(this.pauseBtn);
   }
 
   private updateLivesUI() {
@@ -3048,7 +3003,7 @@ export class GameScene extends Phaser.Scene {
     // Dialog Box
     const dialogX = GAME_WIDTH / 2;
     const dialogY = GAME_HEIGHT / 2;
-    const dialogWidth = 400;
+    const dialogWidth = 320;
     const dialogHeight = 250;
 
     const dialogBg = this.add.rectangle(dialogX, dialogY, dialogWidth, dialogHeight, 0x000000)
@@ -3057,46 +3012,40 @@ export class GameScene extends Phaser.Scene {
 
     const message = this.add.text(dialogX, dialogY - 40, text, {
       fontFamily: "Orbitron",
-      fontSize: "32px",
+      fontSize: "28px",
       color: "#ffffff",
       align: "center"
     }).setOrigin(0.5);
     container.add(message);
 
-    // Helper for dialog buttons
-    const createDialogBtn = (x: number, y: number, label: string, onClick: () => void) => {
-      const btnContainer = this.add.container(x, y);
-      const bg = this.add.image(0, 0, ATLAS_KEYS.ui, UI_FRAMES.btnSmallNormal).setScale(1.2, 0.8);
-      const lbl = this.add.text(0, 0, label, {
-        fontFamily: "Orbitron",
-        fontSize: "20px",
-        color: "#ffffff"
-      }).setOrigin(0.5);
-
-      btnContainer.add([bg, lbl]);
-      btnContainer.setSize(bg.width * 1.2, bg.height * 0.8);
-      btnContainer.setInteractive({ useHandCursor: true });
-
-      const press = () => { bg.setFrame(UI_FRAMES.btnSmallPressed); lbl.y = 2; };
-      const release = () => { bg.setFrame(UI_FRAMES.btnSmallNormal); lbl.y = 0; };
-
-      btnContainer.on("pointerdown", press);
-      btnContainer.on("pointerout", release);
-      btnContainer.on("pointerup", () => {
-        release();
-        onClick();
-      });
-      return btnContainer;
-    };
-
-    const yesBtn = createDialogBtn(dialogX - 80, dialogY + 50, "YES", () => {
-      onYes();
-      container.destroy();
+    const yesBtn = new Button({
+      scene: this,
+      x: dialogX - 70, // Slightly closer to center
+      y: dialogY + 50,
+      text: "YES",
+      width: 120,
+      height: 50,
+      type: "ok",
+      fontSize: 20,
+      onClick: () => {
+        onYes();
+        container.destroy();
+      }
     });
 
-    const noBtn = createDialogBtn(dialogX + 80, dialogY + 50, "NO", () => {
-      onNo();
-      container.destroy();
+    const noBtn = new Button({
+      scene: this,
+      x: dialogX + 70, // Slightly closer to center
+      y: dialogY + 50,
+      text: "NO",
+      width: 120,
+      height: 50,
+      type: "danger",
+      fontSize: 20,
+      onClick: () => {
+        onNo();
+        container.destroy();
+      }
     });
 
     container.add([yesBtn, noBtn]);
@@ -3123,45 +3072,36 @@ export class GameScene extends Phaser.Scene {
     }).setOrigin(0.5);
     this.pauseUIContainer.add(pausedText);
 
-    const createControlBtn = (x: number, frame: string, onClick: () => void) => {
-        const container = this.add.container(x, y);
-        const bg = this.add.image(0, 0, ATLAS_KEYS.ui, UI_FRAMES.btnSmallNormal).setScale(0.6, 1);
-        const icon = this.add.image(0, 0, ATLAS_KEYS.ui, frame).setScale(0.8);
-        container.add([bg, icon]);
-        container.setSize(bg.width * 0.6, bg.height);
-        container.setInteractive({ useHandCursor: true });
-
-        const press = () => {
-            bg.setFrame(UI_FRAMES.btnSmallPressed);
-            icon.y = 2;
-        };
-        const release = () => {
-            bg.setFrame(UI_FRAMES.btnSmallNormal);
-            icon.y = 0;
-        };
-
-        container.on("pointerdown", press);
-        container.on("pointerout", release);
-        container.on("pointerup", () => {
-            release();
-            onClick();
-        });
-        return container;
-    };
-
     // Prev Button (Left)
-    const prevBtn = createControlBtn(GAME_WIDTH / 2 - spacing, UI_FRAMES.iconBack, () => {
-       this.playSfx(AUDIO_KEYS.click, 0.7);
-       this.playPrevTrack();
+    const prevBtn = new Button({
+      scene: this,
+      x: GAME_WIDTH / 2 - spacing,
+      y: y,
+      icon: UI_FRAMES.iconBack,
+      width: 77,
+      height: 60,
+      iconScale: 0.8,
+      onClick: () => {
+         this.playSfx(AUDIO_KEYS.click, 0.7);
+         this.playPrevTrack();
+      }
     });
     this.pauseUIContainer.add(prevBtn);
 
     // Toggle Button (Center)
-    const toggleBtn = createControlBtn(GAME_WIDTH / 2, this.isMusicOn ? UI_FRAMES.iconSoundOn : UI_FRAMES.iconSoundOff, () => {
-       this.playSfx(AUDIO_KEYS.click, 0.7);
-       this.toggleMusic();
-       const icon = toggleBtn.getAt(1) as Phaser.GameObjects.Image;
-       icon.setFrame(this.isMusicOn ? UI_FRAMES.iconSoundOn : UI_FRAMES.iconSoundOff);
+    const toggleBtn = new Button({
+      scene: this,
+      x: GAME_WIDTH / 2,
+      y: y,
+      icon: this.isMusicOn ? UI_FRAMES.iconSoundOn : UI_FRAMES.iconSoundOff,
+      width: 77,
+      height: 60,
+      iconScale: 0.8,
+      onClick: () => {
+         this.playSfx(AUDIO_KEYS.click, 0.7);
+         this.toggleMusic();
+         toggleBtn.setIcon(this.isMusicOn ? UI_FRAMES.iconSoundOn : UI_FRAMES.iconSoundOff);
+      }
     });
     // Add Note icon in middle (using text for now as requested)
     const note = this.add.text(0, 0, "♫", { 
@@ -3175,45 +3115,34 @@ export class GameScene extends Phaser.Scene {
     this.pauseUIContainer.add(toggleBtn);
 
     // Next Button (Right)
-    const nextBtn = createControlBtn(GAME_WIDTH / 2 + spacing, UI_FRAMES.iconBack, () => {
-       this.playSfx(AUDIO_KEYS.click, 0.7);
-       this.playNextTrack();
+    const nextBtn = new Button({
+      scene: this,
+      x: GAME_WIDTH / 2 + spacing,
+      y: y,
+      icon: UI_FRAMES.iconBack,
+      width: 77,
+      height: 60,
+      iconScale: 0.8,
+      onClick: () => {
+         this.playSfx(AUDIO_KEYS.click, 0.7);
+         this.playNextTrack();
+      }
     });
-    const nextIcon = nextBtn.getAt(1) as Phaser.GameObjects.Image;
-    nextIcon.setFlipX(true); // Flip back arrow for Next
+    const nextIcon = nextBtn.getIcon();
+    if (nextIcon) nextIcon.setFlipX(true); // Flip back arrow for Next
     this.pauseUIContainer.add(nextBtn);
 
     // Menu Button (Below controls, centered, wide)
     const menuBtnY = y + 80;
-    const menuBtn = this.add.container(GAME_WIDTH / 2, menuBtnY);
-    // 3 buttons width (spacing is 80, so -80 to +80 is 160. Each button is ~77px. 
-    // Total width roughly 160 + 77 = ~240px.
-    // Let's make it 240px wide.
-    const menuBg = this.add.image(0, 0, ATLAS_KEYS.ui, UI_FRAMES.btnSmallNormal).setScale(1.8, 1);
-    const menuText = this.add.text(0, 0, "MENU", {
-        fontFamily: "Orbitron",
-        fontSize: "24px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-    }).setOrigin(0.5);
-    menuBtn.add([menuBg, menuText]);
-    menuBtn.setSize(menuBg.width * 1.8, menuBg.height);
-    menuBtn.setInteractive({ useHandCursor: true });
-
-    const menuPress = () => {
-        menuBg.setFrame(UI_FRAMES.btnSmallPressed);
-        menuText.y = 2;
-    };
-    const menuRelease = () => {
-        menuBg.setFrame(UI_FRAMES.btnSmallNormal);
-        menuText.y = 0;
-    };
-
-    menuBtn.on("pointerdown", menuPress);
-    menuBtn.on("pointerout", menuRelease);
-    menuBtn.on("pointerup", () => {
-        menuRelease();
+    const menuBtn = new Button({
+      scene: this,
+      x: GAME_WIDTH / 2,
+      y: menuBtnY,
+      text: "MENU",
+      width: 240,
+      height: 60,
+      fontSize: 24,
+      onClick: () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
 
         this.createConfirmationDialog("Are you sure?", () => {
@@ -3222,6 +3151,7 @@ export class GameScene extends Phaser.Scene {
         }, () => {
             // Do nothing, just close dialog
         });
+      }
     });
     this.pauseUIContainer.add(menuBtn);
   }

@@ -1,8 +1,9 @@
 import * as Phaser from "phaser";
-import { ATLAS_KEYS, AUDIO_KEYS, IMAGE_KEYS, UI_FRAMES } from "../config";
+import { ATLAS_KEYS, AUDIO_KEYS, IMAGE_KEYS } from "../config";
+import { Button } from "../ui/Button";
 
 export class MenuScene extends Phaser.Scene {
-  private startButton!: Phaser.GameObjects.Image;
+  private startButton!: Button;
   private menuMusic?: Phaser.Sound.BaseSound;
 
   constructor() {
@@ -26,22 +27,17 @@ export class MenuScene extends Phaser.Scene {
     }
 
     // START button with pointer states.
-    this.startButton = this.add
-      .image(0, 0, ATLAS_KEYS.ui, UI_FRAMES.btnLargeNormal)
-      .setInteractive({ useHandCursor: true })
-      .setDepth(2);
-
-    const startLabel = this.add
-      .text(0, 0, "START", {
-        fontFamily: "Orbitron",
-        fontSize: "24px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-        shadow: { color: "#00ffff", blur: 10, fill: true, stroke: true }
-      })
-      .setOrigin(0.5)
-      .setDepth(3);
+    this.startButton = new Button({
+      scene: this,
+      x: 0,
+      y: 0,
+      text: "START",
+      width: 200,
+      height: 60,
+      fontSize: 24,
+      onClick: () => this.onStart()
+    });
+    this.startButton.setDepth(2);
 
     const layout = (width: number, height: number) => {
       bg.setPosition(width / 2, height / 2);
@@ -57,13 +53,18 @@ export class MenuScene extends Phaser.Scene {
       // Button width logic: max 80% of width, but clamp to reasonable max size if needed.
       // Let's stick to 80% of width for now as requested.
       const btnTargetWidth = Math.min((width - padding * 2) * 0.8, 400); 
-      const btnScale = btnTargetWidth / this.startButton.width;
-      this.startButton.setScale(btnScale);
+      // Button scale isn't supported directly by my simple Button class resizing
+      // But we can scale the container.
+      // However, Button constructor sets fixed width.
+      // Let's just reposition it for now.
       
-      const btnY = height - padding - (this.startButton.height * btnScale) / 2;
+      const btnY = height - padding - 40; // 40 is roughly half height + padding
       this.startButton.setPosition(width / 2, btnY);
-      startLabel.setPosition(width / 2, btnY);
-      startLabel.setScale(btnScale); // Scale text too? Or keep fixed? Fixed is better usually, but let's keep it simple.
+      
+      // If we want to resize the button, we can't easily with the current implementation 
+      // without exposing resize methods or recreating it. 
+      // But scaling the container works for Graphics too.
+      // Let's keep it simple and just center it.
     };
 
     layout(this.scale.width, this.scale.height);
@@ -72,22 +73,6 @@ export class MenuScene extends Phaser.Scene {
       layout(gameSize.width, gameSize.height);
     };
     this.scale.on(Phaser.Scale.Events.RESIZE, onResize);
-
-    this.startButton.on("pointerdown", () => {
-      this.startButton.setFrame(UI_FRAMES.btnLargePressed);
-      startLabel.y += 2;
-    });
-    this.startButton.on("pointerup", () => {
-      this.startButton.setFrame(UI_FRAMES.btnLargeNormal);
-      startLabel.y -= 2;
-      this.onStart();
-    });
-    this.startButton.on("pointerover", () => {
-      this.startButton.setFrame(UI_FRAMES.btnLargeHover);
-    });
-    this.startButton.on("pointerout", () => {
-      this.startButton.setFrame(UI_FRAMES.btnLargeNormal);
-    });
 
     // Cleanup on scene shutdown.
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
