@@ -18,6 +18,12 @@ export interface SaveData {
   hasBigSpaceGun: boolean;
   activeEngineType: "base" | "supercharged" | "burst" | "bigPulse" | null;
   highScore: number;
+  /** Accumulated XP (score) carried across levels. */
+  score: number;
+  /** Main weapon fire-rate multiplier (1 = default, 0.25 = 300% cap). */
+  fireRateMultiplier: number;
+  /** Secondary weapon animation speed multiplier (1 = default, max 2 = +100%). */
+  weaponBonusRate: number;
 }
 
 const DEFAULT_SAVE: SaveData = {
@@ -28,6 +34,9 @@ const DEFAULT_SAVE: SaveData = {
   hasBigSpaceGun: false,
   activeEngineType: null,
   highScore: 0,
+  score: 0,
+  fireRateMultiplier: 1,
+  weaponBonusRate: 1,
 };
 
 export class SaveManager {

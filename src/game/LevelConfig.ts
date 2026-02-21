@@ -26,6 +26,8 @@ export interface DropChances {
   health: number;
   shield: number;
   firingRate: number;
+  /** Secondary weapon speed boost pickup (FX2 atlas). */
+  firingRate2: number;
   autoCannons: number;
   rocket: number;
   zapper: number;
@@ -64,12 +66,12 @@ export interface LevelConfig {
 }
 
 // ---------------------------------------------------------------------------
-// Level definitions (1 – 10)
+// Level definitions (1 – 15)
 // ---------------------------------------------------------------------------
 
 export const LEVELS: LevelConfig[] = [
   // -----------------------------------------------------------------------
-  // Level 1 – Easy intro (scouts only, no shields, BCG background)
+  // Level 1 – Easy intro (scouts only, no shields, BCG only)
   // -----------------------------------------------------------------------
   {
     level: 1,
@@ -82,7 +84,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "scout", weight: 1.0, shieldChance: 0 },
     ],
     drops: {
-      health: 0, shield: 0, firingRate: 0,
+      health: 0, shield: 0, firingRate: 0, firingRate2: 0,
       autoCannons: 0, rocket: 0, zapper: 0, bigSpaceGun: 0,
       baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0,
     },
@@ -90,7 +92,7 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 2 – Fighters appear, still no shields
+  // Level 2 – Fighters appear
   // -----------------------------------------------------------------------
   {
     level: 2,
@@ -104,7 +106,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "fighter", weight: 0.15, shieldChance: 0 },
     ],
     drops: {
-      health: 0.05, shield: 0.04, firingRate: 0.04,
+      health: 0.05, shield: 0.04, firingRate: 0.04, firingRate2: 0,
       autoCannons: 0, rocket: 0, zapper: 0, bigSpaceGun: 0,
       baseEngine: 0.02, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0,
     },
@@ -126,7 +128,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "fighter", weight: 0.35, shieldChance: 0 },
     ],
     drops: {
-      health: 0.05, shield: 0.04, firingRate: 0.05,
+      health: 0.05, shield: 0.04, firingRate: 0.05, firingRate2: 0,
       autoCannons: 0.02, rocket: 0, zapper: 0, bigSpaceGun: 0,
       baseEngine: 0.03, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0,
     },
@@ -134,12 +136,12 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 4 – Asteroids background, torpedo & frigate intro
+  // Level 4 – Torpedo & frigate intro
   // -----------------------------------------------------------------------
   {
     level: 4,
     distanceGoal: 54,
-    bgSet: "asteroids",
+    bgSet: "none",
     asteroidMultiplier: 1.0,
     spawnInterval: [650, 1000],
     enemySpeed: [85, 150],
@@ -150,7 +152,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.10, shieldChance: 0.15 },
     ],
     drops: {
-      health: 0.04, shield: 0.04, firingRate: 0.04,
+      health: 0.04, shield: 0.04, firingRate: 0.04, firingRate2: 0,
       autoCannons: 0.03, rocket: 0, zapper: 0, bigSpaceGun: 0,
       baseEngine: 0.02, superchargedEngine: 0, burstEngine: 0.02, bigPulseEngine: 0,
     },
@@ -163,7 +165,7 @@ export const LEVELS: LevelConfig[] = [
   {
     level: 5,
     distanceGoal: 60,
-    bgSet: "asteroids",
+    bgSet: "none",
     asteroidMultiplier: 1.5,
     spawnInterval: [600, 950],
     enemySpeed: [90, 155],
@@ -174,7 +176,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.20, shieldChance: 0.30 },
     ],
     drops: {
-      health: 0.04, shield: 0.05, firingRate: 0.04,
+      health: 0.04, shield: 0.05, firingRate: 0.04, firingRate2: 0.03,
       autoCannons: 0.03, rocket: 0.02, zapper: 0, bigSpaceGun: 0,
       baseEngine: 0.02, superchargedEngine: 0, burstEngine: 0.02, bigPulseEngine: 0,
     },
@@ -182,7 +184,7 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 6 – Supercharged engine, heavier enemies
+  // Level 6 – Asteroids background begins, supercharged engine
   // -----------------------------------------------------------------------
   {
     level: 6,
@@ -198,7 +200,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.30, shieldChance: 0.40 },
     ],
     drops: {
-      health: 0.04, shield: 0.05, firingRate: 0.04,
+      health: 0.04, shield: 0.05, firingRate: 0.04, firingRate2: 0.03,
       autoCannons: 0.03, rocket: 0.03, zapper: 0, bigSpaceGun: 0,
       baseEngine: 0, superchargedEngine: 0.02, burstEngine: 0.02, bigPulseEngine: 0,
     },
@@ -206,7 +208,7 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 7 – Battlecruiser intro, zapper unlock
+  // Level 7 – Battlecruiser intro, zapper + big weapons unlock
   // -----------------------------------------------------------------------
   {
     level: 7,
@@ -223,7 +225,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.10, shieldChance: 0.20 },
     ],
     drops: {
-      health: 0.05, shield: 0.05, firingRate: 0.03,
+      health: 0.05, shield: 0.05, firingRate: 0.03, firingRate2: 0.03,
       autoCannons: 0.02, rocket: 0.03, zapper: 0.02, bigSpaceGun: 0.02,
       baseEngine: 0, superchargedEngine: 0.02, burstEngine: 0.02, bigPulseEngine: 0.02,
     },
@@ -231,7 +233,7 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 8 – Heavy combat, big pulse engine
+  // Level 8 – Heavy combat (distance capped at 78 from now on)
   // -----------------------------------------------------------------------
   {
     level: 8,
@@ -248,7 +250,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.20, shieldChance: 0.30 },
     ],
     drops: {
-      health: 0.05, shield: 0.05, firingRate: 0.03,
+      health: 0.05, shield: 0.05, firingRate: 0.03, firingRate2: 0.03,
       autoCannons: 0, rocket: 0.03, zapper: 0.03, bigSpaceGun: 0.02,
       baseEngine: 0, superchargedEngine: 0.02, burstEngine: 0, bigPulseEngine: 0.02,
     },
@@ -256,11 +258,11 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 9 – Big Space Gun unlock, maximum intensity
+  // Level 9 – Maximum intensity
   // -----------------------------------------------------------------------
   {
     level: 9,
-    distanceGoal: 84,
+    distanceGoal: 78,
     bgSet: "asteroids",
     asteroidMultiplier: 3.5,
     spawnInterval: [500, 750],
@@ -273,7 +275,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.30, shieldChance: 0.50 },
     ],
     drops: {
-      health: 0.05, shield: 0.05, firingRate: 0.03,
+      health: 0.05, shield: 0.05, firingRate: 0.03, firingRate2: 0.03,
       autoCannons: 0, rocket: 0.02, zapper: 0.03, bigSpaceGun: 0.03,
       baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
     },
@@ -281,10 +283,135 @@ export const LEVELS: LevelConfig[] = [
   },
 
   // -----------------------------------------------------------------------
-  // Level 10 – Boss fight (Dreadnought HP 200 / Shield 200 + escort waves)
+  // Level 10 – Last asteroids level
   // -----------------------------------------------------------------------
   {
     level: 10,
+    distanceGoal: 78,
+    bgSet: "asteroids",
+    asteroidMultiplier: 3.5,
+    spawnInterval: [480, 720],
+    enemySpeed: [105, 180],
+    enemies: [
+      { kind: "scout", weight: 0.05, shieldChance: 0.30 },
+      { kind: "fighter", weight: 0.15, shieldChance: 0.55 },
+      { kind: "torpedo", weight: 0.20, shieldChance: 0.65 },
+      { kind: "frigate", weight: 0.30, shieldChance: 0.75 },
+      { kind: "battlecruiser", weight: 0.30, shieldChance: 0.55 },
+    ],
+    drops: {
+      health: 0.05, shield: 0.05, firingRate: 0.03, firingRate2: 0.03,
+      autoCannons: 0, rocket: 0.02, zapper: 0.03, bigSpaceGun: 0.03,
+      baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
+    },
+    isBossLevel: false,
+  },
+
+  // -----------------------------------------------------------------------
+  // Level 11 – Planets background begins
+  // -----------------------------------------------------------------------
+  {
+    level: 11,
+    distanceGoal: 78,
+    bgSet: "planets",
+    asteroidMultiplier: 3.5,
+    spawnInterval: [470, 700],
+    enemySpeed: [105, 180],
+    enemies: [
+      { kind: "scout", weight: 0.05, shieldChance: 0.35 },
+      { kind: "fighter", weight: 0.10, shieldChance: 0.55 },
+      { kind: "torpedo", weight: 0.20, shieldChance: 0.70 },
+      { kind: "frigate", weight: 0.35, shieldChance: 0.80 },
+      { kind: "battlecruiser", weight: 0.30, shieldChance: 0.60 },
+    ],
+    drops: {
+      health: 0.05, shield: 0.05, firingRate: 0.03, firingRate2: 0.03,
+      autoCannons: 0, rocket: 0.02, zapper: 0.03, bigSpaceGun: 0.03,
+      baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
+    },
+    isBossLevel: false,
+  },
+
+  // -----------------------------------------------------------------------
+  // Level 12 – Battlecruiser heavy
+  // -----------------------------------------------------------------------
+  {
+    level: 12,
+    distanceGoal: 78,
+    bgSet: "planets",
+    asteroidMultiplier: 3.5,
+    spawnInterval: [460, 680],
+    enemySpeed: [110, 185],
+    enemies: [
+      { kind: "scout", weight: 0.05, shieldChance: 0.40 },
+      { kind: "fighter", weight: 0.10, shieldChance: 0.60 },
+      { kind: "torpedo", weight: 0.15, shieldChance: 0.70 },
+      { kind: "frigate", weight: 0.35, shieldChance: 0.85 },
+      { kind: "battlecruiser", weight: 0.35, shieldChance: 0.65 },
+    ],
+    drops: {
+      health: 0.06, shield: 0.05, firingRate: 0.03, firingRate2: 0.03,
+      autoCannons: 0, rocket: 0.02, zapper: 0.03, bigSpaceGun: 0.03,
+      baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
+    },
+    isBossLevel: false,
+  },
+
+  // -----------------------------------------------------------------------
+  // Level 13 – Elite enemies
+  // -----------------------------------------------------------------------
+  {
+    level: 13,
+    distanceGoal: 78,
+    bgSet: "planets",
+    asteroidMultiplier: 4.0,
+    spawnInterval: [450, 660],
+    enemySpeed: [110, 190],
+    enemies: [
+      { kind: "scout", weight: 0.05, shieldChance: 0.45 },
+      { kind: "fighter", weight: 0.10, shieldChance: 0.65 },
+      { kind: "torpedo", weight: 0.15, shieldChance: 0.75 },
+      { kind: "frigate", weight: 0.35, shieldChance: 0.90 },
+      { kind: "battlecruiser", weight: 0.35, shieldChance: 0.70 },
+    ],
+    drops: {
+      health: 0.06, shield: 0.06, firingRate: 0.03, firingRate2: 0.03,
+      autoCannons: 0, rocket: 0.02, zapper: 0.03, bigSpaceGun: 0.04,
+      baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
+    },
+    isBossLevel: false,
+  },
+
+  // -----------------------------------------------------------------------
+  // Level 14 – Pre-boss gauntlet
+  // -----------------------------------------------------------------------
+  {
+    level: 14,
+    distanceGoal: 78,
+    bgSet: "planets",
+    asteroidMultiplier: 4.0,
+    spawnInterval: [440, 640],
+    enemySpeed: [115, 195],
+    enemies: [
+      { kind: "scout", weight: 0.05, shieldChance: 0.50 },
+      { kind: "fighter", weight: 0.10, shieldChance: 0.70 },
+      { kind: "torpedo", weight: 0.15, shieldChance: 0.80 },
+      { kind: "frigate", weight: 0.30, shieldChance: 0.90 },
+      { kind: "battlecruiser", weight: 0.40, shieldChance: 0.75 },
+    ],
+    drops: {
+      health: 0.06, shield: 0.06, firingRate: 0.03, firingRate2: 0.03,
+      autoCannons: 0, rocket: 0.02, zapper: 0.03, bigSpaceGun: 0.04,
+      baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
+    },
+    isBossLevel: false,
+  },
+
+  // -----------------------------------------------------------------------
+  // Level 15 – Boss fight (Dreadnought HP 200 / Shield 200 + escort waves)
+  // -----------------------------------------------------------------------
+  {
+    level: 15,
     distanceGoal: 0, // no distance – fight ends when Dreadnought dies
     bgSet: "planets",
     asteroidMultiplier: 4.0,
@@ -296,7 +423,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.40, shieldChance: 0.50 },
     ],
     drops: {
-      health: 0.06, shield: 0.06, firingRate: 0.03,
+      health: 0.06, shield: 0.06, firingRate: 0.03, firingRate2: 0.03,
       autoCannons: 0, rocket: 0.03, zapper: 0.03, bigSpaceGun: 0.04,
       baseEngine: 0, superchargedEngine: 0, burstEngine: 0, bigPulseEngine: 0.02,
     },

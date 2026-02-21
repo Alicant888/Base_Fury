@@ -1,0 +1,229 @@
+{
+	"textures": [
+		{
+			"image": "texture",
+			"format": "RGBA8888",
+			"size": {
+				"w": 28,
+				"h": 280
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Pickup Icon - Firing Rate2- 0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 2,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 30,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 58,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 86,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 114,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 142,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 170,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 198,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 226,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "Pickup Icon - Firing Rate2- 9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 4,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 2,
+						"y": 254,
+						"w": 24,
+						"h": 24
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

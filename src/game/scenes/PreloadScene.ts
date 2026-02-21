@@ -26,6 +26,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.atlas(ATLAS_KEYS.ship, "/assets/atlases/MainShip.png", "/assets/atlases/MainShip.json");
     this.load.atlas(ATLAS_KEYS.enemy, "/assets/atlases/Enemy.png", "/assets/atlases/Enemy.json");
     this.load.atlas(ATLAS_KEYS.fx, "/assets/atlases/FX.png", "/assets/atlases/FX.json");
+    this.load.atlas(ATLAS_KEYS.fx2, "/assets/atlases/FX2.png", "/assets/atlases/FX2.json");
     this.load.atlas(ATLAS_KEYS.ui, "/assets/atlases/ui.png", "/assets/atlases/ui.json");
     // Backgrounds: multi-atlas (BCG.png + L0..L6.png).
     this.load.multiatlas(ATLAS_KEYS.bg, "/assets/atlases/backgrounds.json", "/assets/atlases/");

@@ -11,6 +11,7 @@ import { Asteroid } from "../entities/Asteroid";
 import { Enemy, type EnemyKind, getEnemyXp } from "../entities/Enemy";
 import { EnemyBullet } from "../entities/EnemyBullet";
 import { FiringRatePickup } from "../entities/FiringRatePickup";
+import { FiringRate2Pickup } from "../entities/FiringRate2Pickup";
 import { HealthPickup } from "../entities/HealthPickup";
 import { RocketPickup } from "../entities/RocketPickup";
 import { RocketProjectile } from "../entities/RocketProjectile";
@@ -52,7 +53,7 @@ const BG_SCROLL_SPEED_BCG = 0.015;
 // Asteroids set (reserved for certain levels).
 const ASTEROIDS_SCROLL_SPEED_L4 = 0.3;
 const ASTEROIDS_SCROLL_SPEED_L5 = 0.6;
-const ASTEROIDS_SCROLL_SPEED_L6 = 0.12;
+const ASTEROIDS_SCROLL_SPEED_L6 = 1.2;
 
 
 const PLANETS_SCROLL_SPEED_L0 = 0.02;
@@ -157,7 +158,7 @@ const BIG_SPACE_GUN_WEAPON_FIRE_FRAME = `${SPRITE_FRAMES.bigSpaceGunWeaponPrefix
 const DEFAULT_DROPS = {
   bigSpaceGun: 0.01, zapper: 0.01, rocket: 0.01, autoCannons: 0.01,
   baseEngine: 0.01, superchargedEngine: 0.01, burstEngine: 0.01, bigPulseEngine: 0.01,
-  health: 0.03, firingRate: 0.05, shield: 0.04,
+  health: 0.03, firingRate: 0.05, shield: 0.04, firingRate2: 0,
 } as const;
 
 export class GameScene extends Phaser.Scene {
@@ -180,6 +181,7 @@ export class GameScene extends Phaser.Scene {
   private shieldPickups!: Phaser.Physics.Arcade.Group;
   private healthPickups!: Phaser.Physics.Arcade.Group;
   private firingRatePickups!: Phaser.Physics.Arcade.Group;
+  private firingRate2Pickups!: Phaser.Physics.Arcade.Group;
   private autoCannonsPickups!: Phaser.Physics.Arcade.Group;
   private rocketPickups!: Phaser.Physics.Arcade.Group;
   private zapperPickups!: Phaser.Physics.Arcade.Group;
@@ -419,6 +421,12 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: true,
     });
 
+    this.firingRate2Pickups = this.physics.add.group({
+      classType: FiringRate2Pickup,
+      maxSize: 12,
+      runChildUpdate: true,
+    });
+
     this.autoCannonsPickups = this.physics.add.group({
       classType: AutoCannonsPickup,
       maxSize: 12,
@@ -637,6 +645,14 @@ export class GameScene extends Phaser.Scene {
 
     this.physics.add.overlap(
       this.player,
+      this.firingRate2Pickups,
+      this.onFiringRate2Pickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+      undefined,
+      this,
+    );
+
+    this.physics.add.overlap(
+      this.player,
       this.autoCannonsPickups,
       this.onAutoCannonsPickup as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
       undefined,
@@ -709,7 +725,7 @@ export class GameScene extends Phaser.Scene {
     // ----- Level UI -----
     // Level number + distance progress (bottom-right corner, 10px padding).
     this.levelProgressText = this.add.text(GAME_WIDTH - 10, GAME_HEIGHT - 10, "", {
-      fontFamily: "Pixel Operator 8 Regular",
+      fontFamily: "Orbitron",
       fontSize: "24px",
       color: "#00FF9C",
       stroke: "#000000",
@@ -735,6 +751,20 @@ export class GameScene extends Phaser.Scene {
         case "supercharged": this.activateSuperchargedEngine(); break;
         case "burst": this.activateBurstEngine(); break;
         case "bigPulse": this.activateBigPulseEngine(); break;
+      }
+      // Restore XP from previous level.
+      if (this._pendingSave.score > 0) {
+        this.score = this._pendingSave.score;
+        this.scoreText.setText(`${this.score}`);
+      }
+      // Restore fire-rate multipliers.
+      if (this._pendingSave.fireRateMultiplier < 1) {
+        this.fireRateMultiplier = this._pendingSave.fireRateMultiplier;
+        this.setFireRateMultiplier(this.fireRateMultiplier);
+      }
+      if (this._pendingSave.weaponBonusRate > 1) {
+        this.weaponBonusRate = this._pendingSave.weaponBonusRate;
+        this.applyWeaponBonusRate();
       }
       this._pendingSave = undefined;
     }
@@ -1452,9 +1482,18 @@ export class GameScene extends Phaser.Scene {
     if (this.fireRateMultiplier > MIN_FIRE_RATE) {
       const newMultiplier = Math.max(MIN_FIRE_RATE, this.fireRateMultiplier - 0.1);
       this.setFireRateMultiplier(newMultiplier);
-    } else {
-      // Fire rate maxed out — boost weapon animation speed (+10% per pickup, max +100%).
-      this.weaponBonusRate = Math.min(2, this.weaponBonusRate + 0.1);
+    }
+  }
+
+  private onFiringRate2Pickup(_playerObj: Phaser.GameObjects.GameObject, pickupObj: Phaser.GameObjects.GameObject) {
+    const pickup = pickupObj as FiringRate2Pickup;
+    if (!pickup.active) return;
+
+    pickup.kill();
+    // Boost secondary weapon animation speed (+20% per pickup, max +100% = 2.0).
+    const MAX_WEAPON_BONUS = 2; // +100%
+    if (this.weaponBonusRate < MAX_WEAPON_BONUS) {
+      this.weaponBonusRate = Math.min(MAX_WEAPON_BONUS, this.weaponBonusRate + 0.2);
       this.applyWeaponBonusRate();
     }
   }
@@ -1644,6 +1683,12 @@ export class GameScene extends Phaser.Scene {
     pickup.spawn(x, y);
   }
 
+  private spawnFiringRate2Pickup(x: number, y: number) {
+    const pickup = this.firingRate2Pickups.get(x, y) as FiringRate2Pickup | null;
+    if (!pickup) return;
+    pickup.spawn(x, y);
+  }
+
   private spawnAutoCannonsPickup(x: number, y: number) {
     const pickup = this.autoCannonsPickups.get(x, y) as AutoCannonsPickup | null;
     if (!pickup) return;
@@ -1707,6 +1752,9 @@ export class GameScene extends Phaser.Scene {
     threshold += d.firingRate;
     if (r < threshold) return this.spawnFiringRatePickup(x, y);
 
+    threshold += d.firingRate2;
+    if (r < threshold) return this.spawnFiringRate2Pickup(x, y);
+
     threshold += d.shield;
     if (r < threshold) {
       if (hadShield) this.spawnShieldPickup(x, y);
@@ -1735,6 +1783,9 @@ export class GameScene extends Phaser.Scene {
       hasBigSpaceGun: this.hasBigSpaceGun,
       activeEngineType: this.activeEngineType,
       highScore: Math.max(this.score, SaveManager.load().highScore),
+      score: this.score,
+      fireRateMultiplier: this.fireRateMultiplier,
+      weaponBonusRate: this.weaponBonusRate,
     };
     SaveManager.save(save);
 
@@ -1751,8 +1802,8 @@ export class GameScene extends Phaser.Scene {
     const titleText = isLastLevel ? "YOU WIN!" : `LEVEL ${this.currentLevel} COMPLETE!`;
 
     container.add(this.add.text(centerX, centerY - 60, titleText, {
-      fontFamily: "Pixel Operator 8 Regular",
-      fontSize: "56px",
+      fontFamily: "Orbitron",
+      fontSize: "20px",
       color: "#00FF9C",
       stroke: "#000000",
       strokeThickness: 6,
@@ -1761,17 +1812,17 @@ export class GameScene extends Phaser.Scene {
     }).setOrigin(0.5));
 
     container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
-      fontFamily: "Pixel Operator 8 Regular",
-      fontSize: "42px",
+      fontFamily: "Orbitron",
+      fontSize: "10px",
       color: "#CFE9F2",
       stroke: "#000000",
-      strokeThickness: 4,
+      strokeThickness: 2,
       align: "center",
     }).setOrigin(0.5));
 
     container.add(this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
-      fontFamily: "Pixel Operator 8 Regular",
-      fontSize: "28px",
+      fontFamily: "Orbitron",
+      fontSize: "20px",
       color: "#CFE9F2",
       stroke: "#000000",
       strokeThickness: 4,
@@ -1831,11 +1882,11 @@ export class GameScene extends Phaser.Scene {
     // Midpoint = (centerY - 60 + centerY + 120) / 2 = centerY + 30
     this.add
       .text(centerX, centerY + 30, `ENEMIES DESTROYED: ${this.kills}`, {
-        fontFamily: "Pixel Operator 8 Regular",
-        fontSize: "48px",
+        fontFamily: "Orbitron",
+        fontSize: "24px",
         color: "#CFE9F2",
         stroke: "#000000",
-        strokeThickness: 6,
+        strokeThickness: 3,
         align: "center",
         wordWrap: { width: GAME_WIDTH - 40 },
         padding: { x: 8, y: 6 },
@@ -2387,6 +2438,16 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.createLoopAnimIfFrames(
+      "firing_rate2_pickup",
+      ATLAS_KEYS.fx2,
+      SPRITE_FRAMES.firingRate2PickupPrefix,
+      SPRITE_FRAMES.firingRate2PickupStart,
+      SPRITE_FRAMES.firingRate2PickupEnd,
+      SPRITE_FRAMES.firingRate2PickupSuffix,
+      14,
+    );
+
+    this.createLoopAnimIfFrames(
       "auto_cannons_pickup",
       ATLAS_KEYS.fx,
       SPRITE_FRAMES.autoCannonsPickupPrefix,
@@ -2712,7 +2773,7 @@ export class GameScene extends Phaser.Scene {
     // Score Text (Top Right)
     this.scoreText = this.add
       .text(GAME_WIDTH - 20, 20, "0", {
-        fontFamily: "Pixel Operator 8 Regular",
+        fontFamily: "Orbitron",
         fontSize: "24px",
         color: "#ffffff",
         stroke: "#000000",

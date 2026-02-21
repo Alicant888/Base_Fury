@@ -52,6 +52,7 @@ export const ATLAS_KEYS = {
   ship: "MainShip",
   enemy: "Enemy",
   fx: "FX",
+  fx2: "FX2",
   ui: "ui",
   bg: "backgrounds",
 } as const;
@@ -288,6 +289,12 @@ export const SPRITE_FRAMES = {
   firingRatePickupSuffix: ".png",
   firingRatePickupStart: 0,
   firingRatePickupEnd: 9,
+
+  // Firing-rate 2 pickup icon (atlas: FX2) – secondary weapon speed
+  firingRate2PickupPrefix: "Pickup Icon - Firing Rate2- ",
+  firingRate2PickupSuffix: ".png",
+  firingRate2PickupStart: 0,
+  firingRate2PickupEnd: 9,
 
   // Base engine pickup icon (atlas: FX)
   baseEnginePickupPrefix: "PickupsPack/Engines/Pickup Icon - Engines - Base Engine/Pickup Icon - Engines - Base Engine-",
