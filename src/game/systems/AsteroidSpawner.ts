@@ -14,17 +14,29 @@ const ASTEROID_SCALE_MAX = 2.0;
 
 export class AsteroidSpawner {
   private nextSpawnAt = 0;
+  /** 0 = disabled, 1 = base rate, up to 4. Higher → shorter intervals. */
+  private spawnMultiplier = 1;
 
   constructor(
     private scene: Phaser.Scene,
     private asteroids: Phaser.Physics.Arcade.Group,
   ) {}
 
+  /** Set from LevelConfig.asteroidMultiplier (0 disables spawning). */
+  setMultiplier(mult: number) {
+    this.spawnMultiplier = Math.max(0, Math.min(mult, 4));
+  }
+
   update(time: number) {
+    if (this.spawnMultiplier <= 0) return; // asteroids disabled for this level
+
     if (time < this.nextSpawnAt) return;
 
     this.spawnOne();
-    this.nextSpawnAt = time + Phaser.Math.Between(ASTEROID_SPAWN_MIN_MS, ASTEROID_SPAWN_MAX_MS);
+
+    // Higher multiplier → shorter wait (divide interval by multiplier).
+    const baseInterval = Phaser.Math.Between(ASTEROID_SPAWN_MIN_MS, ASTEROID_SPAWN_MAX_MS);
+    this.nextSpawnAt = time + Math.max(1500, baseInterval / this.spawnMultiplier);
   }
 
   private spawnOne() {

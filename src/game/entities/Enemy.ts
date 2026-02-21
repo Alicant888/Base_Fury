@@ -202,6 +202,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     enemyBullets: Phaser.Physics.Arcade.Group,
     kind: EnemyKind,
     hasShield: boolean,
+    hpOverride?: number,
+    shieldHpOverride?: number,
   ) {
     const body = this.body as Phaser.Physics.Arcade.Body | null;
     if (!body) return;
@@ -220,8 +222,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.dreadnoughtState = "idle";
     this.dreadnoughtDriftDir = Phaser.Math.Between(0, 1) === 0 ? -1 : 1;
 
-    this.hp = isDreadnought ? DREADNOUGHT_HP : isBattlecruiser ? BATTLECRUISER_HP : isFrigate ? FRIGATE_HP : isTorpedo ? TORPEDO_SHIP_HP : isFighter ? FIGHTER_HP : 1;
-    this.shieldHp = isDreadnought
+    const defaultHp = isDreadnought ? DREADNOUGHT_HP : isBattlecruiser ? BATTLECRUISER_HP : isFrigate ? FRIGATE_HP : isTorpedo ? TORPEDO_SHIP_HP : isFighter ? FIGHTER_HP : 1;
+    this.hp = hpOverride ?? defaultHp;
+
+    const defaultShieldHp = isDreadnought
       ? (hasShield ? DREADNOUGHT_SHIELD_HP : 0)
       : isBattlecruiser
         ? (hasShield ? BATTLECRUISER_SHIELD_HP : 0)
@@ -234,6 +238,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
               : hasShield
                 ? 1
                 : 0;
+    this.shieldHp = shieldHpOverride ?? defaultShieldHp;
 
     this.setFrame(
       isDreadnought

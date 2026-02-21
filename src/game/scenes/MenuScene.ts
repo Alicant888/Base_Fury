@@ -1,9 +1,11 @@
 import * as Phaser from "phaser";
 import { ATLAS_KEYS, AUDIO_KEYS, IMAGE_KEYS, UI_SCALE } from "../config";
 import { Button } from "../ui/Button";
+import { SaveManager } from "../systems/SaveManager";
 
 export class MenuScene extends Phaser.Scene {
   private startButton!: Phaser.GameObjects.Image;
+  private continueButton?: Phaser.GameObjects.Image;
   private menuMusic?: Phaser.Sound.BaseSound;
 
   constructor() {
@@ -25,7 +27,7 @@ export class MenuScene extends Phaser.Scene {
       // ignore
     }
 
-    // START button (image)
+    // START (New Game) button
     this.startButton = this.add.image(0, 0, IMAGE_KEYS.uiStart)
       .setInteractive({ useHandCursor: true })
       .setDepth(2)
@@ -35,8 +37,26 @@ export class MenuScene extends Phaser.Scene {
     this.startButton.on("pointerout", () => this.startButton.clearTint());
     this.startButton.on("pointerdown", () => {
       this.startButton.setTint(0x888888);
-      this.onStart();
+      SaveManager.clear();
+      this.onStart(1);
     });
+
+    // CONTINUE button (only shown when a save exists)
+    const hasSave = SaveManager.hasSave();
+    if (hasSave) {
+      this.continueButton = this.add.image(0, 0, IMAGE_KEYS.uiResume)
+        .setInteractive({ useHandCursor: true })
+        .setDepth(2)
+        .setScale(UI_SCALE);
+
+      this.continueButton.on("pointerover", () => this.continueButton?.setTint(0xcccccc));
+      this.continueButton.on("pointerout", () => this.continueButton?.clearTint());
+      this.continueButton.on("pointerdown", () => {
+        this.continueButton?.setTint(0x888888);
+        const save = SaveManager.load();
+        this.onStart(save.currentLevel, save);
+      });
+    }
 
     const layout = (width: number, height: number) => {
       bg.setPosition(width / 2, height / 2);
@@ -46,8 +66,16 @@ export class MenuScene extends Phaser.Scene {
       const scale = Math.max(scaleX, scaleY);
       bg.setScale(scale);
 
-      const btnY = height * 0.67; // 33% from bottom = 67% from top
-      this.startButton.setPosition(width / 2, btnY);
+      if (hasSave && this.continueButton) {
+        // Two buttons: Continue higher, New Game lower
+        const btnGap = 60;
+        const baseY = height * 0.67;
+        this.continueButton.setPosition(width / 2, baseY - btnGap / 2);
+        this.startButton.setPosition(width / 2, baseY + btnGap / 2);
+      } else {
+        const btnY = height * 0.67;
+        this.startButton.setPosition(width / 2, btnY);
+      }
     };
 
     layout(this.scale.width, this.scale.height);
@@ -66,7 +94,7 @@ export class MenuScene extends Phaser.Scene {
     });
   }
 
-  private onStart() {
+  private onStart(level: number, save?: import("../systems/SaveManager").SaveData) {
     // IMPORTANT: unlock audio only after START click (user gesture).
     this.unlockAudioOnce();
     this.playClick();
@@ -76,7 +104,7 @@ export class MenuScene extends Phaser.Scene {
     this.menuMusic?.destroy();
     this.menuMusic = undefined;
 
-    this.scene.start("GameScene");
+    this.scene.start("GameScene", { level, save });
   }
 
   private playClick() {

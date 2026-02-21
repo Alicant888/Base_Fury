@@ -23,6 +23,8 @@ import { AsteroidSpawner } from "../systems/AsteroidSpawner";
 import { EnemySpawner } from "../systems/EnemySpawner";
 import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS, SPRITE_FRAMES, UI_FRAMES, UI_SCALE } from "../config";
 import { Button } from "../ui/Button";
+import { getLevelConfig, TOTAL_LEVELS, type LevelConfig, type BgSet } from "../LevelConfig";
+import { SaveManager, type SaveData } from "../systems/SaveManager";
 
 const BASE_FIRE_RATE_MS = 375; // ~2.67 shots/sec
 const BASE_MOVE_SPEED_PX_PER_SEC = 280;
@@ -40,7 +42,9 @@ const DEPTH_WEAPON = 4.8; // under the ship, still under the shield.
 // Background sets (overlays; BCG is always the base layer):
 // - Asteroids: L4 + L5 + L6 (reserved for some levels)
 // - Planets: L0 (static) + L1 + L2 + L3 (currently active for testing)
-const ACTIVE_BG_SET: "asteroids" | "planets" = "asteroids";
+// Background set is now driven by LevelConfig (per-level).
+// The constant below is only a fallback; activeBgSet on the scene instance is authoritative.
+const DEFAULT_BG_SET: BgSet = "asteroids";
 
 // Base background (always visible).
 const BG_SCROLL_SPEED_BCG = 0.01;
@@ -148,18 +152,13 @@ const BIG_SPACE_GUN_PROJECTILE_FROM_WEAPON_OFFSET_Y = -10;
 // Fire a single centered projectile on this weapon frame:
 const BIG_SPACE_GUN_WEAPON_FIRE_FRAME = `${SPRITE_FRAMES.bigSpaceGunWeaponPrefix}7${SPRITE_FRAMES.bigSpaceGunWeaponSuffix}`;
 
-// TUNE PICKUP DROP CHANCES HERE (0.0..1.0)
-const DROP_CHANCE_BIG_SPACE_GUN = 0.3;
-const DROP_CHANCE_ZAPPER = 0.01;
-const DROP_CHANCE_ROCKET = 0.01;
-const DROP_CHANCE_AUTO_CANNONS = 0.01;
-const DROP_CHANCE_BASE_ENGINE = 0.01;
-const DROP_CHANCE_SUPERCHARGED_ENGINE = 0.01;
-const DROP_CHANCE_BURST_ENGINE = 0.01;
-const DROP_CHANCE_BIG_PULSE_ENGINE = 0.01;
-const DROP_CHANCE_HEALTH = 0.03;
-const DROP_CHANCE_FIRING_RATE = 0.04;
-const DROP_CHANCE_SHIELD = 0.04;
+// Pickup drop chances are now in LevelConfig (per-level).
+// Fallback defaults are only used if levelConfig is somehow missing.
+const DEFAULT_DROPS = {
+  bigSpaceGun: 0.01, zapper: 0.01, rocket: 0.01, autoCannons: 0.01,
+  baseEngine: 0.01, superchargedEngine: 0.01, burstEngine: 0.01, bigPulseEngine: 0.01,
+  health: 0.03, firingRate: 0.04, shield: 0.04,
+} as const;
 
 export class GameScene extends Phaser.Scene {
   private bgStar!: Phaser.GameObjects.TileSprite;
@@ -239,9 +238,35 @@ export class GameScene extends Phaser.Scene {
   private isPausedByInput = false;
   private pausedText?: Phaser.GameObjects.Text;
 
+  // --- Level system ---
+  private currentLevel = 1;
+  private levelConfig!: LevelConfig;
+  private activeBgSet: BgSet = "none";
+  private levelStartTime = 0;
+  private isLevelComplete = false;
+  private levelTimerText?: Phaser.GameObjects.Text;
+  private levelText?: Phaser.GameObjects.Text;
+
   constructor() {
     super("GameScene");
   }
+
+  /** Phaser init callback – receives scene data (e.g. { level: 3, save: SaveData }). */
+  init(data?: { level?: number; save?: SaveData }) {
+    this.currentLevel = data?.level ?? 1;
+    this.levelConfig = getLevelConfig(this.currentLevel);
+    this.activeBgSet = this.levelConfig.bgSet;
+
+    // Restore weapons / engine from save data if provided.
+    if (data?.save) {
+      this._pendingSave = data.save;
+    } else {
+      this._pendingSave = undefined;
+    }
+  }
+
+  /** Temporary storage for save data to apply in create(). */
+  private _pendingSave?: SaveData;
 
   create() {
     this.scale.scaleMode = Phaser.Scale.FIT;
@@ -253,6 +278,7 @@ export class GameScene extends Phaser.Scene {
     this.kills = 0;
     this.score = 0;
     this.isGameOver = false;
+    this.isLevelComplete = false;
     this.shieldHits = 0;
     this.fireRateMultiplier = 1;
     this.moveSpeedMultiplier = 1;
@@ -263,6 +289,7 @@ export class GameScene extends Phaser.Scene {
     this.hasRockets = false;
     this.hasZapper = false;
     this.hasBigSpaceGun = false;
+    this.levelStartTime = 0;
 
     // Reset pause state
     this.isPausedByInput = false;
@@ -294,9 +321,10 @@ export class GameScene extends Phaser.Scene {
     // Keep all background layers below gameplay objects (bullets, enemies, player, etc).
     this.bgDust = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, BG_FRAMES.bcg).setOrigin(0).setDepth(-10);
 
-    // Overlay set: Asteroids (L4-L6) or Planets (L0-L3).
-    // NOTE: Currently active set is "Planets", so L4/L5/L6 are disabled.
-    const overlays = BG_OVERLAY_LAYERS[ACTIVE_BG_SET];
+    // Overlay set depends on the current level (none / asteroids / planets).
+    const useBgOverlays = this.activeBgSet !== "none";
+    const bgSetKey = useBgOverlays ? this.activeBgSet as ("asteroids" | "planets") : "asteroids";
+    const overlays = BG_OVERLAY_LAYERS[bgSetKey];
     this.bgNebula = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[0].frame).setOrigin(0).setDepth(-9);
     this.bgStar = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[1].frame).setOrigin(0).setDepth(-8);
     this.bgL6 = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, overlays[2].frame).setOrigin(0).setDepth(-7);
@@ -304,7 +332,15 @@ export class GameScene extends Phaser.Scene {
     const topLayer = overlays[3];
     const topLayerFrame = topLayer ? topLayer.frame : overlays[2].frame;
     this.bgL3 = this.add.tileSprite(0, 0, GAME_WIDTH, GAME_HEIGHT, ATLAS_KEYS.bg, topLayerFrame).setOrigin(0).setDepth(-6);
-    this.bgL3.setVisible(!!topLayer);
+    this.bgL3.setVisible(useBgOverlays && !!topLayer);
+
+    // Hide overlay layers when bgSet is "none" (early levels: only BCG visible).
+    if (!useBgOverlays) {
+      this.bgNebula.setVisible(false);
+      this.bgStar.setVisible(false);
+      this.bgL6.setVisible(false);
+      this.bgL3.setVisible(false);
+    }
 
     // For Planets: scroll only once (no looping). Clamp to the largest offset that still
     // shows a continuous portion of the texture without wrapping within the viewport.
@@ -452,7 +488,12 @@ export class GameScene extends Phaser.Scene {
 
     // Spawning.
     this.spawner = new EnemySpawner(this, this.enemies, this.enemyBullets);
+    this.spawner.setLevelConfig(this.levelConfig);
     this.asteroidSpawner = new AsteroidSpawner(this, this.asteroids);
+    this.asteroidSpawner.setMultiplier(this.levelConfig.asteroidMultiplier);
+
+    // Record level start time (for survival timer).
+    this.levelStartTime = 0; // will be set to this.time.now in first update() tick
 
     // Collisions.
     this.physics.add.overlap(
@@ -654,6 +695,42 @@ export class GameScene extends Phaser.Scene {
     this.createUI();
     this.updateLivesUI();
 
+    // ----- Level UI -----
+    // Level indicator (top-left area).
+    this.levelText = this.add.text(10, 8, `LEVEL ${this.currentLevel}`, {
+      fontFamily: "Pixel Operator 8 Regular",
+      fontSize: "28px",
+      color: "#CFE9F2",
+      stroke: "#000000",
+      strokeThickness: 4,
+    }).setDepth(50).setScrollFactor(0);
+
+    // Survival timer (below level indicator).
+    if (this.levelConfig.durationSec > 0) {
+      this.levelTimerText = this.add.text(10, 36, "", {
+        fontFamily: "Pixel Operator 8 Regular",
+        fontSize: "24px",
+        color: "#00FF9C",
+        stroke: "#000000",
+        strokeThickness: 3,
+      }).setDepth(50).setScrollFactor(0);
+    }
+
+    // ----- Restore saved weapons / engine -----
+    if (this._pendingSave) {
+      if (this._pendingSave.hasAutoCannons) this.activateAutoCannons();
+      if (this._pendingSave.hasRockets) this.activateRockets();
+      if (this._pendingSave.hasZapper) this.activateZapper();
+      if (this._pendingSave.hasBigSpaceGun) this.activateBigSpaceGun();
+      switch (this._pendingSave.activeEngineType) {
+        case "base": this.activateBaseEngine(); break;
+        case "supercharged": this.activateSuperchargedEngine(); break;
+        case "burst": this.activateBurstEngine(); break;
+        case "bigPulse": this.activateBigPulseEngine(); break;
+      }
+      this._pendingSave = undefined;
+    }
+
     // Game music (starts after START click / audio unlock).
     if (this.registry.get("audioUnlocked") && this.isMusicOn) {
       try {
@@ -705,7 +782,32 @@ export class GameScene extends Phaser.Scene {
 
   update(time: number, delta: number) {
     if (this.isGameOver) return;
+    if (this.isLevelComplete) return;
     if (this.isPausedByInput) return;
+
+    // Initialise levelStartTime on the very first tick.
+    if (this.levelStartTime === 0) this.levelStartTime = time;
+
+    // --- Level timer / boss check ---
+    if (this.levelConfig.isBossLevel) {
+      // Boss level ends when boss is defeated.
+      if (this.spawner.isBossDefeated()) {
+        this.onLevelComplete();
+        return;
+      }
+    } else if (this.levelConfig.durationSec > 0) {
+      const elapsed = (time - this.levelStartTime) / 1000;
+      const remaining = Math.max(0, this.levelConfig.durationSec - elapsed);
+      if (this.levelTimerText) {
+        const m = Math.floor(remaining / 60);
+        const s = Math.floor(remaining % 60);
+        this.levelTimerText.setText(`${m}:${s.toString().padStart(2, "0")}`);
+      }
+      if (remaining <= 0) {
+        this.onLevelComplete();
+        return;
+      }
+    }
 
     // Provide player X for boss AI (safe + cheap).
     this.registry.set("playerX", this.player.x);
@@ -714,27 +816,30 @@ export class GameScene extends Phaser.Scene {
     // Subtract to make the texture appear to move "down".
     this.bgDust.tilePositionY -= BG_SCROLL_SPEED_BCG * t; // BCG (base)
 
-    const overlays = BG_OVERLAY_LAYERS[ACTIVE_BG_SET];
-    const planetsOneShot = ACTIVE_BG_SET === "planets";
+    if (this.activeBgSet !== "none") {
+      const bgSetKey = this.activeBgSet as ("asteroids" | "planets");
+      const overlays = BG_OVERLAY_LAYERS[bgSetKey];
+      const planetsOneShot = this.activeBgSet === "planets";
 
-    const scrollLayerOnce = (ts: Phaser.GameObjects.TileSprite, speed: number, maxScroll: number) => {
-      if (speed === 0) return;
-      const next = ts.tilePositionY - speed * t;
-      ts.tilePositionY = Math.max(-maxScroll, next);
-    };
+      const scrollLayerOnce = (ts: Phaser.GameObjects.TileSprite, speed: number, maxScroll: number) => {
+        if (speed === 0) return;
+        const next = ts.tilePositionY - speed * t;
+        ts.tilePositionY = Math.max(-maxScroll, next);
+      };
 
-    if (planetsOneShot) {
-      scrollLayerOnce(this.bgNebula, overlays[0].speed, this.bgOverlayMaxScrollY[0]);
-      scrollLayerOnce(this.bgStar, overlays[1].speed, this.bgOverlayMaxScrollY[1]);
-      scrollLayerOnce(this.bgL6, overlays[2].speed, this.bgOverlayMaxScrollY[2]);
-      const topLayer = overlays[3];
-      if (topLayer) scrollLayerOnce(this.bgL3, topLayer.speed, this.bgOverlayMaxScrollY[3]);
-    } else {
-      this.bgNebula.tilePositionY -= overlays[0].speed * t;
-      this.bgStar.tilePositionY -= overlays[1].speed * t;
-      this.bgL6.tilePositionY -= overlays[2].speed * t;
-      const topLayer = overlays[3];
-      if (topLayer) this.bgL3.tilePositionY -= topLayer.speed * t;
+      if (planetsOneShot) {
+        scrollLayerOnce(this.bgNebula, overlays[0].speed, this.bgOverlayMaxScrollY[0]);
+        scrollLayerOnce(this.bgStar, overlays[1].speed, this.bgOverlayMaxScrollY[1]);
+        scrollLayerOnce(this.bgL6, overlays[2].speed, this.bgOverlayMaxScrollY[2]);
+        const topLayer = overlays[3];
+        if (topLayer) scrollLayerOnce(this.bgL3, topLayer.speed, this.bgOverlayMaxScrollY[3]);
+      } else {
+        this.bgNebula.tilePositionY -= overlays[0].speed * t;
+        this.bgStar.tilePositionY -= overlays[1].speed * t;
+        this.bgL6.tilePositionY -= overlays[2].speed * t;
+        const topLayer = overlays[3];
+        if (topLayer) this.bgL3.tilePositionY -= topLayer.speed * t;
+      }
     }
 
     // Pointer drag takes priority; keyboard works when not dragging.
@@ -1498,42 +1603,128 @@ export class GameScene extends Phaser.Scene {
   private maybeSpawnPickup(x: number, y: number) {
     if (this.isGameOver) return;
 
+    const d = this.levelConfig?.drops ?? DEFAULT_DROPS;
+
     // Spawn at most one pickup (cumulative thresholds).
     const r = Phaser.Math.FloatBetween(0, 1);
     let threshold = 0;
 
-    threshold += DROP_CHANCE_BIG_SPACE_GUN;
+    threshold += d.bigSpaceGun;
     if (r < threshold) return this.spawnBigSpaceGunPickup(x, y);
 
-    threshold += DROP_CHANCE_ZAPPER;
+    threshold += d.zapper;
     if (r < threshold) return this.spawnZapperPickup(x, y);
 
-    threshold += DROP_CHANCE_ROCKET;
+    threshold += d.rocket;
     if (r < threshold) return this.spawnRocketPickup(x, y);
 
-    threshold += DROP_CHANCE_AUTO_CANNONS;
+    threshold += d.autoCannons;
     if (r < threshold) return this.spawnAutoCannonsPickup(x, y);
 
-    threshold += DROP_CHANCE_BASE_ENGINE;
+    threshold += d.baseEngine;
     if (r < threshold) return this.spawnBaseEnginePickup(x, y);
 
-    threshold += DROP_CHANCE_SUPERCHARGED_ENGINE;
+    threshold += d.superchargedEngine;
     if (r < threshold) return this.spawnSuperchargedEnginePickup(x, y);
 
-    threshold += DROP_CHANCE_BURST_ENGINE;
+    threshold += d.burstEngine;
     if (r < threshold) return this.spawnBurstEnginePickup(x, y);
 
-    threshold += DROP_CHANCE_BIG_PULSE_ENGINE;
+    threshold += d.bigPulseEngine;
     if (r < threshold) return this.spawnBigPulseEnginePickup(x, y);
 
-    threshold += DROP_CHANCE_HEALTH;
+    threshold += d.health;
     if (r < threshold) return this.spawnHealthPickup(x, y);
 
-    threshold += DROP_CHANCE_FIRING_RATE;
+    threshold += d.firingRate;
     if (r < threshold) return this.spawnFiringRatePickup(x, y);
 
-    threshold += DROP_CHANCE_SHIELD;
+    threshold += d.shield;
     if (r < threshold) return this.spawnShieldPickup(x, y);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Level completion
+  // ---------------------------------------------------------------------------
+
+  private onLevelComplete() {
+    if (this.isLevelComplete || this.isGameOver) return;
+    this.isLevelComplete = true;
+
+    // Freeze gameplay.
+    this.physics.world.pause();
+    this.destroyWeaponFireEvents();
+
+    // Persist progress.
+    const save: SaveData = {
+      currentLevel: Math.min(this.currentLevel + 1, TOTAL_LEVELS),
+      hasAutoCannons: this.hasAutoCannons,
+      hasRockets: this.hasRockets,
+      hasZapper: this.hasZapper,
+      hasBigSpaceGun: this.hasBigSpaceGun,
+      activeEngineType: this.activeEngineType,
+      highScore: Math.max(this.score, SaveManager.load().highScore),
+    };
+    SaveManager.save(save);
+
+    const depth = 100;
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.55).setOrigin(0).setDepth(depth).setInteractive();
+
+    const centerX = GAME_WIDTH / 2;
+    const centerY = GAME_HEIGHT / 2;
+
+    const isLastLevel = this.currentLevel >= TOTAL_LEVELS;
+    const titleText = isLastLevel ? "YOU WIN!" : "LEVEL COMPLETE!";
+
+    this.add.text(centerX, centerY - 60, titleText, {
+      fontFamily: "Pixel Operator 8 Regular",
+      fontSize: "48px",
+      color: "#00FF9C",
+      stroke: "#000000",
+      strokeThickness: 6,
+      align: "center",
+    }).setOrigin(0.5).setDepth(depth + 1);
+
+    this.add.text(centerX, centerY, `ENEMIES DESTROYED: ${this.kills}`, {
+      fontFamily: "Pixel Operator 8 Regular",
+      fontSize: "36px",
+      color: "#CFE9F2",
+      stroke: "#000000",
+      strokeThickness: 4,
+      align: "center",
+    }).setOrigin(0.5).setDepth(depth + 1);
+
+    const btnY = centerY + 120;
+
+    if (!isLastLevel) {
+      // Next Level button.
+      const nextBtn = this.add.image(centerX, btnY, IMAGE_KEYS.uiNext)
+        .setInteractive({ useHandCursor: true })
+        .setDepth(depth + 2)
+        .setScale(UI_SCALE)
+        .on("pointerdown", () => {
+          this.playSfx(AUDIO_KEYS.click, 0.7);
+          dim.destroy();
+          this.gameMusic?.stop();
+          this.scene.start("GameScene", { level: this.currentLevel + 1, save });
+        });
+      nextBtn.on("pointerover", () => nextBtn.setTint(0xcccccc));
+      nextBtn.on("pointerout", () => nextBtn.clearTint());
+    } else {
+      // Back to menu after winning.
+      const exitBtn = this.add.image(centerX, btnY, IMAGE_KEYS.uiHome)
+        .setInteractive({ useHandCursor: true })
+        .setDepth(depth + 2)
+        .setScale(UI_SCALE)
+        .on("pointerdown", () => {
+          this.playSfx(AUDIO_KEYS.click, 0.7);
+          dim.destroy();
+          this.gameMusic?.stop();
+          this.scene.start("MenuScene");
+        });
+      exitBtn.on("pointerover", () => exitBtn.setTint(0xcccccc));
+      exitBtn.on("pointerout", () => exitBtn.clearTint());
+    }
   }
 
   private triggerGameOver() {
@@ -1598,7 +1789,8 @@ export class GameScene extends Phaser.Scene {
     exitBtn.on("pointerover", () => exitBtn.setTint(0xcccccc));
     exitBtn.on("pointerout", () => exitBtn.clearTint());
 
-    // Restart (Right) - Swapped with Exit
+    // Restart (Right) – restart current level, restoring saved weapons/engine
+    const savedProgress = SaveManager.load();
     const restartBtn = this.add.image(centerX + 80, btnY, IMAGE_KEYS.uiRestart)
       .setInteractive({ useHandCursor: true })
       .setDepth(depth + 2)
@@ -1606,7 +1798,7 @@ export class GameScene extends Phaser.Scene {
       .on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
         dim.destroy();
-        this.scene.restart();
+        this.scene.start("GameScene", { level: this.currentLevel, save: savedProgress });
       });
     restartBtn.on("pointerover", () => restartBtn.setTint(0xcccccc));
     restartBtn.on("pointerout", () => restartBtn.clearTint());

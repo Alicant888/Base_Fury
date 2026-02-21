@@ -1,18 +1,15 @@
 import * as Phaser from "phaser";
 import type { Enemy, EnemyKind } from "../entities/Enemy";
 import { GAME_WIDTH } from "../config";
-
-// Enemy spawn chances (per spawn tick).
-const DREADNOUGHT_SPAWN_CHANCE = 0.0001; // 0.01%
-const BATTLECRUISER_SPAWN_CHANCE = 0.0001; // 0.01%
-const FRIGATE_SPAWN_CHANCE = 0.0001; // 30%
-const TORPEDO_SPAWN_CHANCE = 0.0001; // 0.01%
-const FIGHTER_SPAWN_CHANCE = 0.0001; // 0.01%
+import type { LevelConfig } from "../LevelConfig";
 
 export class EnemySpawner {
   private nextSpawnAt = 0;
   private bossSpawned = false;
   private boss?: Enemy;
+  private levelConfig?: LevelConfig;
+  private nextEscortWaveAt = 0;
+  private escortWaveIndex = 0;
 
   constructor(
     private scene: Phaser.Scene,
@@ -20,26 +17,54 @@ export class EnemySpawner {
     private enemyBullets: Phaser.Physics.Arcade.Group,
   ) {}
 
-  update(time: number) {
-    // Boss fight: while the Dreadnought is alive, pause other spawns.
-    if (this.boss?.active) return;
-
-    if (time < this.nextSpawnAt) return;
-
-    // Very rare boss spawn (once per run).
-    if (!this.bossSpawned && Phaser.Math.FloatBetween(0, 1) < DREADNOUGHT_SPAWN_CHANCE) {
-      const spawned = this.spawnBoss();
-      if (spawned) {
-        this.bossSpawned = true;
-        return;
-      }
-    }
-
-    this.spawnOne();
-    this.nextSpawnAt = time + Phaser.Math.Between(600, 1000);
+  /** Call when a new level starts. */
+  setLevelConfig(config: LevelConfig) {
+    this.levelConfig = config;
+    this.bossSpawned = false;
+    this.boss = undefined;
+    this.escortWaveIndex = 0;
+    this.nextEscortWaveAt = 0;
+    this.nextSpawnAt = 0;
   }
 
+  /** True once the Dreadnought has been spawned and then destroyed. */
+  isBossDefeated(): boolean {
+    return this.bossSpawned && (!this.boss || !this.boss.active);
+  }
+
+  update(time: number) {
+    if (!this.levelConfig) return;
+
+    // Boss level logic.
+    if (this.levelConfig.isBossLevel) {
+      if (!this.bossSpawned) {
+        this.spawnBoss();
+        this.bossSpawned = true;
+        this.nextEscortWaveAt = time + (this.levelConfig.escortWaveIntervalMs ?? 15_000);
+        return;
+      }
+
+      // Spawn escort waves while boss is alive.
+      if (this.boss?.active && time >= this.nextEscortWaveAt) {
+        this.spawnEscortWave();
+        this.nextEscortWaveAt = time + (this.levelConfig.escortWaveIntervalMs ?? 15_000);
+      }
+      return;
+    }
+
+    // Regular level spawning.
+    if (time < this.nextSpawnAt) return;
+    this.spawnOne();
+    const [min, max] = this.levelConfig.spawnInterval;
+    this.nextSpawnAt = time + Phaser.Math.Between(min, max);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Boss
+  // ---------------------------------------------------------------------------
+
   private spawnBoss(): boolean {
+    if (!this.levelConfig) return false;
     const x = GAME_WIDTH * 0.5;
     const y = -24;
     const speedY = 0;
@@ -48,42 +73,70 @@ export class EnemySpawner {
 
     const enemy = this.enemies.get(x, y) as Enemy | null;
     if (!enemy) return false;
-    enemy.spawn(x, y, speedY, this.enemyBullets, kind, hasShield);
+    enemy.spawn(
+      x, y, speedY, this.enemyBullets, kind, hasShield,
+      this.levelConfig.bossHp,
+      this.levelConfig.bossShieldHp,
+    );
     this.boss = enemy;
     return true;
   }
 
+  // ---------------------------------------------------------------------------
+  // Escort waves (boss level only)
+  // ---------------------------------------------------------------------------
+
+  private spawnEscortWave() {
+    if (!this.levelConfig?.escortWaves?.length) return;
+
+    const waves = this.levelConfig.escortWaves;
+    const wave = waves[this.escortWaveIndex % waves.length];
+    this.escortWaveIndex++;
+
+    for (const entry of wave.enemies) {
+      for (let i = 0; i < entry.count; i++) {
+        const x = Phaser.Math.Between(24, GAME_WIDTH - 24);
+        const y = -24 - i * 30; // stagger vertically
+        const [minSpd, maxSpd] = this.levelConfig.enemySpeed;
+        const speedY = Phaser.Math.Between(minSpd, maxSpd);
+
+        const enemy = this.enemies.get(x, y) as Enemy | null;
+        if (!enemy) continue;
+        enemy.spawn(x, y, speedY, this.enemyBullets, entry.kind, entry.hasShield);
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Regular enemy spawning (weighted by LevelConfig)
+  // ---------------------------------------------------------------------------
+
   private spawnOne() {
+    if (!this.levelConfig) return;
+
     const x = Phaser.Math.Between(24, GAME_WIDTH - 24);
     const y = -24;
-    const speedY = Phaser.Math.Between(90, 160);
-    // Regular enemies (boss is spawned separately and very rarely).
-    const r = Phaser.Math.FloatBetween(0, 1);
-    const kind: EnemyKind =
-      r < BATTLECRUISER_SPAWN_CHANCE
-        ? "battlecruiser"
-        : r < BATTLECRUISER_SPAWN_CHANCE + FRIGATE_SPAWN_CHANCE
-          ? "frigate"
-          : r < BATTLECRUISER_SPAWN_CHANCE + FRIGATE_SPAWN_CHANCE + TORPEDO_SPAWN_CHANCE
-            ? "torpedo"
-            : r < BATTLECRUISER_SPAWN_CHANCE + FRIGATE_SPAWN_CHANCE + TORPEDO_SPAWN_CHANCE + FIGHTER_SPAWN_CHANCE
-              ? "fighter"
-              : "scout";
+    const [minSpd, maxSpd] = this.levelConfig.enemySpeed;
+    const speedY = Phaser.Math.Between(minSpd, maxSpd);
 
-    const hasShield =
-      kind === "battlecruiser"
-        ? Phaser.Math.FloatBetween(0, 1) < 0.1
-        : kind === "frigate"
-          ? Phaser.Math.FloatBetween(0, 1) < 0.5
-          : kind === "torpedo"
-            ? Phaser.Math.FloatBetween(0, 1) < 0.5
-            : kind === "fighter"
-              ? Phaser.Math.FloatBetween(0, 1) < 0.01
-              : Phaser.Math.FloatBetween(0, 1) < 0.05;
+    // Weighted random pick.
+    const entries = this.levelConfig.enemies;
+    const totalWeight = entries.reduce((sum, e) => sum + e.weight, 0);
+    let r = Phaser.Math.FloatBetween(0, totalWeight);
+    let picked = entries[entries.length - 1];
+    for (const entry of entries) {
+      r -= entry.weight;
+      if (r <= 0) {
+        picked = entry;
+        break;
+      }
+    }
+
+    const kind: EnemyKind = picked.kind;
+    const hasShield = Phaser.Math.FloatBetween(0, 1) < picked.shieldChance;
 
     const enemy = this.enemies.get(x, y) as Enemy | null;
     if (!enemy) return;
-
     enemy.spawn(x, y, speedY, this.enemyBullets, kind, hasShield);
   }
 }
