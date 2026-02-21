@@ -474,6 +474,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   kill() {
     this.setActive(false);
     this.setVisible(false);
+    this.clearTint();
 
     this.isFiring = false;
     this.hp = 0;
@@ -654,12 +655,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.shieldFx.setVisible(false);
     this.shieldFx.anims.stop();
 
-    // Tiny feedback flash.
-    this.setTintFill(0x7df9ff);
-    this.scene.time.delayedCall(70, () => {
+    // Tiny feedback flash (use setTint instead of setTintFill to avoid solid color fill).
+    this.setTint(0x7df9ff);
+    // Use a real-time setTimeout so the flash clears even when scene time is paused.
+    setTimeout(() => {
       if (!this.active) return;
       this.clearTint();
-    });
+    }, 70);
   }
 
   /** Whether this enemy behaves as a mini-boss. */

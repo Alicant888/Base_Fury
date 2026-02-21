@@ -144,7 +144,7 @@ const ZAPPER_PROJECTILE_FROM_WEAPON_OFFSET_X_R = 7;
 const ZAPPER_WEAPON_FIRE_FRAME = `${SPRITE_FRAMES.zapperWeaponPrefix}7${SPRITE_FRAMES.zapperWeaponSuffix}`;
 
 // TUNE WEAPON OFFSETS HERE (Big Space Gun):
-const BIG_SPACE_GUN_DAMAGE = 7;
+const BIG_SPACE_GUN_DAMAGE = 8;
 const BIG_SPACE_GUN_WEAPON_OFFSET_X = 0;
 const BIG_SPACE_GUN_WEAPON_OFFSET_Y = -2;
 const BIG_SPACE_GUN_PROJECTILE_FROM_WEAPON_OFFSET_X = 0;
@@ -157,7 +157,7 @@ const BIG_SPACE_GUN_WEAPON_FIRE_FRAME = `${SPRITE_FRAMES.bigSpaceGunWeaponPrefix
 const DEFAULT_DROPS = {
   bigSpaceGun: 0.01, zapper: 0.01, rocket: 0.01, autoCannons: 0.01,
   baseEngine: 0.01, superchargedEngine: 0.01, burstEngine: 0.01, bigPulseEngine: 0.01,
-  health: 0.03, firingRate: 0.04, shield: 0.04,
+  health: 0.03, firingRate: 0.05, shield: 0.04,
 } as const;
 
 export class GameScene extends Phaser.Scene {
@@ -216,6 +216,8 @@ export class GameScene extends Phaser.Scene {
   private engineFlameR?: Phaser.GameObjects.Sprite;
   private activeEngineType: "base" | "supercharged" | "burst" | "bigPulse" | null = null;
   private fireRateMultiplier = 1;
+  /** Bonus weapon animation speed multiplier (stacks after fire-rate cap). */
+  private weaponBonusRate = 1;
 
   private lifeIcons: Phaser.GameObjects.Image[] = [];
   private fireEvent?: Phaser.Time.TimerEvent;
@@ -281,6 +283,7 @@ export class GameScene extends Phaser.Scene {
     this.distanceTraveled = 0;
     this.shieldHits = 0;
     this.fireRateMultiplier = 1;
+    this.weaponBonusRate = 1;
     this.moveSpeedMultiplier = 1;
     this.draggingPointerId = null;
     this.hasDragTarget = false;
@@ -581,6 +584,14 @@ export class GameScene extends Phaser.Scene {
       this.player,
       this.asteroids,
       this.onAsteroidHitsPlayer as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+      undefined,
+      this,
+    );
+    // 20% of asteroids can damage non-boss enemies.
+    this.physics.add.overlap(
+      this.asteroids,
+      this.enemies,
+      this.onAsteroidHitsEnemy as Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
       undefined,
       this,
     );
@@ -1370,6 +1381,39 @@ export class GameScene extends Phaser.Scene {
     this.takeHit(damage);
   }
 
+  private onAsteroidHitsEnemy(asteroidObj: Phaser.GameObjects.GameObject, enemyObj: Phaser.GameObjects.GameObject) {
+    const asteroid = asteroidObj as Asteroid;
+    const enemy = enemyObj as Enemy;
+    if (!asteroid.active || !enemy.active) return;
+    if (!asteroid.damagesEnemies) return;
+    // Don't damage boss enemies (dreadnought).
+    if (enemy.getKind() === "dreadnought") return;
+
+    const damage = asteroid.getDurability();
+    const { x, y, scaleX, angle } = asteroid;
+    asteroid.kill();
+    this.spawnAsteroidExplosion(x, y, scaleX, angle);
+
+    const destroyed = enemy.onPlayerBulletHit(damage);
+    if (destroyed) {
+      const hadShield = enemy.spawnedWithShield;
+      const wasMiniBoss = enemy.isMiniBoss;
+      enemy.kill();
+
+      this.spawnExplosion(enemy.x, enemy.y, enemy.getKind());
+      this.playSfx(AUDIO_KEYS.explosionScout, 0.55);
+      this.kills += 1;
+      this.score += getEnemyXp(enemy.getKind());
+      this.scoreText.setText(`${this.score}`);
+
+      if (wasMiniBoss) {
+        this.spawnHealthPickup(enemy.x, enemy.y);
+      } else {
+        this.maybeSpawnPickup(enemy.x, enemy.y, hadShield);
+      }
+    }
+  }
+
   private onEnemyBulletHitsPlayer(_playerObj: Phaser.GameObjects.GameObject, bulletObj: Phaser.GameObjects.GameObject) {
     const bullet = bulletObj as EnemyBullet;
     if (!bullet.active) return;
@@ -1402,10 +1446,17 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
-    // Stack firing rate increase up to 200% (triple speed => 0.333 delay multiplier).
+    // Stack firing rate increase up to 300% (4x speed => 0.25 delay multiplier).
     // Each pickup reduces delay by 0.1 (10%).
-    const newMultiplier = Math.max(1 / 3, this.fireRateMultiplier - 0.1);
-    this.setFireRateMultiplier(newMultiplier);
+    const MIN_FIRE_RATE = 0.25; // 300% bonus = 4x speed
+    if (this.fireRateMultiplier > MIN_FIRE_RATE) {
+      const newMultiplier = Math.max(MIN_FIRE_RATE, this.fireRateMultiplier - 0.1);
+      this.setFireRateMultiplier(newMultiplier);
+    } else {
+      // Fire rate maxed out — boost weapon animation speed (+10% per pickup, max +100%).
+      this.weaponBonusRate = Math.min(2, this.weaponBonusRate + 0.1);
+      this.applyWeaponBonusRate();
+    }
   }
 
   private deactivateAllAdditionalWeapons() {
@@ -1688,7 +1739,10 @@ export class GameScene extends Phaser.Scene {
     SaveManager.save(save);
 
     const depth = 100;
-    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.55).setOrigin(0).setDepth(depth).setInteractive();
+    const container = this.add.container(0, 0).setDepth(depth);
+
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.55).setOrigin(0).setInteractive();
+    container.add(dim);
 
     const centerX = GAME_WIDTH / 2;
     const centerY = GAME_HEIGHT / 2;
@@ -1696,7 +1750,7 @@ export class GameScene extends Phaser.Scene {
     const isLastLevel = this.currentLevel >= TOTAL_LEVELS;
     const titleText = isLastLevel ? "YOU WIN!" : `LEVEL ${this.currentLevel} COMPLETE!`;
 
-    this.add.text(centerX, centerY - 60, titleText, {
+    container.add(this.add.text(centerX, centerY - 60, titleText, {
       fontFamily: "Pixel Operator 8 Regular",
       fontSize: "56px",
       color: "#00FF9C",
@@ -1704,49 +1758,37 @@ export class GameScene extends Phaser.Scene {
       strokeThickness: 6,
       align: "center",
       wordWrap: { width: GAME_WIDTH - 20 },
-    }).setOrigin(0.5).setDepth(depth + 1);
+    }).setOrigin(0.5));
 
-    this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
+    container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
       fontFamily: "Pixel Operator 8 Regular",
       fontSize: "42px",
       color: "#CFE9F2",
       stroke: "#000000",
       strokeThickness: 4,
       align: "center",
-    }).setOrigin(0.5).setDepth(depth + 1);
+    }).setOrigin(0.5));
+
+    container.add(this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
+      fontFamily: "Pixel Operator 8 Regular",
+      fontSize: "28px",
+      color: "#CFE9F2",
+      stroke: "#000000",
+      strokeThickness: 4,
+      align: "center",
+    }).setOrigin(0.5));
 
     if (!isLastLevel) {
-      // "Tap to continue" hint.
-      this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
-        fontFamily: "Pixel Operator 8 Regular",
-        fontSize: "28px",
-        color: "#CFE9F2",
-        stroke: "#000000",
-        strokeThickness: 4,
-        align: "center",
-      }).setOrigin(0.5).setDepth(depth + 1);
-
-      // Tap anywhere progresses to next level.
       dim.on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
-        dim.destroy();
+        container.destroy();
         this.gameMusic?.stop();
         this.scene.start("GameScene", { level: this.currentLevel + 1, save });
       });
     } else {
-      // "Tap to continue" – back to menu after winning.
-      this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
-        fontFamily: "Pixel Operator 8 Regular",
-        fontSize: "28px",
-        color: "#CFE9F2",
-        stroke: "#000000",
-        strokeThickness: 4,
-        align: "center",
-      }).setOrigin(0.5).setDepth(depth + 1);
-
       dim.on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
-        dim.destroy();
+        container.destroy();
         this.gameMusic?.stop();
         this.scene.start("MenuScene");
       });
@@ -2757,10 +2799,20 @@ export class GameScene extends Phaser.Scene {
   }
 
   private setFireRateMultiplier(multiplier: number) {
-    this.fireRateMultiplier = Phaser.Math.Clamp(multiplier, 0.2, 2);
+    this.fireRateMultiplier = Phaser.Math.Clamp(multiplier, 0.25, 2);
 
     if (this.isGameOver) return;
     this.configureWeaponFireEvents();
+  }
+
+  /** Apply bonus timeScale to all weapon animations (after fire-rate cap). */
+  private applyWeaponBonusRate() {
+    const ts = this.weaponBonusRate;
+    if (this.autoCannonWeaponSprite?.anims) this.autoCannonWeaponSprite.anims.timeScale = ts;
+    if (this.rocketWeaponL?.anims) this.rocketWeaponL.anims.timeScale = ts;
+    if (this.rocketWeaponR?.anims) this.rocketWeaponR.anims.timeScale = ts;
+    if (this.zapperWeaponSprite?.anims) this.zapperWeaponSprite.anims.timeScale = ts;
+    if (this.bigSpaceGunWeaponSprite?.anims) this.bigSpaceGunWeaponSprite.anims.timeScale = ts;
   }
 
   private spawnBaseEnginePickup(x: number, y: number) {

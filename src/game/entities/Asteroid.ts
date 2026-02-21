@@ -6,14 +6,18 @@ const ASTEROID_MAX_DURABILITY = 19;
 
 export class Asteroid extends Phaser.Physics.Arcade.Sprite {
   private durability = ASTEROID_MIN_DURABILITY;
+  /** Whether this asteroid can damage enemies on collision. */
+  private _damagesEnemies = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, ATLAS_KEYS.fx, SPRITE_FRAMES.asteroid01Base);
 
     this.setActive(false);
     this.setVisible(false);
-    this.setDepth(4);
+    this.setDepth(8); // above enemies (4), their shields (6), and weapon FX (5)
   }
+
+  get damagesEnemies() { return this._damagesEnemies; }
 
   getDurability() {
     return this.durability;
@@ -28,6 +32,7 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
     const s = Math.max(0.05, scale);
 
     this.durability = d;
+    this._damagesEnemies = Math.random() < 0.2; // 20% chance
 
     this.setFrame(SPRITE_FRAMES.asteroid01Base);
     this.setScale(s);
