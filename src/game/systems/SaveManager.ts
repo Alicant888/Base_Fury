@@ -24,6 +24,17 @@ export interface SaveData {
   fireRateMultiplier: number;
   /** Secondary weapon animation speed multiplier (1 = default, max 2 = +100%). */
   weaponBonusRate: number;
+  // --- Shop packs (purchased once, persist forever) ---
+  /** XP Pack: unlocks Firing Rate 2 pickup drops. Cost 100. Always available. */
+  packXp: boolean;
+  /** Base Pack: unlocks Auto Cannons + Base Engine drops. Cost 200. Req level 2. */
+  packBase: boolean;
+  /** Medium Pack: unlocks Rocket + Supercharged Engine drops. Cost 600. Req level 5. */
+  packMedium: boolean;
+  /** Big Pack: unlocks Zapper + Burst Engine drops. Cost 1800. Req level 9. */
+  packBig: boolean;
+  /** Maxi Pack: unlocks Big Space Gun + Big Pulse Engine drops. Cost 5400. Req level 12. */
+  packMaxi: boolean;
 }
 
 const DEFAULT_SAVE: SaveData = {
@@ -37,6 +48,11 @@ const DEFAULT_SAVE: SaveData = {
   score: 0,
   fireRateMultiplier: 1,
   weaponBonusRate: 1,
+  packXp: false,
+  packBase: false,
+  packMedium: false,
+  packBig: false,
+  packMaxi: false,
 };
 
 export class SaveManager {

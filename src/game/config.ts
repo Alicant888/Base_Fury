@@ -22,6 +22,12 @@ export const IMAGE_KEYS = {
   ui1d: "ui_1d",
   ui2d: "ui_2d",
   uiXp: "ui_xp",
+  // Shop pack buttons
+  uiPackXp: "ui_pack_xp",
+  uiPackBase: "ui_pack_base",
+  uiPackMedium: "ui_pack_medium",
+  uiPackBig: "ui_pack_big",
+  uiPackMaxi: "ui_pack_maxi",
 } as const;
 
 export const AUDIO_KEYS = {

@@ -6,6 +6,7 @@ import type { LevelConfig } from "../LevelConfig";
 export class EnemySpawner {
   private nextSpawnAt = 0;
   private bossSpawned = false;
+  private bossPhaseActive = false;
   private boss?: Enemy;
   private levelConfig?: LevelConfig;
   private nextEscortWaveAt = 0;
@@ -21,6 +22,7 @@ export class EnemySpawner {
   setLevelConfig(config: LevelConfig) {
     this.levelConfig = config;
     this.bossSpawned = false;
+    this.bossPhaseActive = false;
     this.boss = undefined;
     this.escortWaveIndex = 0;
     this.nextEscortWaveAt = 0;
@@ -35,8 +37,8 @@ export class EnemySpawner {
   update(time: number) {
     if (!this.levelConfig) return;
 
-    // Boss level logic.
-    if (this.levelConfig.isBossLevel) {
+    // Boss-level logic (standard immediate-boss OR boss-after-distance once triggered).
+    if (this.levelConfig.isBossLevel || this.bossPhaseActive) {
       if (!this.bossSpawned) {
         this.spawnBoss();
         this.bossSpawned = true;
@@ -57,6 +59,18 @@ export class EnemySpawner {
     this.spawnOne();
     const [min, max] = this.levelConfig.spawnInterval;
     this.nextSpawnAt = time + Phaser.Math.Between(min, max);
+  }
+
+  /**
+   * Called by GameScene when a bossAfterDistance level reaches its distance
+   * goal.  Switches the spawner into boss mode immediately.
+   */
+  triggerBossPhase(time: number) {
+    if (this.bossPhaseActive) return;
+    this.bossPhaseActive = true;
+    this.spawnBoss();
+    this.bossSpawned = true;
+    this.nextEscortWaveAt = time + (this.levelConfig?.escortWaveIntervalMs ?? 15_000);
   }
 
   // ---------------------------------------------------------------------------
@@ -140,9 +154,13 @@ export class EnemySpawner {
     enemy.spawn(x, y, speedY, this.enemyBullets, kind, hasShield);
 
     // Some shielded heavy enemies hover + drift like a mini-boss.
+    // Battlecruiser mini-boss limit: max 2 active simultaneously.
     if (hasShield && (kind === "battlecruiser" || kind === "frigate")) {
       const chance = kind === "battlecruiser" ? 0.8 : 0.3;
-      if (Phaser.Math.FloatBetween(0, 1) < chance) {
+      const activeBCMiniBosses = (this.enemies.getChildren() as Enemy[])
+        .filter(e => e.active && e.isMiniBoss && (e as Enemy).getKind() === "battlecruiser").length;
+      const canBeMiniBoss = kind === "battlecruiser" ? activeBCMiniBosses < 2 : true;
+      if (canBeMiniBoss && Phaser.Math.FloatBetween(0, 1) < chance) {
         enemy.setMiniBoss(true);
       }
     }

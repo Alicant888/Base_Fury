@@ -279,6 +279,15 @@ export class GameScene extends Phaser.Scene {
   private _openMenuOnStart = false;
   /** When true: show play.png instead of resume.png in the pause (main) menu. */
   private _showPlayBtn = false;
+  /** When true: boss phase triggered by bossAfterDistance mechanic. */
+  private _bossPhaseActive = false;
+
+  // --- Purchased shop packs (loaded fresh each scene) ---
+  private packXp = false;
+  private packBase = false;
+  private packMedium = false;
+  private packBig = false;
+  private packMaxi = false;
 
   create() {
     this.scale.scaleMode = Phaser.Scale.FIT;
@@ -303,6 +312,7 @@ export class GameScene extends Phaser.Scene {
     this.hasRockets = false;
     this.hasZapper = false;
     this.hasBigSpaceGun = false;
+    this._bossPhaseActive = false;
 
     // Reset pause state
     this.isPausedByInput = false;
@@ -778,7 +788,15 @@ export class GameScene extends Phaser.Scene {
       this._pendingSave = undefined;
     }
 
-    // Game music (starts after START click / audio unlock).
+    // Load purchased packs from persistent save (always fresh, independent of level save).
+    {
+      const sv = SaveManager.load();
+      this.packXp   = sv.packXp;
+      this.packBase = sv.packBase;
+      this.packMedium = sv.packMedium;
+      this.packBig  = sv.packBig;
+      this.packMaxi = sv.packMaxi;
+    }
     if (this.registry.get("audioUnlocked") && this.isMusicOn) {
       try {
         this.playMusicTrack(this.currentTrackIndex);
@@ -839,8 +857,8 @@ export class GameScene extends Phaser.Scene {
     if (this.isPausedByInput) return;
 
     // --- Level distance / boss check ---
-    if (this.levelConfig.isBossLevel) {
-      // Boss level ends when boss is defeated.
+    if (this.levelConfig.isBossLevel || this._bossPhaseActive) {
+      // Boss level (or post-distance boss phase) ends when boss is defeated.
       if (this.spawner.isBossDefeated()) {
         this.onLevelComplete();
         return;
@@ -853,8 +871,19 @@ export class GameScene extends Phaser.Scene {
         this.levelProgressText.setText(`LV ${this.currentLevel}  ${pct}%`);
       }
       if (this.distanceTraveled >= this.levelConfig.distanceGoal) {
-        this.onLevelComplete();
-        return;
+        if (this.levelConfig.bossAfterDistance) {
+          // Trigger boss spawn once, then wait for defeat (handled in the branch above).
+          if (!this._bossPhaseActive) {
+            this._bossPhaseActive = true;
+            if (this.levelProgressText) {
+              this.levelProgressText.setText(`LV ${this.currentLevel}  BOSS`);
+            }
+            this.spawner.triggerBossPhase(time);
+          }
+        } else {
+          this.onLevelComplete();
+          return;
+        }
       }
     }
 
@@ -1732,43 +1761,47 @@ export class GameScene extends Phaser.Scene {
     if (this.isGameOver) return;
 
     const d = this.levelConfig?.drops ?? DEFAULT_DROPS;
+    // Weapon/engine drops are gated by purchased shop packs.
+    // Each pack unlocks a pair of drops at a fixed base rate.
+    const WPN = 0.03; // weapon drop rate per pack
+    const ENG = 0.02; // engine drop rate per pack
 
-    // Spawn at most one pickup (cumulative thresholds).
     const r = Phaser.Math.FloatBetween(0, 1);
     let threshold = 0;
 
-    threshold += d.bigSpaceGun;
-    if (r < threshold) return this.spawnBigSpaceGunPickup(x, y);
+    // Pack: Maxi – Big Space Gun + Big Pulse Engine
+    if (this.packMaxi) {
+      threshold += WPN; if (r < threshold) return this.spawnBigSpaceGunPickup(x, y);
+      threshold += ENG; if (r < threshold) return this.spawnBigPulseEnginePickup(x, y);
+    }
+    // Pack: Big – Zapper + Burst Engine
+    if (this.packBig) {
+      threshold += WPN; if (r < threshold) return this.spawnZapperPickup(x, y);
+      threshold += ENG; if (r < threshold) return this.spawnBurstEnginePickup(x, y);
+    }
+    // Pack: Medium – Rocket + Supercharged Engine
+    if (this.packMedium) {
+      threshold += WPN; if (r < threshold) return this.spawnRocketPickup(x, y);
+      threshold += ENG; if (r < threshold) return this.spawnSuperchargedEnginePickup(x, y);
+    }
+    // Pack: Base – Auto Cannons + Base Engine
+    if (this.packBase) {
+      threshold += WPN; if (r < threshold) return this.spawnAutoCannonsPickup(x, y);
+      threshold += ENG; if (r < threshold) return this.spawnBaseEnginePickup(x, y);
+    }
 
-    threshold += d.zapper;
-    if (r < threshold) return this.spawnZapperPickup(x, y);
-
-    threshold += d.rocket;
-    if (r < threshold) return this.spawnRocketPickup(x, y);
-
-    threshold += d.autoCannons;
-    if (r < threshold) return this.spawnAutoCannonsPickup(x, y);
-
-    threshold += d.baseEngine;
-    if (r < threshold) return this.spawnBaseEnginePickup(x, y);
-
-    threshold += d.superchargedEngine;
-    if (r < threshold) return this.spawnSuperchargedEnginePickup(x, y);
-
-    threshold += d.burstEngine;
-    if (r < threshold) return this.spawnBurstEnginePickup(x, y);
-
-    threshold += d.bigPulseEngine;
-    if (r < threshold) return this.spawnBigPulseEnginePickup(x, y);
-
+    // Non-gated drops from LevelConfig (health, firingRate, shield)
     threshold += d.health;
     if (r < threshold) return this.spawnHealthPickup(x, y);
 
     threshold += d.firingRate;
     if (r < threshold) return this.spawnFiringRatePickup(x, y);
 
-    threshold += d.firingRate2;
-    if (r < threshold) return this.spawnFiringRate2Pickup(x, y);
+    // firingRate2 requires XP pack
+    if (this.packXp) {
+      threshold += 0.03;
+      if (r < threshold) return this.spawnFiringRate2Pickup(x, y);
+    }
 
     threshold += d.shield;
     if (r < threshold) {
@@ -1801,6 +1834,11 @@ export class GameScene extends Phaser.Scene {
       score: this.score,
       fireRateMultiplier: this.fireRateMultiplier,
       weaponBonusRate: this.weaponBonusRate,
+      packXp: this.packXp,
+      packBase: this.packBase,
+      packMedium: this.packMedium,
+      packBig: this.packBig,
+      packMaxi: this.packMaxi,
     };
     SaveManager.save(save);
 
@@ -1814,37 +1852,25 @@ export class GameScene extends Phaser.Scene {
     const centerY = GAME_HEIGHT / 2;
 
     const isLastLevel = this.currentLevel >= TOTAL_LEVELS;
-    const titleText = isLastLevel ? "YOU WIN!" : `LEVEL ${this.currentLevel} COMPLETE!`;
-
-    container.add(this.add.text(centerX, centerY - 60, titleText, {
-      fontFamily: "Orbitron",
-      fontSize: "20px",
-      color: "#00FF9C",
-      stroke: "#000000",
-      strokeThickness: 6,
-      align: "center",
-      wordWrap: { width: GAME_WIDTH - 20 },
-    }).setOrigin(0.5));
-
-    container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
-      fontFamily: "Orbitron",
-      fontSize: "10px",
-      color: "#CFE9F2",
-      stroke: "#000000",
-      strokeThickness: 2,
-      align: "center",
-    }).setOrigin(0.5));
-
-    container.add(this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
-      fontFamily: "Orbitron",
-      fontSize: "20px",
-      color: "#CFE9F2",
-      stroke: "#000000",
-      strokeThickness: 4,
-      align: "center",
-    }).setOrigin(0.5));
 
     if (!isLastLevel) {
+      // ---- Normal level complete screen ----
+      container.add(this.add.text(centerX, centerY - 60, `LEVEL ${this.currentLevel} COMPLETE!`, {
+        fontFamily: "Orbitron", fontSize: "20px", color: "#00FF9C",
+        stroke: "#000000", strokeThickness: 6, align: "center",
+        wordWrap: { width: GAME_WIDTH - 20 },
+      }).setOrigin(0.5));
+
+      container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
+        fontFamily: "Orbitron", fontSize: "10px", color: "#CFE9F2",
+        stroke: "#000000", strokeThickness: 2, align: "center",
+      }).setOrigin(0.5));
+
+      container.add(this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
+        fontFamily: "Orbitron", fontSize: "20px", color: "#CFE9F2",
+        stroke: "#000000", strokeThickness: 4, align: "center",
+      }).setOrigin(0.5));
+
       dim.on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
         container.destroy();
@@ -1852,12 +1878,29 @@ export class GameScene extends Phaser.Scene {
         this.scene.start("GameScene", { level: this.currentLevel + 1, save });
       });
     } else {
-      dim.on("pointerdown", () => {
+      // ---- Final level – Congratulations screen ----
+      container.add(this.add.text(centerX, centerY - 60, "Congratulations!", {
+        fontFamily: "Orbitron", fontSize: "10px", color: "#00FF9C",
+        stroke: "#000000", strokeThickness: 2, align: "center",
+      }).setOrigin(0.5));
+
+      container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
+        fontFamily: "Orbitron", fontSize: "10px", color: "#CFE9F2",
+        stroke: "#000000", strokeThickness: 2, align: "center",
+      }).setOrigin(0.5));
+
+      const menuBtn = this.add.image(centerX, centerY + 80, IMAGE_KEYS.uiMenu)
+        .setInteractive({ useHandCursor: true })
+        .setScale(UI_SCALE);
+      menuBtn.on("pointerover", () => menuBtn.setTint(0xcccccc));
+      menuBtn.on("pointerout",  () => menuBtn.clearTint());
+      menuBtn.on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
         container.destroy();
         this.gameMusic?.stop();
         this.scene.start("MenuScene");
       });
+      container.add(menuBtn);
     }
   }
 
@@ -1909,7 +1952,7 @@ export class GameScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(depth + 2);
 
-    // Menu (Left) — returns to main menu
+    // Menu (Left) — opens main menu overlay (not start screen)
     const exitBtn = this.add.image(centerX - 80, btnY, IMAGE_KEYS.uiMenu)
       .setInteractive({ useHandCursor: true })
       .setDepth(depth + 2)
@@ -1917,8 +1960,8 @@ export class GameScene extends Phaser.Scene {
       .on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
         dim.destroy();
-        this.gameMusic?.stop();
-        this.scene.start("MenuScene");
+        const sv = SaveManager.load();
+        this.scene.start("GameScene", { level: sv.currentLevel, save: sv, showMenu: true });
       });
     exitBtn.on("pointerover", () => exitBtn.setTint(0xcccccc));
     exitBtn.on("pointerout", () => exitBtn.clearTint());
@@ -3416,6 +3459,17 @@ export class GameScene extends Phaser.Scene {
     message.setScale(UI_SCALE);
     container.add(message);
 
+    // "Start from the beginning?" label — centred between image (dialogY - 50) and buttons (dialogY + 60)
+    const label = this.add.text(dialogX, dialogY + 5, "Start from the beginning?", {
+      fontFamily: "Orbitron",
+      fontSize: "18px",
+      color: "#FFE066",
+      stroke: "#000000",
+      strokeThickness: 3,
+      align: "center",
+    }).setOrigin(0.5);
+    container.add(label);
+
     // No Button (Return to Pause)
     const noBtn = this.add.image(dialogX - 80, dialogY + 60, IMAGE_KEYS.uiNo)
       .setInteractive({ useHandCursor: true })
@@ -3431,7 +3485,7 @@ export class GameScene extends Phaser.Scene {
     noBtn.on("pointerout", () => noBtn.clearTint());
     container.add(noBtn);
 
-    // Yes Button (Restart Game)
+    // Yes Button (Restart from beginning — clears save, opens main menu)
     const yesBtn = this.add.image(dialogX + 80, dialogY + 60, IMAGE_KEYS.uiYes)
       .setInteractive({ useHandCursor: true })
       .setScale(UI_SCALE)
@@ -3440,7 +3494,8 @@ export class GameScene extends Phaser.Scene {
         if (this.cameras.main.postFX) {
           this.cameras.main.postFX.clear();
         }
-        this.scene.restart();
+        SaveManager.clear();
+        this.scene.start("GameScene", { level: 1, showMenu: true });
       });
     yesBtn.on("pointerover", () => yesBtn.setTint(0xcccccc));
     yesBtn.on("pointerout", () => yesBtn.clearTint());
