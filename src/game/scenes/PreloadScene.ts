@@ -37,6 +37,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(IMAGE_KEYS.uiResume, "/assets/atlases/UI/resume.png");
     this.load.image(IMAGE_KEYS.uiRestart, "/assets/atlases/UI/restart.png");
     this.load.image(IMAGE_KEYS.uiPlay, "/assets/atlases/UI/play.png");
+    this.load.image(IMAGE_KEYS.uiPlayG, "/assets/atlases/UI/playg.png");
     this.load.image(IMAGE_KEYS.uiPause, "/assets/atlases/UI/pause.png");
     this.load.image(IMAGE_KEYS.uiPrev, "/assets/atlases/UI/prev.png");
     this.load.image(IMAGE_KEYS.uiNext, "/assets/atlases/UI/next.png");

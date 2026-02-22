@@ -3478,7 +3478,7 @@ export class GameScene extends Phaser.Scene {
     const spacing = 20; // Vertical spacing between elements
 
     // Resume / Play (top button — shows play.png on first open, resume.png otherwise)
-    const resumeKey = this._showPlayBtn ? IMAGE_KEYS.uiPlay : IMAGE_KEYS.uiResume;
+    const resumeKey = this._showPlayBtn ? IMAGE_KEYS.uiPlayG : IMAGE_KEYS.uiResume;
     const resumeBtn = this.add.image(centerX, centerY - 120, resumeKey)
       .setInteractive({ useHandCursor: true })
       .setScale(UI_SCALE)

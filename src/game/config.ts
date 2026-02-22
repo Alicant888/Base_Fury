@@ -11,6 +11,7 @@ export const IMAGE_KEYS = {
   uiResume: "ui_resume",
   uiRestart: "ui_restart",
   uiPlay: "ui_play",
+  uiPlayG: "ui_playg",
   uiPause: "ui_pause",
   uiPrev: "ui_prev",
   uiNext: "ui_next",
