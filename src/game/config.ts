@@ -53,6 +53,7 @@ export const AUDIO_KEYS = {
   torpedoShot: "sfx_torpedo_shot",
   bcShot: "sfx_bc_shot",
   dnShot: "sfx_dn_shot",
+  bought: "sfx_bought",
 } as const;
 
 // Atlas keys (DO NOT CHANGE): required by project docs.

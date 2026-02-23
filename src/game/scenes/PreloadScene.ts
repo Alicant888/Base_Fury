@@ -82,6 +82,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.audio(AUDIO_KEYS.torpedoShot, "/assets/audio/sfx/Torpedo.wav");
     this.load.audio(AUDIO_KEYS.bcShot, "/assets/audio/sfx/Bc.wav");
     this.load.audio(AUDIO_KEYS.dnShot, "/assets/audio/sfx/DnShot.wav");
+    this.load.audio(AUDIO_KEYS.bought, "/assets/audio/sfx/bought.wav");
   }
 
   create() {

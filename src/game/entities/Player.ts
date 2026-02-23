@@ -22,8 +22,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const halfW = this.displayWidth * 0.5;
     const halfH = this.displayHeight * 0.5;
     this.x = Phaser.Math.Clamp(this.x, halfW, GAME_WIDTH - halfW);
-    // Keep the ship in the lower ~70% of the screen for a shooter feel.
-    this.y = Phaser.Math.Clamp(this.y, GAME_HEIGHT * 0.25, GAME_HEIGHT - halfH);
+    this.y = Phaser.Math.Clamp(this.y, halfH, GAME_HEIGHT - halfH);
   }
 }
 

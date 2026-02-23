@@ -1029,7 +1029,7 @@ export class GameScene extends Phaser.Scene {
       const halfW = this.player.displayWidth * 0.5;
       const halfH = this.player.displayHeight * 0.5;
       const tx = Phaser.Math.Clamp(pointer.x - this.dragOffset.x, halfW, GAME_WIDTH - halfW);
-      const ty = Phaser.Math.Clamp(pointer.y - this.dragOffset.y, GAME_HEIGHT * 0.25, GAME_HEIGHT - halfH);
+      const ty = Phaser.Math.Clamp(pointer.y - this.dragOffset.y, halfH, GAME_HEIGHT - halfH);
       this.dragTarget.set(tx, ty);
     };
 
@@ -2720,7 +2720,7 @@ export class GameScene extends Phaser.Scene {
       SPRITE_FRAMES.bigSpaceGunWeaponStart,
       SPRITE_FRAMES.bigSpaceGunWeaponEnd,
       SPRITE_FRAMES.bigSpaceGunWeaponSuffix,
-      18,
+      19.8, // +10% from base 18
     );
 
     this.createLoopAnimIfFrames(
@@ -3751,7 +3751,7 @@ export class GameScene extends Phaser.Scene {
           img.on("pointerdown", () => {
             const sv2 = SaveManager.load();
             if ((sv2[pack.saveFlag] as boolean) || sv2.score < pack.cost) return;
-            this.playSfx(AUDIO_KEYS.click, 0.7);
+            this.playSfx(AUDIO_KEYS.bought, 0.7);
             (sv2 as unknown as Record<string, unknown>)[pack.saveFlag as string] = true;
             sv2.score -= pack.cost;
             SaveManager.save(sv2);
