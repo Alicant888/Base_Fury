@@ -3599,7 +3599,7 @@ export class GameScene extends Phaser.Scene {
     // PLAY / RESUME — 8px below last shop button (xpp)
     const resumeKey = this._showPlayBtn ? IMAGE_KEYS.uiPlayG : IMAGE_KEYS.uiResume;
     const resumeBtn = this.add.image(centerX, 0, resumeKey).setScale(UI_SCALE);
-    resumeBtn.y = shopBottomY + 8 + resumeBtn.displayHeight / 2;
+    resumeBtn.y = shopBottomY + 18 + resumeBtn.displayHeight / 2;
     resumeBtn
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -3717,11 +3717,11 @@ export class GameScene extends Phaser.Scene {
     const halfH = probe.displayHeight / 2;
     probe.destroy();
 
-    const gap = 8; // 8px between buttons in both x and y
+    const gap = 18; // 18px between buttons in both x and y
     const lx  = centerX - halfW - gap / 2;
     const rx  = centerX + halfW + gap / 2;
     const firstRowY = shopTopPad + halfH; // first row: 20px below scoreText
-    const rowGap    = halfH * 2 + 8;     // button height + 8px
+    const rowGap    = halfH * 2 + 18;     // button height + 18px
     const rowY = [firstRowY, firstRowY + rowGap, firstRowY + rowGap * 2];
 
     // Grid: [basep, mediump], [bigp, maxip], [xpp centred]
