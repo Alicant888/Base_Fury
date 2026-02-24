@@ -3056,6 +3056,7 @@ export class GameScene extends Phaser.Scene {
     if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
 
     this.syncPlayerWeaponFx();
+    this.applyWeaponBonusRate();
   }
 
   private activateRockets() {
@@ -3090,6 +3091,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
     this.syncPlayerWeaponFx();
+    this.applyWeaponBonusRate();
   }
 
   private activateZapper() {
@@ -3121,6 +3123,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
     this.syncPlayerWeaponFx();
+    this.applyWeaponBonusRate();
   }
 
   private activateBigSpaceGun() {
@@ -3151,6 +3154,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.shieldFx) this.shieldFx.setDepth(DEPTH_SHIELD);
     this.syncPlayerWeaponFx();
+    this.applyWeaponBonusRate();
   }
 
   private syncPlayerWeaponFx() {
@@ -3589,14 +3593,13 @@ export class GameScene extends Phaser.Scene {
     const shopBottomY = this.buildShopUI(this.pauseUIContainer);
 
     // ================================================================== //
-    //  Buttons flow top-down, 20px gaps                                    //
+    //  Buttons flow top-down                                               //
     // ================================================================== //
-    const btnGap = 20;
 
-    // PLAY / RESUME — 20px below last shop button (xpp)
+    // PLAY / RESUME — 8px below last shop button (xpp)
     const resumeKey = this._showPlayBtn ? IMAGE_KEYS.uiPlayG : IMAGE_KEYS.uiResume;
     const resumeBtn = this.add.image(centerX, 0, resumeKey).setScale(UI_SCALE);
-    resumeBtn.y = shopBottomY + btnGap + resumeBtn.displayHeight / 2;
+    resumeBtn.y = shopBottomY + 8 + resumeBtn.displayHeight / 2;
     resumeBtn
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -3608,8 +3611,13 @@ export class GameScene extends Phaser.Scene {
     resumeBtn.on("pointerout", () => resumeBtn.clearTint());
     this.pauseUIContainer.add(resumeBtn);
 
-    // MUSIC CONTROLS — below RESUME
-    const musicY = resumeBtn.y + resumeBtn.displayHeight / 2 + btnGap + resumeBtn.displayHeight / 2;
+    // Pre-measure music-toggle button height for layout.
+    const musicProbe = this.add.image(-9999, -9999, this.isMusicOn ? IMAGE_KEYS.uiPause : IMAGE_KEYS.uiPlay).setScale(UI_SCALE);
+    const toggleBtnH = musicProbe.displayHeight;
+    musicProbe.destroy();
+
+    // MUSIC CONTROLS — 4px below RESUME
+    const musicY = resumeBtn.y + resumeBtn.displayHeight / 2 + 4 + toggleBtnH / 2;
     const musicSpacing = 80;
 
     const prevBtn = this.add.image(centerX - musicSpacing, musicY, IMAGE_KEYS.uiPrev)
@@ -3646,8 +3654,8 @@ export class GameScene extends Phaser.Scene {
     nextBtn.on("pointerout", () => nextBtn.clearTint());
     this.pauseUIContainer.add(nextBtn);
 
-    // RESTART — below music
-    const restartY = musicY + toggleBtn.displayHeight / 2 + btnGap + resumeBtn.displayHeight / 2;
+    // RESTART — 4px below music
+    const restartY = musicY + toggleBtn.displayHeight / 2 + 4 + resumeBtn.displayHeight / 2;
     const restartBtn = this.add.image(centerX, restartY, IMAGE_KEYS.uiRestart)
       .setInteractive({ useHandCursor: true })
       .setScale(UI_SCALE)
@@ -3660,8 +3668,9 @@ export class GameScene extends Phaser.Scene {
     restartBtn.on("pointerout", () => restartBtn.clearTint());
     this.pauseUIContainer.add(restartBtn);
 
-    // EXIT — below restart
-    const exitY = restartBtn.y + restartBtn.displayHeight / 2 + btnGap + resumeBtn.displayHeight / 2;
+    // EXIT — centred between restart bottom and screen bottom
+    const restartBottom = restartBtn.y + restartBtn.displayHeight / 2;
+    const exitY = restartBottom + (GAME_HEIGHT - restartBottom) / 2;
     const exitBtn = this.add.image(centerX, exitY, IMAGE_KEYS.uiExit)
       .setInteractive({ useHandCursor: true })
       .setScale(UI_SCALE)
@@ -3708,11 +3717,11 @@ export class GameScene extends Phaser.Scene {
     const halfH = probe.displayHeight / 2;
     probe.destroy();
 
-    const gap = 20; // 20px between buttons in both x and y
+    const gap = 8; // 8px between buttons in both x and y
     const lx  = centerX - halfW - gap / 2;
     const rx  = centerX + halfW + gap / 2;
     const firstRowY = shopTopPad + halfH; // first row: 20px below scoreText
-    const rowGap    = halfH * 2 + 20;     // button height + 20px
+    const rowGap    = halfH * 2 + 8;     // button height + 8px
     const rowY = [firstRowY, firstRowY + rowGap, firstRowY + rowGap * 2];
 
     // Grid: [basep, mediump], [bigp, maxip], [xpp centred]
