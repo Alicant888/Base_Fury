@@ -35,6 +35,8 @@ export class MenuScene extends Phaser.Scene {
     this.startButton.on("pointerout", () => this.startButton.clearTint());
     this.startButton.on("pointerdown", () => {
       this.startButton.setTint(0x888888);
+      // Fire gasless "GameStarted" transaction via React bridge
+      window.dispatchEvent(new Event("phaser:gameStart"));
       const savedData = SaveManager.load();
       if (savedData.currentLevel > 1) {
         this.onStart(savedData.currentLevel, savedData, true);
