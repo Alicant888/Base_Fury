@@ -313,7 +313,7 @@ export const LEVELS: LevelConfig[] = [
   // Level 16 вЂ“ Final: regular fight в†’ Dreadnought boss at end of distance
   // -----------------------------------------------------------------------
   {
-    level: 16, distanceGoal: 10, bgSet: "planets",
+    level: 16, distanceGoal: 100, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [430, 620], enemySpeed: [115, 200],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 1 },
