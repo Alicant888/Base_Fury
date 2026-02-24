@@ -155,7 +155,7 @@ export const LEVELS: LevelConfig[] = [
   // -----------------------------------------------------------------------
   {
     level: 6, distanceGoal: 66, bgSet: "asteroids",
-    asteroidMultiplier: 2.0, spawnInterval: [600, 900], enemySpeed: [90, 160],
+    asteroidMultiplier: 3, spawnInterval: [600, 900], enemySpeed: [90, 160],
     enemies: [
       { kind: "scout", weight: 0.20, shieldChance: 0.10 },
       { kind: "fighter", weight: 0.25, shieldChance: 0.25 },
@@ -170,7 +170,7 @@ export const LEVELS: LevelConfig[] = [
   // -----------------------------------------------------------------------
   {
     level: 7, distanceGoal: 72, bgSet: "asteroids",
-    asteroidMultiplier: 2.5, spawnInterval: [550, 850], enemySpeed: [95, 165],
+    asteroidMultiplier: 3, spawnInterval: [550, 850], enemySpeed: [95, 165],
     enemies: [
       { kind: "scout", weight: 0.15, shieldChance: 0.15 },
       { kind: "fighter", weight: 0.20, shieldChance: 0.30 },
@@ -201,7 +201,7 @@ export const LEVELS: LevelConfig[] = [
   // Level 9 вЂ“ Maximum intensity (asteroids)
   // -----------------------------------------------------------------------
   {
-    level: 9, distanceGoal: 78, bgSet: "asteroids",
+    level: 9, distanceGoal: 80, bgSet: "asteroids",
     asteroidMultiplier: 3.5, spawnInterval: [500, 750], enemySpeed: [100, 175],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.25 },
@@ -217,8 +217,8 @@ export const LEVELS: LevelConfig[] = [
   // Level 10 вЂ“ Last pure-asteroids level
   // -----------------------------------------------------------------------
   {
-    level: 10, distanceGoal: 78, bgSet: "asteroids",
-    asteroidMultiplier: 3.5, spawnInterval: [480, 720], enemySpeed: [105, 180],
+    level: 10, distanceGoal: 82, bgSet: "asteroids",
+    asteroidMultiplier: 4, spawnInterval: [480, 720], enemySpeed: [105, 180],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.30 },
       { kind: "fighter", weight: 0.15, shieldChance: 0.55 },
@@ -233,8 +233,8 @@ export const LEVELS: LevelConfig[] = [
   // Level 11 вЂ“ Still asteroids (planets start at 12)
   // -----------------------------------------------------------------------
   {
-    level: 11, distanceGoal: 78, bgSet: "asteroids",
-    asteroidMultiplier: 3.5, spawnInterval: [470, 700], enemySpeed: [105, 180],
+    level: 11, distanceGoal: 84, bgSet: "asteroids",
+    asteroidMultiplier: 5, spawnInterval: [470, 700], enemySpeed: [105, 180],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.35 },
       { kind: "fighter", weight: 0.10, shieldChance: 0.55 },
@@ -249,7 +249,7 @@ export const LEVELS: LevelConfig[] = [
   // Level 12 вЂ“ Planets background begins, battlecruiser heavy
   // -----------------------------------------------------------------------
   {
-    level: 12, distanceGoal: 78, bgSet: "planets",
+    level: 12, distanceGoal: 86, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [460, 680], enemySpeed: [110, 185],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.40 },
@@ -265,8 +265,8 @@ export const LEVELS: LevelConfig[] = [
   // Level 13 вЂ“ Elite enemies
   // -----------------------------------------------------------------------
   {
-    level: 13, distanceGoal: 78, bgSet: "planets",
-    asteroidMultiplier: 4.0, spawnInterval: [450, 660], enemySpeed: [110, 190],
+    level: 13, distanceGoal: 88, bgSet: "planets",
+    asteroidMultiplier: 3.5, spawnInterval: [450, 660], enemySpeed: [110, 190],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.45 },
       { kind: "fighter", weight: 0.10, shieldChance: 0.65 },
@@ -281,8 +281,8 @@ export const LEVELS: LevelConfig[] = [
   // Level 14 вЂ“ Pre-boss gauntlet
   // -----------------------------------------------------------------------
   {
-    level: 14, distanceGoal: 78, bgSet: "planets",
-    asteroidMultiplier: 4.0, spawnInterval: [440, 640], enemySpeed: [115, 195],
+    level: 14, distanceGoal: 90, bgSet: "planets",
+    asteroidMultiplier: 3.5, spawnInterval: [440, 640], enemySpeed: [115, 195],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.50 },
       { kind: "fighter", weight: 0.10, shieldChance: 0.70 },
@@ -294,50 +294,44 @@ export const LEVELS: LevelConfig[] = [
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
-  // Level 15 вЂ“ Boss fight (Dreadnought + escort waves)
+  // Level 15 вЂ�� Heavy gauntlet (no boss)
   // -----------------------------------------------------------------------
   {
-    level: 15, distanceGoal: 0, bgSet: "planets",
-    asteroidMultiplier: 4.0, spawnInterval: [800, 1200], enemySpeed: [90, 150],
+    level: 15, distanceGoal: 92, bgSet: "planets",
+    asteroidMultiplier: 3.5, spawnInterval: [430, 640], enemySpeed: [115, 200],
     enemies: [
-      { kind: "scout", weight: 0.30, shieldChance: 0.30 },
-      { kind: "fighter", weight: 0.30, shieldChance: 0.40 },
-      { kind: "frigate", weight: 0.40, shieldChance: 0.50 },
+      { kind: "scout", weight: 0.05, shieldChance: 0.50 },
+      { kind: "fighter", weight: 0.10, shieldChance: 0.70 },
+      { kind: "torpedo", weight: 0.15, shieldChance: 0.80 },
+      { kind: "frigate", weight: 0.30, shieldChance: 0.90 },
+      { kind: "battlecruiser", weight: 0.40, shieldChance: 0.90 },
     ],
     drops: { health: 0.06, shield: 0.20, firingRate: 0.03, firingRate2: 0.04, ...NWD },
-    isBossLevel: true,
-    bossHp: 200, bossShieldHp: 200, escortWaveIntervalMs: 15_000,
-    escortWaves: [
-      { enemies: [{ kind: "scout", count: 3, hasShield: false }] },
-      { enemies: [{ kind: "scout", count: 2, hasShield: false }, { kind: "fighter", count: 1, hasShield: true }] },
-      { enemies: [{ kind: "fighter", count: 2, hasShield: true }, { kind: "torpedo", count: 1, hasShield: true }] },
-      { enemies: [{ kind: "fighter", count: 1, hasShield: true }, { kind: "torpedo", count: 1, hasShield: true }, { kind: "frigate", count: 1, hasShield: true }] },
-      { enemies: [{ kind: "fighter", count: 2, hasShield: true }, { kind: "frigate", count: 1, hasShield: true }] },
-    ],
+    isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 16 вЂ“ Final: regular fight в†’ Dreadnought boss at end of distance
   // -----------------------------------------------------------------------
   {
-    level: 16, distanceGoal: 88, bgSet: "planets",
-    asteroidMultiplier: 4.0, spawnInterval: [430, 620], enemySpeed: [115, 200],
+    level: 16, distanceGoal: 100, bgSet: "planets",
+    asteroidMultiplier: 3.5, spawnInterval: [430, 620], enemySpeed: [115, 200],
     enemies: [
-      { kind: "scout", weight: 0.05, shieldChance: 0.50 },
-      { kind: "fighter", weight: 0.10, shieldChance: 0.75 },
-      { kind: "torpedo", weight: 0.15, shieldChance: 0.85 },
-      { kind: "frigate", weight: 0.30, shieldChance: 0.95 },
-      { kind: "battlecruiser", weight: 0.40, shieldChance: 0.80 },
+      { kind: "scout", weight: 0.05, shieldChance: 1 },
+      { kind: "fighter", weight: 0.10, shieldChance: 1 },
+      { kind: "torpedo", weight: 0.15, shieldChance: 1 },
+      { kind: "frigate", weight: 0.30, shieldChance: 1 },
+      { kind: "battlecruiser", weight: 0.40, shieldChance: 1 },
     ],
     drops: { health: 0.07, shield: 0.20, firingRate: 0.03, firingRate2: 0.04, ...NWD },
     isBossLevel: false,
     bossAfterDistance: true,
-    bossHp: 250, bossShieldHp: 250, escortWaveIntervalMs: 12_000,
+    bossHp: 2000, bossShieldHp: 2000, escortWaveIntervalMs: 4_000,
     escortWaves: [
-      { enemies: [{ kind: "scout", count: 3, hasShield: false }] },
-      { enemies: [{ kind: "fighter", count: 2, hasShield: true }, { kind: "torpedo", count: 1, hasShield: true }] },
-      { enemies: [{ kind: "frigate", count: 2, hasShield: true }, { kind: "battlecruiser", count: 1, hasShield: true }] },
-      { enemies: [{ kind: "fighter", count: 2, hasShield: true }, { kind: "frigate", count: 1, hasShield: true }, { kind: "torpedo", count: 1, hasShield: true }] },
-      { enemies: [{ kind: "battlecruiser", count: 1, hasShield: true }, { kind: "frigate", count: 2, hasShield: true }] },
+      { enemies: [{ kind: "scout", count: 10, hasShield: false }] },
+      { enemies: [{ kind: "fighter", count: 6, hasShield: true }, { kind: "torpedo", count: 2, hasShield: true }] },
+      { enemies: [{ kind: "frigate", count: 4, hasShield: true }, { kind: "battlecruiser", count: 2, hasShield: true }] },
+      { enemies: [{ kind: "fighter", count: 6, hasShield: true }, { kind: "frigate", count: 2, hasShield: true }, { kind: "torpedo", count: 1, hasShield: true }] },
+      { enemies: [{ kind: "battlecruiser", count: 3, hasShield: true }, { kind: "frigate", count: 3, hasShield: true }] },
     ],
   },
 ];
