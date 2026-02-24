@@ -325,7 +325,7 @@ export const LEVELS: LevelConfig[] = [
     drops: { health: 0.07, shield: 0.20, firingRate: 0.03, firingRate2: 0.04, ...NWD },
     isBossLevel: false,
     bossAfterDistance: true,
-    bossHp: 2000, bossShieldHp: 2000, escortWaveIntervalMs: 4_000,
+    bossHp: 5000, bossShieldHp: 5000, escortWaveIntervalMs: 4_000,
     escortWaves: [
       { enemies: [{ kind: "scout", count: 10, hasShield: false }] },
       { enemies: [{ kind: "fighter", count: 6, hasShield: true }, { kind: "torpedo", count: 2, hasShield: true }] },

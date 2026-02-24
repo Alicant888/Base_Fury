@@ -463,7 +463,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.weaponFx.removeAllListeners();
 
     this.isFiring = false;
-    this.nextFireAt = this.scene.time.now + Phaser.Math.Between(isDreadnought ? 1200 : 850, isDreadnought ? 1900 : 1400);
+    this.nextFireAt = this.scene.time.now + Phaser.Math.Between(isDreadnought ? 400 : 850, isDreadnought ? 633 : 1400);
 
     // IMPORTANT: This enemy is pooled and its FX sprites are separate GameObjects.
     // Sync their positions immediately on spawn to avoid a 1-frame "flicker" at the
@@ -831,7 +831,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
       this.isFiring = false;
       this.dreadnoughtState = "idle";
-      this.nextFireAt = this.scene.time.now + Phaser.Math.Between(1400, 2200);
+      this.nextFireAt = this.scene.time.now + Phaser.Math.Between(467, 733);
     });
 
     this.weaponFx.play("dreadnought_weapon", true);

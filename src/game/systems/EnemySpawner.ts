@@ -107,6 +107,19 @@ export class EnemySpawner {
     const wave = waves[this.escortWaveIndex % waves.length];
     this.escortWaveIndex++;
 
+    // Collect all eligible (non-torpedo) escort slots, then pick 1-3 to become mini-bosses.
+    const eligibleSlots: { entryIdx: number; slotIdx: number }[] = [];
+    wave.enemies.forEach((entry, ei) => {
+      if (entry.kind !== "torpedo") {
+        for (let i = 0; i < entry.count; i++) eligibleSlots.push({ entryIdx: ei, slotIdx: i });
+      }
+    });
+    Phaser.Utils.Array.Shuffle(eligibleSlots);
+    const miniBossCount = Math.min(eligibleSlots.length, Phaser.Math.Between(1, 3));
+    const miniBossSlots = new Set(
+      eligibleSlots.slice(0, miniBossCount).map(s => `${s.entryIdx}_${s.slotIdx}`),
+    );
+
     for (const entry of wave.enemies) {
       for (let i = 0; i < entry.count; i++) {
         const x = Phaser.Math.Between(24, GAME_WIDTH - 24);
@@ -117,6 +130,11 @@ export class EnemySpawner {
         const enemy = this.enemies.get(x, y) as Enemy | null;
         if (!enemy) continue;
         enemy.spawn(x, y, speedY, this.enemyBullets, entry.kind, entry.hasShield);
+
+        const entryIdx = wave.enemies.indexOf(entry);
+        if (miniBossSlots.has(`${entryIdx}_${i}`)) {
+          enemy.setMiniBoss(true);
+        }
       }
     }
   }
