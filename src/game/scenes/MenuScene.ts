@@ -35,6 +35,7 @@ export class MenuScene extends Phaser.Scene {
     this.startButton.on("pointerout", () => this.startButton.clearTint());
     this.startButton.on("pointerdown", () => {
       this.startButton.setTint(0x888888);
+      void this.submitStartCheckIn();
       const savedData = SaveManager.load();
       if (savedData.currentLevel > 1) {
         this.onStart(savedData.currentLevel, savedData, true);
@@ -76,6 +77,20 @@ export class MenuScene extends Phaser.Scene {
     this.menuMusic?.destroy();
     this.menuMusic = undefined;
     this.scene.start("GameScene", { level, save, showMenu });
+  }
+
+  private async submitStartCheckIn() {
+    try {
+      const { sdk } = await import("@farcaster/miniapp-sdk");
+      if (!(await sdk.isInMiniApp())) return;
+
+      const response = await sdk.quickAuth.fetch("/api/checkin/start", { method: "POST" });
+      if (!response.ok) {
+        console.warn("Start check-in failed:", response.status);
+      }
+    } catch (error) {
+      console.warn("Start check-in request failed:", error);
+    }
   }
 
   private playClick() {
