@@ -51,9 +51,9 @@ export class MenuScene extends Phaser.Scene {
       this.startButton.setTint(0x888888);
       const savedData = SaveManager.load();
       if (savedData.currentLevel > 1) {
-        this.onStart(savedData.currentLevel, savedData, true);
+        this.onStart(savedData.currentLevel, savedData);
       } else {
-        this.onStart(1, undefined, true);
+        this.onStart(1);
       }
       globalThis.setTimeout(() => {
         void submitStartCheckIn();
