@@ -2,6 +2,20 @@ import * as Phaser from "phaser";
 import { AUDIO_KEYS, IMAGE_KEYS, UI_SCALE } from "../config";
 import { SaveManager, SaveData } from "../systems/SaveManager";
 
+async function submitStartCheckIn() {
+  try {
+    const { sdk } = await import("@farcaster/miniapp-sdk");
+    if (!(await sdk.isInMiniApp())) return;
+
+    const response = await sdk.quickAuth.fetch("/api/checkin/start", { method: "POST" });
+    if (!response.ok) {
+      console.warn("Start check-in failed:", response.status);
+    }
+  } catch (error) {
+    console.warn("Start check-in request failed:", error);
+  }
+}
+
 export class MenuScene extends Phaser.Scene {
   private startButton!: Phaser.GameObjects.Image;
   private menuMusic?: Phaser.Sound.BaseSound;
@@ -35,13 +49,15 @@ export class MenuScene extends Phaser.Scene {
     this.startButton.on("pointerout", () => this.startButton.clearTint());
     this.startButton.on("pointerdown", () => {
       this.startButton.setTint(0x888888);
-      void this.submitStartCheckIn();
       const savedData = SaveManager.load();
       if (savedData.currentLevel > 1) {
         this.onStart(savedData.currentLevel, savedData, true);
       } else {
         this.onStart(1, undefined, true);
       }
+      globalThis.setTimeout(() => {
+        void submitStartCheckIn();
+      }, 0);
     });
 
     const layout = (width: number, height: number) => {
@@ -77,20 +93,6 @@ export class MenuScene extends Phaser.Scene {
     this.menuMusic?.destroy();
     this.menuMusic = undefined;
     this.scene.start("GameScene", { level, save, showMenu });
-  }
-
-  private async submitStartCheckIn() {
-    try {
-      const { sdk } = await import("@farcaster/miniapp-sdk");
-      if (!(await sdk.isInMiniApp())) return;
-
-      const response = await sdk.quickAuth.fetch("/api/checkin/start", { method: "POST" });
-      if (!response.ok) {
-        console.warn("Start check-in failed:", response.status);
-      }
-    } catch (error) {
-      console.warn("Start check-in request failed:", error);
-    }
   }
 
   private playClick() {
