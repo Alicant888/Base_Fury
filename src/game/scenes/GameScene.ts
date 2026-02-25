@@ -204,6 +204,7 @@ export class GameScene extends Phaser.Scene {
   private menuBtn!: Phaser.GameObjects.Container;
   private pauseBtn!: Phaser.GameObjects.Container;
   private bottomUIButtons: Phaser.GameObjects.GameObject[] = [];
+  private viewportSizeText?: Phaser.GameObjects.Text;
   private isMusicOn = true;
   private isGameOver = false;
   private shieldHits = 0;
@@ -811,6 +812,7 @@ export class GameScene extends Phaser.Scene {
       const height = gameSize.height;
 
       this.cameras.main.setViewport(0, 0, width, height);
+      this.updateViewportSizeText(gameSize);
 
       const scaleY = height / GAME_HEIGHT;
 
@@ -2930,13 +2932,40 @@ export class GameScene extends Phaser.Scene {
     // will put its bottom-left corner exactly there.
     homeBtn.setPosition(padding, GAME_HEIGHT - padding);
 
+    // Debug: show the real viewport size (useful for Base app on iPhone).
+    // Displays current game canvas size (ScaleManager gameSize) in CSS pixels.
+    this.viewportSizeText = this.add
+      .text(homeBtn.x, homeBtn.y - homeBtn.displayHeight - 6, "", {
+        fontFamily: "Orbitron",
+        fontSize: "12px",
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 3,
+      })
+      .setOrigin(0, 1)
+      .setDepth(depth + 1)
+      .setScrollFactor(0);
+
+    this.updateViewportSizeText(this.scale.gameSize);
+
     // Add simple hover effect
     homeBtn.on("pointerover", () => homeBtn.setTint(0xcccccc));
     homeBtn.on("pointerout", () => homeBtn.clearTint());
 
-    this.pauseBtn.add(homeBtn);
+    this.pauseBtn.add([homeBtn, this.viewportSizeText]);
     this.pauseBtn.setDepth(depth);
     this.bottomUIButtons.push(this.pauseBtn);
+  }
+
+  private updateViewportSizeText(gameSize: Phaser.Structs.Size) {
+    if (!this.viewportSizeText) return;
+
+    const width = Math.round(gameSize.width);
+    const height = Math.round(gameSize.height);
+    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    const dprLabel = Number.isInteger(dpr) ? String(dpr) : dpr.toFixed(2);
+
+    this.viewportSizeText.setText(`${width}×${height} dpr:${dprLabel}`);
   }
 
   private updateLivesUI() {
