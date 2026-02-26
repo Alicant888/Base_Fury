@@ -28,15 +28,15 @@ export interface SaveData {
   weaponBonusRateZapper: number;
   weaponBonusRateBigSpaceGun: number;
   // --- Shop packs (purchased once, persist forever) ---
-  /** XP Pack: unlocks Firing Rate 2 pickup drops. Cost 100. Always available. */
+  /** XP Pack: ETH-only purchase, adds +5 Main Ship durability. */
   packXp: boolean;
-  /** Base Pack: unlocks Auto Cannons + Base Engine drops. Cost 200. Req level 2. */
+  /** Base Pack: unlocks Auto Cannons + Base Engine drops (points or ETH). Req level 2. */
   packBase: boolean;
-  /** Medium Pack: unlocks Rocket + Supercharged Engine drops. Cost 600. Req level 5. */
+  /** Medium Pack: unlocks Rocket + Supercharged Engine drops (points or ETH). Req level 5. */
   packMedium: boolean;
-  /** Big Pack: unlocks Zapper + Burst Engine drops. Cost 1800. Req level 9. */
+  /** Big Pack: unlocks Zapper + Burst Engine drops (points or ETH). Req level 9. */
   packBig: boolean;
-  /** Maxi Pack: unlocks Big Space Gun + Big Pulse Engine drops. Cost 5400. Req level 12. */
+  /** Maxi Pack: unlocks Big Space Gun + Big Pulse Engine drops (points or ETH). Req level 12. */
   packMaxi: boolean;
 }
 

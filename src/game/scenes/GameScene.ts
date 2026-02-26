@@ -25,6 +25,7 @@ import { EnemySpawner } from "../systems/EnemySpawner";
 import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS, SPRITE_FRAMES, UI_SCALE, setGameHeight } from "../config";
 import { getLevelConfig, TOTAL_LEVELS, type LevelConfig, type BgSet } from "../LevelConfig";
 import { SaveManager, type SaveData } from "../systems/SaveManager";
+import { buyPackWithEth, getOnchainPackOwnership, isPackShopOnchainEnabled } from "../onchain/packShop";
 
 const BASE_FIRE_RATE_MS = 375; // ~2.67 shots/sec
 const BASE_MOVE_SPEED_PX_PER_SEC = 280;
@@ -158,6 +159,31 @@ const DEFAULT_DROPS = {
   health: 0.03, firingRate: 0.05, shield: 0.20, firingRate2: 0.04,
 } as const;
 
+const BASE_HP = 5;
+const XP_PACK_HP_BONUS = 5;
+const HUD_EDGE_PADDING = 10;
+const LIFE_ICON_START_X = HUD_EDGE_PADDING;
+const LIFE_ICON_TOP_Y = HUD_EDGE_PADDING;
+const LIFE_ICON_SCALE = 0.6;
+const LIFE_ICON_GAP_X = 4;
+const LIFE_ICON_ROW_GAP = 5;
+
+const SHOP_ETH_PRICES = {
+  packBase: "0.0005",
+  packMedium: "0.001",
+  packBig: "0.002",
+  packMaxi: "0.006",
+  packXp: (process.env.NEXT_PUBLIC_PACK_XP_PRICE_ETH?.trim() || "0.0005"),
+} as const;
+
+const SHOP_PACK_IDS = {
+  packBase: 0,
+  packMedium: 1,
+  packBig: 2,
+  packMaxi: 3,
+  packXp: 4,
+} as const;
+
 export class GameScene extends Phaser.Scene {
   private bgStar!: Phaser.GameObjects.TileSprite;
   private bgNebula!: Phaser.GameObjects.TileSprite;
@@ -196,8 +222,8 @@ export class GameScene extends Phaser.Scene {
   private dragTarget = new Phaser.Math.Vector2();
   private hasDragTarget = false;
 
-  private hp = 5;
-  private readonly maxHp = 5;
+  private hp = BASE_HP;
+  private maxHp = BASE_HP;
   private kills = 0;
   private score = 0;
   private scoreText!: Phaser.GameObjects.Text;
@@ -291,6 +317,81 @@ export class GameScene extends Phaser.Scene {
   private packMedium = false;
   private packBig = false;
   private packMaxi = false;
+  private syncOnchainPacksInFlight = false;
+
+  private applyPackFlags(save: SaveData, grantBonusHpForXpPack: boolean) {
+    const hadXpPack = this.packXp;
+    const prevMaxHp = this.maxHp;
+
+    this.packXp = save.packXp;
+    this.packBase = save.packBase;
+    this.packMedium = save.packMedium;
+    this.packBig = save.packBig;
+    this.packMaxi = save.packMaxi;
+
+    this.maxHp = BASE_HP + (this.packXp ? XP_PACK_HP_BONUS : 0);
+
+    if (grantBonusHpForXpPack && !hadXpPack && this.packXp) {
+      this.hp = Math.min(this.maxHp, this.hp + (this.maxHp - prevMaxHp));
+    } else {
+      this.hp = Math.min(this.hp, this.maxHp);
+    }
+
+    if (this.lifeIcons.length > 0 && prevMaxHp !== this.maxHp) {
+      this.rebuildLifeIcons();
+    }
+    if (this.lifeIcons.length > 0) {
+      this.updateLivesUI();
+    }
+    if (this.player && this.player.active) {
+      this.updatePlayerDamageAppearance();
+    }
+  }
+
+  private async syncOnchainPackOwnership(onComplete?: () => void) {
+    if (this.syncOnchainPacksInFlight) return;
+    this.syncOnchainPacksInFlight = true;
+
+    try {
+      const onchain = await getOnchainPackOwnership();
+      if (!onchain) return;
+
+      const save = SaveManager.load();
+      let changed = false;
+
+      if (onchain.packBase && !save.packBase) {
+        save.packBase = true;
+        changed = true;
+      }
+      if (onchain.packMedium && !save.packMedium) {
+        save.packMedium = true;
+        changed = true;
+      }
+      if (onchain.packBig && !save.packBig) {
+        save.packBig = true;
+        changed = true;
+      }
+      if (onchain.packMaxi && !save.packMaxi) {
+        save.packMaxi = true;
+        changed = true;
+      }
+      if (onchain.packXp && !save.packXp) {
+        save.packXp = true;
+        changed = true;
+      }
+
+      if (changed) {
+        SaveManager.save(save);
+      }
+
+      this.applyPackFlags(save, true);
+    } catch (error) {
+      console.warn("Onchain pack sync failed:", error);
+    } finally {
+      this.syncOnchainPacksInFlight = false;
+      if (onComplete && this.sys.isActive()) onComplete();
+    }
+  }
 
   create() {
     this.cameras.main.setBackgroundColor("#000000");
@@ -299,6 +400,8 @@ export class GameScene extends Phaser.Scene {
     const gs = this.scale.gameSize;
     const initZoom = gs.width / GAME_WIDTH;
     setGameHeight(gs.height / initZoom);
+
+    this.applyPackFlags(SaveManager.load(), false);
 
     // Reset run state (Scene instances are reused between starts).
     this.hp = this.maxHp;
@@ -744,10 +847,11 @@ export class GameScene extends Phaser.Scene {
     // UI overlay.
     this.createUI();
     this.updateLivesUI();
+    void this.syncOnchainPackOwnership();
 
     // ----- Level UI -----
-    // Level indicator (top row, left of score text with 16px gap).
-    this.levelProgressText = this.add.text(0, 16, "", {
+    // Level indicator (top row, left of score text).
+    this.levelProgressText = this.add.text(0, HUD_EDGE_PADDING, "", {
       fontFamily: "Orbitron",
       fontSize: "16px",
       color: "#CFE9F2",
@@ -794,15 +898,6 @@ export class GameScene extends Phaser.Scene {
       this._pendingSave = undefined;
     }
 
-    // Load purchased packs from persistent save (always fresh, independent of level save).
-    {
-      const sv = SaveManager.load();
-      this.packXp = sv.packXp;
-      this.packBase = sv.packBase;
-      this.packMedium = sv.packMedium;
-      this.packBig = sv.packBig;
-      this.packMaxi = sv.packMaxi;
-    }
     if (this.registry.get("audioUnlocked") && this.isMusicOn) {
       try {
         this.playMusicTrack(this.currentTrackIndex);
@@ -1307,9 +1402,9 @@ export class GameScene extends Phaser.Scene {
     this.fireRocketsPair();
   }
 
-  /** XP earned when killing an enemy. Includes packXp bonus (+5) when purchased. */
+  /** XP earned when killing an enemy. */
   private getXpForKill(kind: EnemyKind): number {
-    return getEnemyXp(kind) + (this.packXp ? 5 : 0);
+    return getEnemyXp(kind);
   }
 
   private onBulletHitsEnemy(bulletObj: Phaser.GameObjects.GameObject, enemyObj: Phaser.GameObjects.GameObject) {
@@ -2877,32 +2972,55 @@ export class GameScene extends Phaser.Scene {
     g.destroy();
   }
 
+  private rebuildLifeIcons() {
+    const uiDepth = 120;
+    const topRowCount = Math.min(BASE_HP, this.maxHp);
+    const bottomRowCount = Math.max(0, this.maxHp - BASE_HP);
+    const probe = this.add
+      .image(-9999, -9999, ATLAS_KEYS.ship, SPRITE_FRAMES.playerShip)
+      .setOrigin(0, 0)
+      .setScale(LIFE_ICON_SCALE);
+    const iconWidth = probe.displayWidth;
+    const iconHeight = probe.displayHeight;
+    const iconStep = iconWidth + LIFE_ICON_GAP_X;
+    probe.destroy();
+
+    this.lifeIcons.forEach((icon) => icon.destroy());
+    this.lifeIcons = [];
+
+    for (let i = 0; i < topRowCount; i += 1) {
+      const icon = this.add
+        .image(LIFE_ICON_START_X + i * iconStep, LIFE_ICON_TOP_Y, ATLAS_KEYS.ship, SPRITE_FRAMES.playerShip)
+        .setOrigin(0, 0)
+        .setDepth(uiDepth)
+        .setScale(LIFE_ICON_SCALE);
+      this.lifeIcons.push(icon);
+    }
+
+    if (bottomRowCount > 0) {
+      const secondRowY = LIFE_ICON_TOP_Y + iconHeight + LIFE_ICON_ROW_GAP;
+
+      for (let i = 0; i < bottomRowCount; i += 1) {
+        const icon = this.add
+          .image(LIFE_ICON_START_X + i * iconStep, secondRowY, ATLAS_KEYS.ship, SPRITE_FRAMES.playerShip)
+          .setOrigin(0, 0)
+          .setDepth(uiDepth)
+          .setScale(LIFE_ICON_SCALE);
+        this.lifeIcons.push(icon);
+      }
+    }
+  }
+
   private createUI() {
     const uiDepth = 120;
 
     this.createBottomUI();
 
-    // Lives: 5 mini ship icons. One disappears per hit (HP loss).
-    const startX = 16;
-    const y = 16;
-    const scale = 0.6;
-    const spacing = 30;
-
-    this.lifeIcons.forEach((i) => i.destroy());
-    this.lifeIcons = [];
-
-    for (let i = 0; i < this.maxHp; i += 1) {
-      const icon = this.add
-        .image(startX + i * spacing, y, ATLAS_KEYS.ship, SPRITE_FRAMES.playerShip)
-        .setOrigin(0, 0)
-        .setDepth(uiDepth)
-        .setScale(scale);
-      this.lifeIcons.push(icon);
-    }
+    this.rebuildLifeIcons();
 
     // Score Text (Top Right)
     this.scoreText = this.add
-      .text(GAME_WIDTH - 16, 16, "0", {
+      .text(GAME_WIDTH - HUD_EDGE_PADDING, HUD_EDGE_PADDING, "0", {
         fontFamily: "Orbitron",
         fontSize: "16px",
         color: "#ffffff",
@@ -2912,14 +3030,14 @@ export class GameScene extends Phaser.Scene {
       .setOrigin(1, 0)
       .setDepth(uiDepth);
 
-    // Position level text 16px to the left of score text.
+    // Position level text to the left of score text.
     this.repositionLevelText();
   }
 
-  /** Keep level text 16px to the left of score text. */
+  /** Keep level text to the left of score text. */
   private repositionLevelText() {
     if (this.levelProgressText && this.scoreText) {
-      this.levelProgressText.setX(this.scoreText.x - this.scoreText.width - 16);
+      this.levelProgressText.setX(this.scoreText.x - this.scoreText.width - HUD_EDGE_PADDING);
     }
   }
 
@@ -2969,10 +3087,11 @@ export class GameScene extends Phaser.Scene {
 
   private updatePlayerDamageAppearance() {
     const hitsTaken = this.maxHp - this.hp;
+    const damageRatio = hitsTaken / Math.max(1, this.maxHp);
     let frame: string = SPRITE_FRAMES.playerShip;
-    if (hitsTaken >= 4) frame = SPRITE_FRAMES.playerShipVeryDamaged;
-    else if (hitsTaken === 3) frame = SPRITE_FRAMES.playerShipDamaged;
-    else if (hitsTaken === 2) frame = SPRITE_FRAMES.playerShipSlightDamage;
+    if (damageRatio >= 0.8) frame = SPRITE_FRAMES.playerShipVeryDamaged;
+    else if (damageRatio >= 0.6) frame = SPRITE_FRAMES.playerShipDamaged;
+    else if (damageRatio >= 0.4) frame = SPRITE_FRAMES.playerShipSlightDamage;
     else frame = SPRITE_FRAMES.playerShip; // 0-1
 
     this.player.setFrame(frame);
@@ -3742,20 +3861,24 @@ export class GameScene extends Phaser.Scene {
     const scoreBottom = this.scoreText.y + 16; // scoreText origin(1,0), fontSize 16
     const shopTopPad = scoreBottom + 20;
 
-    // --- Pack definitions ---
+    type PackFlag = "packBase" | "packMedium" | "packBig" | "packMaxi" | "packXp";
     interface PackInfo {
       key: string;
-      cost: number;
+      costPoints: number | null;
       reqLevel: number;
-      saveFlag: keyof import("../systems/SaveManager").SaveData;
+      saveFlag: PackFlag;
+      ethPrice: string;
+      ethPackId: number;
     }
     const PACKS: PackInfo[] = [
-      { key: IMAGE_KEYS.uiPackBase, cost: 200, reqLevel: 2, saveFlag: "packBase" },
-      { key: IMAGE_KEYS.uiPackMedium, cost: 600, reqLevel: 5, saveFlag: "packMedium" },
-      { key: IMAGE_KEYS.uiPackBig, cost: 1800, reqLevel: 9, saveFlag: "packBig" },
-      { key: IMAGE_KEYS.uiPackMaxi, cost: 5400, reqLevel: 12, saveFlag: "packMaxi" },
-      { key: IMAGE_KEYS.uiPackXp, cost: 100, reqLevel: 1, saveFlag: "packXp" },
+      { key: IMAGE_KEYS.uiPackBase, costPoints: 200, reqLevel: 2, saveFlag: "packBase", ethPrice: SHOP_ETH_PRICES.packBase, ethPackId: SHOP_PACK_IDS.packBase },
+      { key: IMAGE_KEYS.uiPackMedium, costPoints: 600, reqLevel: 5, saveFlag: "packMedium", ethPrice: SHOP_ETH_PRICES.packMedium, ethPackId: SHOP_PACK_IDS.packMedium },
+      { key: IMAGE_KEYS.uiPackBig, costPoints: 1800, reqLevel: 9, saveFlag: "packBig", ethPrice: SHOP_ETH_PRICES.packBig, ethPackId: SHOP_PACK_IDS.packBig },
+      { key: IMAGE_KEYS.uiPackMaxi, costPoints: 5400, reqLevel: 12, saveFlag: "packMaxi", ethPrice: SHOP_ETH_PRICES.packMaxi, ethPackId: SHOP_PACK_IDS.packMaxi },
+      { key: IMAGE_KEYS.uiPackXp, costPoints: null, reqLevel: 1, saveFlag: "packXp", ethPrice: SHOP_ETH_PRICES.packXp, ethPackId: SHOP_PACK_IDS.packXp },
     ];
+    const onchainEnabled = isPackShopOnchainEnabled();
+    let pendingOnchainPurchase = false;
 
     // Measure button half-dims at UI_SCALE.
     const probe = this.add.image(-9999, -9999, PACKS[0].key).setScale(UI_SCALE);
@@ -3785,8 +3908,10 @@ export class GameScene extends Phaser.Scene {
     const refreshAll = () => {
       const sv = SaveManager.load();
       for (const { img, lbl, pack, isXp } of entries) {
-        const owned = sv[pack.saveFlag] as boolean;
+        const owned = sv[pack.saveFlag];
         const reqMet = sv.currentLevel >= pack.reqLevel;
+        const canBuyWithPoints = pack.costPoints !== null && sv.score >= pack.costPoints;
+        const canBuyWithEth = onchainEnabled;
 
         img.setAlpha(1);
         img.removeInteractive();
@@ -3799,26 +3924,71 @@ export class GameScene extends Phaser.Scene {
           if (!isXp) lbl.setText(`LVL ${pack.reqLevel}`).setColor("#888888").setVisible(true);
           img.setTint(0x444444).setAlpha(0.4);
         } else {
-          if (!isXp) lbl.setText("available").setColor("#FFD700").setVisible(true);
+          if (!isXp) {
+            if (pack.costPoints !== null) {
+              lbl.setText(`${pack.costPoints} PTS / ${pack.ethPrice} ETH`).setColor("#FFD700").setVisible(true);
+            } else {
+              lbl.setText(`${pack.ethPrice} ETH`).setColor("#FFD700").setVisible(true);
+            }
+          }
+
+          if (!canBuyWithPoints && !canBuyWithEth) {
+            img.setTint(0x555555).setAlpha(0.5);
+            continue;
+          }
+
+          if (pendingOnchainPurchase) {
+            img.setTint(0x777777).setAlpha(0.6);
+            continue;
+          }
+
           img.clearTint().setInteractive({ useHandCursor: true });
           img.on("pointerover", () => img.setTint(0xcccccc));
           img.on("pointerout", () => img.clearTint());
-          img.on("pointerdown", () => {
+          img.on("pointerdown", async () => {
+            if (pendingOnchainPurchase) return;
             const sv2 = SaveManager.load();
-            if ((sv2[pack.saveFlag] as boolean) || sv2.score < pack.cost) return;
-            this.playSfx(AUDIO_KEYS.bought, 0.7);
-            (sv2 as unknown as Record<string, unknown>)[pack.saveFlag as string] = true;
-            sv2.score -= pack.cost;
-            SaveManager.save(sv2);
-            // Sync in-memory score & on-screen pts counter.
-            this.score = sv2.score;
-            this.scoreText.setText(`${this.score}`);
-            this.packXp = sv2.packXp;
-            this.packBase = sv2.packBase;
-            this.packMedium = sv2.packMedium;
-            this.packBig = sv2.packBig;
-            this.packMaxi = sv2.packMaxi;
-            refreshAll();
+            if (sv2[pack.saveFlag]) return;
+
+            const pointsAvailable = pack.costPoints !== null && sv2.score >= pack.costPoints;
+            if (pointsAvailable) {
+              const pointsCost = pack.costPoints ?? 0;
+              this.playSfx(AUDIO_KEYS.bought, 0.7);
+              (sv2 as unknown as Record<string, unknown>)[pack.saveFlag as string] = true;
+              sv2.score -= pointsCost;
+              SaveManager.save(sv2);
+              this.score = sv2.score;
+              this.scoreText.setText(`${this.score}`);
+              this.applyPackFlags(sv2, false);
+              refreshAll();
+              return;
+            }
+
+            if (!onchainEnabled) return;
+
+            pendingOnchainPurchase = true;
+            if (!isXp) lbl.setText("PENDING...").setColor("#66ccff").setVisible(true);
+            img.setTint(0x8888ff);
+
+            try {
+              const txHash = await buyPackWithEth({ packId: pack.ethPackId, valueEth: pack.ethPrice });
+              console.log("Pack purchase tx:", txHash);
+
+              const sv3 = SaveManager.load();
+              if (!sv3[pack.saveFlag]) {
+                (sv3 as unknown as Record<string, unknown>)[pack.saveFlag as string] = true;
+                SaveManager.save(sv3);
+              }
+
+              this.playSfx(AUDIO_KEYS.bought, 0.7);
+              this.applyPackFlags(sv3, true);
+            } catch (error) {
+              console.warn("ETH pack purchase failed:", error);
+              if (!isXp) lbl.setText("TX FAILED").setColor("#ff6666").setVisible(true);
+            } finally {
+              pendingOnchainPurchase = false;
+              refreshAll();
+            }
           });
         }
       }
@@ -3841,6 +4011,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     refreshAll();
+    void this.syncOnchainPackOwnership(refreshAll);
 
     // Return the bottom Y of the xpp image (no label underneath).
     const lastImg = entries[entries.length - 1].img;

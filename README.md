@@ -37,6 +37,8 @@ Create a `.env.local` file and add your environment variables:
 NEXT_PUBLIC_PROJECT_NAME="Your App Name"
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=<Replace-WITH-YOUR-CDP-API-KEY>
 NEXT_PUBLIC_URL=
+NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS=
+NEXT_PUBLIC_PACK_XP_PRICE_ETH=0.0005
 ```
 
 ### 4. Run locally:
@@ -81,6 +83,8 @@ Add your production URL to your local `.env` file:
 NEXT_PUBLIC_PROJECT_NAME="Your App Name"
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=<Replace-WITH-YOUR-CDP-API-KEY>
 NEXT_PUBLIC_URL=https://your-vercel-project-name.vercel.app/
+NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS=
+NEXT_PUBLIC_PACK_XP_PRICE_ETH=0.0005
 ```
 
 ### 3. Upload environment variables to Vercel
@@ -91,6 +95,8 @@ Add environment variables to your production environment:
 vercel env add NEXT_PUBLIC_PROJECT_NAME production
 vercel env add NEXT_PUBLIC_ONCHAINKIT_API_KEY production
 vercel env add NEXT_PUBLIC_URL production
+vercel env add NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS production
+vercel env add NEXT_PUBLIC_PACK_XP_PRICE_ETH production
 ```
 
 ## Account Association
