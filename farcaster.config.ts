@@ -35,9 +35,9 @@ export const farcasterConfig = {
     primaryCategory: "games",
     tags: ["game", "shooter", "space", "arcade"],
     heroImageUrl: `${ROOT_URL}/hero.png`,
-    tagline: "",
-    ogTitle: "",
-    ogDescription: "",
+    tagline: "Fast-paced arcade space shooter",
+    ogTitle: "Base Fury",
+    ogDescription: "Fast-paced space shooter with 16 levels. Dodge asteroids, defeat enemies, collect power-ups and upgrades.",
     ogImageUrl: `${ROOT_URL}/hero.png`,
   },
 } as const;
