@@ -26,7 +26,7 @@ export const farcasterConfig = {
     name: "Base Fury",
     subtitle: "Arcade space combat",
     description: "Fast-paced space shooter with 16 levels. Dodge asteroids, defeat enemies, collect power-ups and upgrades.",
-    screenshotUrls: [`${ROOT_URL}/screenshot-portrait.png`],
+    screenshotUrls: [`${ROOT_URL}/screenshot.png`, `${ROOT_URL}/screenshot1.png`, `${ROOT_URL}/screenshot2.png`],
     iconUrl: `${ROOT_URL}/icon2.png`,
     splashImageUrl: `${ROOT_URL}/hero.png`,
     splashBackgroundColor: "#000000",
