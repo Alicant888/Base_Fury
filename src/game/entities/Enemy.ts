@@ -20,7 +20,7 @@ const TORPEDO_SHIP_ENGINE_SCALE = 0.7; // -30%
 // TUNE HITBOX MULTIPLIER HERE (Torpedo Ship):
 const TORPEDO_SHIP_HITBOX_W_MULT = 0.7;
 const TORPEDO_SHIP_HITBOX_H_MULT = 0.1;
-const ENEMY_ENGINE_OFFSET_Y = 28;
+const ENEMY_ENGINE_OFFSET_Y = 30;
 // TUNE HITBOX MULTIPLIER HERE (Fighter):
 const FIGHTER_HITBOX_W_MULT = 0.7;
 const FIGHTER_HITBOX_H_MULT = 0.1;
@@ -65,7 +65,7 @@ const DREADNOUGHT_FIRE_Y_FACTOR = 0.3; // spawn below the ship
 const DREADNOUGHT_ENGINE_OFFSET_Y = 1; // move engine flame closer to the ship
 const DREADNOUGHT_HOVER_Y = 160; // upper third of the screen
 const DREADNOUGHT_IDLE_DRIFT_SPEED_X = 16;
-const DREADNOUGHT_ALIGN_SPEED_X = 140; // medium speed to chase player X before firing
+const DREADNOUGHT_ALIGN_SPEED_X = 180; // medium speed to chase player X before firing
 const DREADNOUGHT_ALIGN_EPS_PX = 3;
 // Boss is very wide; allow its center closer to edges so the center weapon can still hit the player near screen edges.
 const DREADNOUGHT_BOSS_EDGE_PADDING_X = 4;
