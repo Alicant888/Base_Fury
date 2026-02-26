@@ -556,12 +556,9 @@ export function GameCanvas() {
             {status === "loading" ? (
               <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.08em" }}>LOADING...</div>
             ) : status === "resume" ? (
-              <>
-                <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: "0.12em", color: "#00e8ff" }}>
-                  TAP TO RESUME
-                </div>
-                <div style={{ marginTop: 8, fontSize: 12, opacity: 0.75, letterSpacing: "0.14em" }}>RESUME</div>
-              </>
+              <div style={{ fontFamily: "Orbitron, sans-serif", fontSize: 18, fontWeight: 400, color: "#ffffff" }}>
+                TAP TO CONTINUE
+              </div>
             ) : (
               <div style={{ fontSize: 14, opacity: 0.85 }}>Game failed to start</div>
             )}
