@@ -162,8 +162,6 @@ export function GameCanvas() {
 
     const shouldIgnoreResumeError = (error: unknown): boolean => {
       if (document.hidden) return false;
-      if (!gameRef.current) return false;
-      if (performance.now() < startupDeadline) return false;
       const message = toErrorString(error);
       if (!looksLikeNonFatalResumeError(message)) return false;
       return true;
