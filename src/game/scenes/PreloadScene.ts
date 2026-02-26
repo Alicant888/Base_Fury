@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import { platform } from "@/src/platform";
-import { ATLAS_KEYS, AUDIO_KEYS, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS } from "../config";
+import { ATLAS_KEYS, AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, setGameHeight } from "../config";
 
 export class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -10,10 +10,19 @@ export class PreloadScene extends Phaser.Scene {
   preload() {
     this.cameras.main.setBackgroundColor("#000000");
 
+    // Compute initial world height for centering.
+    const gs = this.scale.gameSize;
+    const zoom = gs.width / GAME_WIDTH;
+    const worldH = gs.height / zoom;
+    setGameHeight(worldH);
+    this.cameras.main.setViewport(0, 0, gs.width, gs.height);
+    this.cameras.main.setZoom(zoom);
+    this.cameras.main.centerOn(GAME_WIDTH / 2, worldH / 2);
+
     const loadingText = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "LOADING...", {
+      .text(GAME_WIDTH / 2, worldH / 2, "LOADING...", {
         fontFamily: "Orbitron",
-        fontSize: "20px",
+        fontSize: "16px",
         color: "#ffffff",
       })
       .setOrigin(0.5);

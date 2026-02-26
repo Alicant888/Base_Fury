@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { AUDIO_KEYS, IMAGE_KEYS, UI_SCALE } from "../config";
+import { AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, UI_SCALE, setGameHeight } from "../config";
 import { SaveManager, SaveData } from "../systems/SaveManager";
 
 const DAY_MS = 86_400_000;
@@ -117,13 +117,21 @@ export class MenuScene extends Phaser.Scene {
     });
 
     const layout = (width: number, height: number) => {
-      bg.setPosition(width / 2, height / 2);
-      const scaleX = width / bg.width;
-      const scaleY = height / bg.height;
+      const zoom = width / GAME_WIDTH;
+      const worldH = height / zoom;
+      setGameHeight(worldH);
+
+      this.cameras.main.setViewport(0, 0, width, height);
+      this.cameras.main.setZoom(zoom);
+      this.cameras.main.centerOn(GAME_WIDTH / 2, worldH / 2);
+
+      bg.setPosition(GAME_WIDTH / 2, worldH / 2);
+      const scaleX = GAME_WIDTH / bg.width;
+      const scaleY = worldH / bg.height;
       bg.setScale(Math.max(scaleX, scaleY));
 
-      const btnY = height * 0.67;
-      this.startButton.setPosition(width / 2, btnY);
+      const btnY = worldH * 0.67;
+      this.startButton.setPosition(GAME_WIDTH / 2, btnY);
     };
 
     layout(this.scale.width, this.scale.height);

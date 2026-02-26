@@ -22,7 +22,7 @@ import { Player } from "../entities/Player";
 import { ShieldPickup } from "../entities/ShieldPickup";
 import { AsteroidSpawner } from "../systems/AsteroidSpawner";
 import { EnemySpawner } from "../systems/EnemySpawner";
-import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS, SPRITE_FRAMES, UI_SCALE } from "../config";
+import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS, SPRITE_FRAMES, UI_SCALE, setGameHeight } from "../config";
 import { getLevelConfig, TOTAL_LEVELS, type LevelConfig, type BgSet } from "../LevelConfig";
 import { SaveManager, type SaveData } from "../systems/SaveManager";
 
@@ -204,7 +204,8 @@ export class GameScene extends Phaser.Scene {
   private menuBtn!: Phaser.GameObjects.Container;
   private pauseBtn!: Phaser.GameObjects.Container;
   private bottomUIButtons: Phaser.GameObjects.GameObject[] = [];
-  private viewportSizeText?: Phaser.GameObjects.Text;
+  private homeBtn?: Phaser.GameObjects.Image;
+
   private isMusicOn = true;
   private isGameOver = false;
   private shieldHits = 0;
@@ -242,7 +243,7 @@ export class GameScene extends Phaser.Scene {
   private lastRocketShotAt = 0;
 
   private isPausedByInput = false;
-  private pausedText?: Phaser.GameObjects.Text;
+
 
   // --- Level system ---
   private currentLevel = 1;
@@ -293,6 +294,11 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBackgroundColor("#000000");
+
+    // Compute initial world height from actual viewport before creating any objects.
+    const gs = this.scale.gameSize;
+    const initZoom = gs.width / GAME_WIDTH;
+    setGameHeight(gs.height / initZoom);
 
     // Reset run state (Scene instances are reused between starts).
     this.hp = this.maxHp;
@@ -740,23 +746,22 @@ export class GameScene extends Phaser.Scene {
     this.updateLivesUI();
 
     // ----- Level UI -----
-    // Level number + distance progress (bottom-right corner, 10px padding).
-    this.levelProgressText = this.add.text(GAME_WIDTH - 10, GAME_HEIGHT - 10, "", {
+    // Level indicator (top row, left of score text with 16px gap).
+    this.levelProgressText = this.add.text(0, 16, "", {
       fontFamily: "Orbitron",
-      fontSize: "24px",
-      color: "#00FF9C",
+      fontSize: "16px",
+      color: "#CFE9F2",
       stroke: "#000000",
       strokeThickness: 3,
-      align: "right",
-    }).setOrigin(1, 1).setDepth(50).setScrollFactor(0);
+    }).setOrigin(1, 0).setDepth(50);
 
-    // Set initial level text (boss levels show only "LV X BOSS").
+    // Set initial level text.
     if (this.levelConfig.isBossLevel) {
-      this.levelProgressText.setText(`LV ${this.currentLevel}  BOSS`);
+      this.levelProgressText.setText(`LVL ${this.currentLevel}`);
       // Switch to boss music immediately on boss levels.
       this.startBossMusic();
     } else {
-      this.levelProgressText.setText(`LV ${this.currentLevel}  0%`);
+      this.levelProgressText.setText(`LVL ${this.currentLevel}`);
     }
 
     // ----- Restore saved weapons / engine -----
@@ -792,10 +797,10 @@ export class GameScene extends Phaser.Scene {
     // Load purchased packs from persistent save (always fresh, independent of level save).
     {
       const sv = SaveManager.load();
-      this.packXp   = sv.packXp;
+      this.packXp = sv.packXp;
       this.packBase = sv.packBase;
       this.packMedium = sv.packMedium;
-      this.packBig  = sv.packBig;
+      this.packBig = sv.packBig;
       this.packMaxi = sv.packMaxi;
     }
     if (this.registry.get("audioUnlocked") && this.isMusicOn) {
@@ -806,22 +811,38 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // Handle resizing (FIT simulation).
+    // Handle resizing — fixed width (360), variable height.
     const resize = (gameSize: Phaser.Structs.Size) => {
-      const width = gameSize.width;
-      const height = gameSize.height;
+      const w = gameSize.width;
+      const h = gameSize.height;
 
-      this.cameras.main.setViewport(0, 0, width, height);
-      this.updateViewportSizeText(gameSize);
+      // Keep world width constant; height stretches to fill the screen.
+      const zoom = w / GAME_WIDTH;
+      const worldH = h / zoom;
+      setGameHeight(worldH);
 
-      const scaleY = height / GAME_HEIGHT;
+      this.cameras.main.setViewport(0, 0, w, h);
+      this.cameras.main.setZoom(zoom);
+      this.cameras.main.centerOn(GAME_WIDTH / 2, worldH / 2);
 
-      // User requested to remove "resize by width" in game scene, so we scale by height only.
-      // This ensures the game always fills the vertical space, even if it means cropping width on very narrow screens.
-      const scale = scaleY;
 
-      this.cameras.main.setZoom(scale);
-      this.cameras.main.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
+
+      // Update physics bounds to new world height.
+      this.physics.world.setBounds(0, 0, GAME_WIDTH, worldH);
+
+      // Resize background tileSprites.
+      if (this.bgDust) this.bgDust.setSize(GAME_WIDTH, worldH);
+      if (this.bgNebula) this.bgNebula.setSize(GAME_WIDTH, worldH);
+      if (this.bgStar) this.bgStar.setSize(GAME_WIDTH, worldH);
+      if (this.bgL6) this.bgL6.setSize(GAME_WIDTH, worldH);
+      if (this.bgL3) this.bgL3.setSize(GAME_WIDTH, worldH);
+
+      // Reposition bottom-anchored HUD.
+      if (this.homeBtn) {
+        this.homeBtn.setPosition(16, worldH - 16);
+      }
+
+
     };
 
     // Initial resize.
@@ -862,6 +883,9 @@ export class GameScene extends Phaser.Scene {
     if (this.isLevelComplete) return;
     if (this.isPausedByInput) return;
 
+    // Keep level label aligned to score text.
+    this.repositionLevelText();
+
     // --- Level distance / boss check ---
     if (this.levelConfig.isBossLevel || this._bossPhaseActive) {
       // Boss level (or post-distance boss phase) ends when boss is defeated.
@@ -875,7 +899,7 @@ export class GameScene extends Phaser.Scene {
       this.distanceTraveled += BG_SCROLL_SPEED_BCG * t0;
       const pct = Math.min(100, Math.floor((this.distanceTraveled / this.levelConfig.distanceGoal) * 100));
       if (this.levelProgressText) {
-        this.levelProgressText.setText(`LV ${this.currentLevel}  ${pct}%`);
+        this.levelProgressText.setText(`LVL ${this.currentLevel}`);
       }
       if (this.distanceTraveled >= this.levelConfig.distanceGoal) {
         if (this.levelConfig.bossAfterDistance) {
@@ -883,7 +907,7 @@ export class GameScene extends Phaser.Scene {
           if (!this._bossPhaseActive) {
             this._bossPhaseActive = true;
             if (this.levelProgressText) {
-              this.levelProgressText.setText(`LV ${this.currentLevel}  BOSS`);
+              this.levelProgressText.setText(`LVL ${this.currentLevel}`);
             }
             this.spawner.triggerBossPhase(time);
             // Switch to boss music, pause the normal track.
@@ -1897,18 +1921,18 @@ export class GameScene extends Phaser.Scene {
     if (!isLastLevel) {
       // ---- Normal level complete screen ----
       container.add(this.add.text(centerX, centerY - 60, `LEVEL ${this.currentLevel} COMPLETE!`, {
-        fontFamily: "Orbitron", fontSize: "20px", color: "#00FF9C",
+        fontFamily: "Orbitron", fontSize: "16px", color: "#00FF9C",
         stroke: "#000000", strokeThickness: 6, align: "center",
         wordWrap: { width: GAME_WIDTH - 20 },
       }).setOrigin(0.5));
 
       container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
-        fontFamily: "Orbitron", fontSize: "10px", color: "#CFE9F2",
+        fontFamily: "Orbitron", fontSize: "16px", color: "#CFE9F2",
         stroke: "#000000", strokeThickness: 2, align: "center",
       }).setOrigin(0.5));
 
       container.add(this.add.text(centerX, centerY + 80, "TAP TO CONTINUE", {
-        fontFamily: "Orbitron", fontSize: "20px", color: "#CFE9F2",
+        fontFamily: "Orbitron", fontSize: "16px", color: "#CFE9F2",
         stroke: "#000000", strokeThickness: 4, align: "center",
       }).setOrigin(0.5));
 
@@ -1921,12 +1945,12 @@ export class GameScene extends Phaser.Scene {
     } else {
       // ---- Final level – Congratulations screen ----
       container.add(this.add.text(centerX, centerY - 60, "Congratulations!", {
-        fontFamily: "Orbitron", fontSize: "10px", color: "#00FF9C",
+        fontFamily: "Orbitron", fontSize: "16px", color: "#00FF9C",
         stroke: "#000000", strokeThickness: 2, align: "center",
       }).setOrigin(0.5));
 
       container.add(this.add.text(centerX, centerY + 10, `ENEMIES DESTROYED: ${this.kills}`, {
-        fontFamily: "Orbitron", fontSize: "10px", color: "#CFE9F2",
+        fontFamily: "Orbitron", fontSize: "16px", color: "#CFE9F2",
         stroke: "#000000", strokeThickness: 2, align: "center",
       }).setOrigin(0.5));
 
@@ -1934,7 +1958,7 @@ export class GameScene extends Phaser.Scene {
         .setInteractive({ useHandCursor: true })
         .setScale(UI_SCALE);
       menuBtn.on("pointerover", () => menuBtn.setTint(0xcccccc));
-      menuBtn.on("pointerout",  () => menuBtn.clearTint());
+      menuBtn.on("pointerout", () => menuBtn.clearTint());
       menuBtn.on("pointerdown", () => {
         this.playSfx(AUDIO_KEYS.click, 0.7);
         container.destroy();
@@ -2005,7 +2029,7 @@ export class GameScene extends Phaser.Scene {
     this.add
       .text(centerX, centerY + 30, `ENEMIES DESTROYED: ${this.kills}`, {
         fontFamily: "Orbitron",
-        fontSize: "24px",
+        fontSize: "16px",
         color: "#CFE9F2",
         stroke: "#000000",
         strokeThickness: 3,
@@ -2860,24 +2884,12 @@ export class GameScene extends Phaser.Scene {
   private createUI() {
     const uiDepth = 120;
 
-    this.pausedText = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, "PAUSED", {
-        fontFamily: "Orbitron",
-        fontSize: "48px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 6,
-      })
-      .setOrigin(0.5)
-      .setDepth(uiDepth + 1)
-      .setVisible(false);
-
     this.createBottomUI();
 
     // Lives: 5 mini ship icons. One disappears per hit (HP loss).
-    const startX = 20;
-    const y = 20;
-    const scale = 0.75;
+    const startX = 16;
+    const y = 16;
+    const scale = 0.6;
     const spacing = 30;
 
     this.lifeIcons.forEach((i) => i.destroy());
@@ -2894,23 +2906,32 @@ export class GameScene extends Phaser.Scene {
 
     // Score Text (Top Right)
     this.scoreText = this.add
-      .text(GAME_WIDTH - 20, 20, "0", {
+      .text(GAME_WIDTH - 16, 16, "0", {
         fontFamily: "Orbitron",
-        fontSize: "24px",
+        fontSize: "16px",
         color: "#ffffff",
         stroke: "#000000",
         strokeThickness: 4,
       })
       .setOrigin(1, 0)
       .setDepth(uiDepth);
+
+    // Position level text 16px to the left of score text.
+    this.repositionLevelText();
+  }
+
+  /** Keep level text 16px to the left of score text. */
+  private repositionLevelText() {
+    if (this.levelProgressText && this.scoreText) {
+      this.levelProgressText.setX(this.scoreText.x - this.scoreText.width - 16);
+    }
   }
 
   private createBottomUI() {
     const depth = 120;
 
     // Home/Pause Button (Bottom Left)
-    // 5px padding from left and bottom
-    const padding = 5;
+    const padding = 16;
 
     this.pauseBtn = this.add.container(0, 0);
 
@@ -2926,47 +2947,23 @@ export class GameScene extends Phaser.Scene {
           this.pauseGame();
         }
       });
+    this.homeBtn = homeBtn;
 
     // Position container at padding, GAME_HEIGHT - padding
     // Since button origin is (0,1), placing it at (padding, GAME_HEIGHT - padding)
     // will put its bottom-left corner exactly there.
     homeBtn.setPosition(padding, GAME_HEIGHT - padding);
 
-    // Debug: show the real viewport size (useful for Base app on iPhone).
-    // Displays current game canvas size (ScaleManager gameSize) in CSS pixels.
-    this.viewportSizeText = this.add
-      .text(homeBtn.x, homeBtn.y - homeBtn.displayHeight - 6, "", {
-        fontFamily: "Orbitron",
-        fontSize: "12px",
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 3,
-      })
-      .setOrigin(0, 1)
-      .setDepth(depth + 1)
-      .setScrollFactor(0);
-
-    this.updateViewportSizeText(this.scale.gameSize);
-
     // Add simple hover effect
     homeBtn.on("pointerover", () => homeBtn.setTint(0xcccccc));
     homeBtn.on("pointerout", () => homeBtn.clearTint());
 
-    this.pauseBtn.add([homeBtn, this.viewportSizeText]);
+    this.pauseBtn.add([homeBtn]);
     this.pauseBtn.setDepth(depth);
     this.bottomUIButtons.push(this.pauseBtn);
   }
 
-  private updateViewportSizeText(gameSize: Phaser.Structs.Size) {
-    if (!this.viewportSizeText) return;
 
-    const width = Math.round(gameSize.width);
-    const height = Math.round(gameSize.height);
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    const dprLabel = Number.isInteger(dpr) ? String(dpr) : dpr.toFixed(2);
-
-    this.viewportSizeText.setText(`${width}×${height} dpr:${dprLabel}`);
-  }
 
   private updateLivesUI() {
     for (let i = 0; i < this.lifeIcons.length; i += 1) {
@@ -3023,7 +3020,7 @@ export class GameScene extends Phaser.Scene {
    * L11-16:+300% max bonus => multiplier floor 0.25  (4x speed)
    */
   private getFireRateFloor(): number {
-    if (this.currentLevel <= 5)  return 0.50;    // +100%
+    if (this.currentLevel <= 5) return 0.50;    // +100%
     if (this.currentLevel <= 10) return 1 / 3;   // +200%
     return 0.25;                                  // +300%
   }
@@ -3586,7 +3583,7 @@ export class GameScene extends Phaser.Scene {
     // "Start from the beginning?" label — centred between image (dialogY - 50) and buttons (dialogY + 60)
     const label = this.add.text(dialogX, dialogY + 5, "Start from the beginning?", {
       fontFamily: "Orbitron",
-      fontSize: "18px",
+      fontSize: "16px",
       color: "#FFE066",
       stroke: "#000000",
       strokeThickness: 3,
@@ -3746,8 +3743,8 @@ export class GameScene extends Phaser.Scene {
   private buildShopUI(container: Phaser.GameObjects.Container): number {
     const centerX = GAME_WIDTH / 2;
     // Anchor top of shop grid 20px below the scoreText bottom edge.
-    const scoreBottom = this.scoreText.y + 24; // scoreText origin(1,0), fontSize 24
-    const shopTopPad  = scoreBottom + 20;
+    const scoreBottom = this.scoreText.y + 16; // scoreText origin(1,0), fontSize 16
+    const shopTopPad = scoreBottom + 20;
 
     // --- Pack definitions ---
     interface PackInfo {
@@ -3757,32 +3754,32 @@ export class GameScene extends Phaser.Scene {
       saveFlag: keyof import("../systems/SaveManager").SaveData;
     }
     const PACKS: PackInfo[] = [
-      { key: IMAGE_KEYS.uiPackBase,   cost: 200,  reqLevel: 2,  saveFlag: "packBase"   },
-      { key: IMAGE_KEYS.uiPackMedium, cost: 600,  reqLevel: 5,  saveFlag: "packMedium" },
-      { key: IMAGE_KEYS.uiPackBig,    cost: 1800, reqLevel: 9,  saveFlag: "packBig"    },
-      { key: IMAGE_KEYS.uiPackMaxi,   cost: 5400, reqLevel: 12, saveFlag: "packMaxi"   },
-      { key: IMAGE_KEYS.uiPackXp,     cost: 100,  reqLevel: 1,  saveFlag: "packXp"     },
+      { key: IMAGE_KEYS.uiPackBase, cost: 200, reqLevel: 2, saveFlag: "packBase" },
+      { key: IMAGE_KEYS.uiPackMedium, cost: 600, reqLevel: 5, saveFlag: "packMedium" },
+      { key: IMAGE_KEYS.uiPackBig, cost: 1800, reqLevel: 9, saveFlag: "packBig" },
+      { key: IMAGE_KEYS.uiPackMaxi, cost: 5400, reqLevel: 12, saveFlag: "packMaxi" },
+      { key: IMAGE_KEYS.uiPackXp, cost: 100, reqLevel: 1, saveFlag: "packXp" },
     ];
 
     // Measure button half-dims at UI_SCALE.
     const probe = this.add.image(-9999, -9999, PACKS[0].key).setScale(UI_SCALE);
-    const halfW = probe.displayWidth  / 2;
+    const halfW = probe.displayWidth / 2;
     const halfH = probe.displayHeight / 2;
     probe.destroy();
 
     const gap = 18; // 18px between buttons in both x and y
-    const lx  = centerX - halfW - gap / 2;
-    const rx  = centerX + halfW + gap / 2;
+    const lx = centerX - halfW - gap / 2;
+    const rx = centerX + halfW + gap / 2;
     const firstRowY = shopTopPad + halfH; // first row: 20px below scoreText
-    const rowGap    = halfH * 2 + 18;     // button height + 18px
+    const rowGap = halfH * 2 + 18;     // button height + 18px
     const rowY = [firstRowY, firstRowY + rowGap, firstRowY + rowGap * 2];
 
     // Grid: [basep, mediump], [bigp, maxip], [xpp centred]
     const grid = [
-      { pi: 0, x: lx,      y: rowY[0] },
-      { pi: 1, x: rx,      y: rowY[0] },
-      { pi: 2, x: lx,      y: rowY[1] },
-      { pi: 3, x: rx,      y: rowY[1] },
+      { pi: 0, x: lx, y: rowY[0] },
+      { pi: 1, x: rx, y: rowY[0] },
+      { pi: 2, x: lx, y: rowY[1] },
+      { pi: 3, x: rx, y: rowY[1] },
       { pi: 4, x: centerX, y: rowY[2] },
     ];
 
@@ -3792,7 +3789,7 @@ export class GameScene extends Phaser.Scene {
     const refreshAll = () => {
       const sv = SaveManager.load();
       for (const { img, lbl, pack, isXp } of entries) {
-        const owned  = sv[pack.saveFlag] as boolean;
+        const owned = sv[pack.saveFlag] as boolean;
         const reqMet = sv.currentLevel >= pack.reqLevel;
 
         img.setAlpha(1);
@@ -3809,7 +3806,7 @@ export class GameScene extends Phaser.Scene {
           if (!isXp) lbl.setText("available").setColor("#FFD700").setVisible(true);
           img.clearTint().setInteractive({ useHandCursor: true });
           img.on("pointerover", () => img.setTint(0xcccccc));
-          img.on("pointerout",  () => img.clearTint());
+          img.on("pointerout", () => img.clearTint());
           img.on("pointerdown", () => {
             const sv2 = SaveManager.load();
             if ((sv2[pack.saveFlag] as boolean) || sv2.score < pack.cost) return;
@@ -3820,11 +3817,11 @@ export class GameScene extends Phaser.Scene {
             // Sync in-memory score & on-screen pts counter.
             this.score = sv2.score;
             this.scoreText.setText(`${this.score}`);
-            this.packXp    = sv2.packXp;
-            this.packBase  = sv2.packBase;
+            this.packXp = sv2.packXp;
+            this.packBase = sv2.packBase;
             this.packMedium = sv2.packMedium;
-            this.packBig   = sv2.packBig;
-            this.packMaxi  = sv2.packMaxi;
+            this.packBig = sv2.packBig;
+            this.packMaxi = sv2.packMaxi;
             refreshAll();
           });
         }
@@ -3837,7 +3834,7 @@ export class GameScene extends Phaser.Scene {
       const img = this.add.image(x, y, pack.key).setScale(UI_SCALE);
       const lbl = this.add.text(x, y + halfH + 9, "", {
         fontFamily: "Orbitron",
-        fontSize: "8px",
+        fontSize: "10px",
         color: "#FFFFFF",
         stroke: "#000000",
         strokeThickness: 2,

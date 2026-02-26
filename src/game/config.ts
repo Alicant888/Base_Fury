@@ -1,6 +1,7 @@
 export const GAME_WIDTH = 360;
-export const GAME_HEIGHT = 800;
-export const UI_SCALE = 0.5; // Global scale for UI buttons
+export let GAME_HEIGHT = 677; // Updated at runtime via setGameHeight()
+export function setGameHeight(h: number) { GAME_HEIGHT = h; }
+export const UI_SCALE = 0.42; // Global scale for UI buttons
 
 // Non-atlas assets served from /public/assets/.
 export const IMAGE_KEYS = {
