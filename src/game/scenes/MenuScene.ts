@@ -1,5 +1,6 @@
 import * as Phaser from "phaser";
 import { AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, UI_SCALE, setGameHeight } from "../config";
+import { sendCallsWithOptionalPaymaster } from "../onchain/sendCalls";
 import { SaveManager, SaveData } from "../systems/SaveManager";
 
 const DAY_MS = 86_400_000;
@@ -68,6 +69,26 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
     // If the contract doesn't expose `lastDay`, we can't preflight daily check-ins.
     // We'll attempt the write instead and let the contract enforce its own rules.
     console.warn("Onchain check-in preflight failed:", error);
+  }
+
+  const paymasterServiceUrl = process.env.NEXT_PUBLIC_PAYMASTER_PROXY_URL?.trim();
+  if (paymasterServiceUrl) {
+    const data = viem.encodeFunctionData({
+      abi,
+      functionName: "checkIn",
+      args: [],
+    });
+    return sendCallsWithOptionalPaymaster({
+      provider: provider as { request(args: { method: string; params?: unknown[] }): Promise<unknown> },
+      account,
+      chainIdHex: viem.numberToHex(base.id),
+      calls: [{
+        to: contractAddress,
+        value: "0x0",
+        data,
+      }],
+      paymasterServiceUrl,
+    });
   }
 
   return walletClient.writeContract({
@@ -195,5 +216,4 @@ export class MenuScene extends Phaser.Scene {
     }
   }
 }
-
 
