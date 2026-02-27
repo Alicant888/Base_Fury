@@ -3994,13 +3994,11 @@ export class GameScene extends Phaser.Scene {
           }
 
           const hitPadding = 10;
-          const hitArea = new Phaser.Geom.Rectangle(
-            -img.displayWidth / 2 - hitPadding,
-            -img.displayHeight / 2 - hitPadding,
-            img.displayWidth + hitPadding * 2,
-            img.displayHeight + hitPadding * 2,
-          );
-          img.clearTint().setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+          img.clearTint().setInteractive({ useHandCursor: true });
+          const area = img.input?.hitArea as Phaser.Geom.Rectangle | undefined;
+          if (area) {
+            area.setTo(-hitPadding, -hitPadding, img.width + hitPadding * 2, img.height + hitPadding * 2);
+          }
           if (img.input) img.input.cursor = "pointer";
           img.on("pointerover", () => img.setTint(0xcccccc));
           img.on("pointerout", () => img.clearTint());
