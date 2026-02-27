@@ -3936,6 +3936,13 @@ export class GameScene extends Phaser.Scene {
     ];
     const onchainEnabled = isPackShopOnchainEnabled();
     let pendingOnchainPurchase = false;
+    let pendingOnchainStartedAt = 0;
+    const clearPendingOnchainPurchase = () => {
+      pendingOnchainPurchase = false;
+      pendingOnchainStartedAt = 0;
+    };
+    const isPendingOnchainStale = () =>
+      pendingOnchainPurchase && performance.now() - pendingOnchainStartedAt > 12000;
 
     // Measure button half-dims at UI_SCALE.
     const probe = this.add.image(-9999, -9999, PACKS[0].key).setScale(UI_SCALE);
@@ -3964,6 +3971,7 @@ export class GameScene extends Phaser.Scene {
     let shopUiDisposed = false;
     container.once("destroy", () => {
       shopUiDisposed = true;
+      clearPendingOnchainPurchase();
     });
 
     const isShopUiActive = () =>
@@ -3973,6 +3981,9 @@ export class GameScene extends Phaser.Scene {
       && container.active;
 
     const refreshAll = () => {
+      if (isPendingOnchainStale()) {
+        clearPendingOnchainPurchase();
+      }
       if (!isShopUiActive()) return;
       const sv = SaveManager.load();
       for (const { img, lbl, pack, isXp } of entries) {
@@ -4021,6 +4032,9 @@ export class GameScene extends Phaser.Scene {
             event: Phaser.Types.Input.EventData,
           ) => {
             event?.stopPropagation?.();
+            if (isPendingOnchainStale()) {
+              clearPendingOnchainPurchase();
+            }
             if (!isShopUiActive()) return;
             this.playSfx(AUDIO_KEYS.click, 0.7);
             if (pendingOnchainPurchase) return;
@@ -4049,6 +4063,7 @@ export class GameScene extends Phaser.Scene {
             if (!onchainEnabled) return;
 
             pendingOnchainPurchase = true;
+            pendingOnchainStartedAt = performance.now();
             if (isShopUiActive()) {
               if (!isXp) lbl.setText("PENDING...").setColor("#66ccff").setVisible(true);
               img.setTint(0x8888ff);
@@ -4070,7 +4085,7 @@ export class GameScene extends Phaser.Scene {
               console.warn("ETH pack purchase failed:", error);
               if (!isXp && isShopUiActive()) lbl.setText("TX FAILED").setColor("#ff6666").setVisible(true);
             } finally {
-              pendingOnchainPurchase = false;
+              clearPendingOnchainPurchase();
               this.draggingPointerId = null;
               this.hasDragTarget = false;
               this.input.resetPointers();

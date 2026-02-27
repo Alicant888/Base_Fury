@@ -145,7 +145,7 @@ export async function buyPackWithEth({
   const { viem, walletClient } = clients;
   const existing = await withTimeout(
     walletClient.getAddresses(),
-    7000,
+    2500,
     "Wallet connection timed out",
   );
   const [account] = existing.length
@@ -172,7 +172,7 @@ export async function buyPackWithEth({
       value: viem.parseEther(valueEth),
       account,
     }),
-    45000,
+    20000,
     "Transaction request timed out",
   );
 
