@@ -166,7 +166,6 @@ const LIFE_ICON_START_X = 10;
 const LIFE_ICON_TOP_Y = 10;
 const LIFE_ICON_SCALE = 0.6;
 const LIFE_ICON_GAP_X = 4;
-const LIFE_ICON_ROW_GAP = 5;
 const SCORE_RIGHT_PADDING = 10; // отступ pts от правого края
 
 const SHOP_ETH_PRICES = {
@@ -2982,7 +2981,6 @@ export class GameScene extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScale(LIFE_ICON_SCALE);
     const iconWidth = probe.displayWidth;
-    const iconHeight = probe.displayHeight;
     const iconStep = iconWidth + LIFE_ICON_GAP_X;
     probe.destroy();
 
