@@ -4000,11 +4000,8 @@ export class GameScene extends Phaser.Scene {
             img.displayWidth + hitPadding * 2,
             img.displayHeight + hitPadding * 2,
           );
-          img.clearTint().setInteractive({
-            useHandCursor: true,
-            hitArea,
-            hitAreaCallback: Phaser.Geom.Rectangle.Contains,
-          });
+          img.clearTint().setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+          if (img.input) img.input.cursor = "pointer";
           img.on("pointerover", () => img.setTint(0xcccccc));
           img.on("pointerout", () => img.clearTint());
           img.on("pointerdown", async (
