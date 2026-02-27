@@ -3978,8 +3978,8 @@ export class GameScene extends Phaser.Scene {
       const sv = SaveManager.load();
       for (const { img, lbl, pack, isXp } of entries) {
         const owned = sv[pack.saveFlag];
-        const reqMet = sv.currentLevel >= pack.reqLevel;
-        const canBuyWithPoints = pack.costPoints !== null && sv.score >= pack.costPoints;
+        const reqMet = this.currentLevel >= pack.reqLevel;
+        const canBuyWithPoints = pack.costPoints !== null && this.score >= pack.costPoints;
         const canBuyWithEth = onchainEnabled;
 
         img.setAlpha(1);
@@ -4013,18 +4013,18 @@ export class GameScene extends Phaser.Scene {
             const sv2 = SaveManager.load();
             if (sv2[pack.saveFlag]) return;
 
-            const pointsAvailable = pack.costPoints !== null && sv2.score >= pack.costPoints;
+            const pointsAvailable = pack.costPoints !== null && this.score >= pack.costPoints;
             if (pointsAvailable) {
               this.createPackPurchaseConfirmation(pack.displayName, () => {
                 const sv3 = SaveManager.load();
                 if (sv3[pack.saveFlag]) return;
-                if (pack.costPoints === null || sv3.score < pack.costPoints) return;
+                if (pack.costPoints === null || this.score < pack.costPoints) return;
 
                 this.playSfx(AUDIO_KEYS.bought, 0.7);
                 (sv3 as unknown as Record<string, unknown>)[pack.saveFlag as string] = true;
-                sv3.score -= pack.costPoints;
+                this.score -= pack.costPoints;
+                sv3.score = this.score;
                 SaveManager.save(sv3);
-                this.score = sv3.score;
                 this.scoreText.setText(`${this.score}`);
                 this.applyPackFlags(sv3, false);
                 refreshAll();
