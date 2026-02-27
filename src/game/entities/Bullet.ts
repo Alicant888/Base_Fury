@@ -9,7 +9,7 @@ export class Bullet extends Phaser.Physics.Arcade.Image {
 
     this.setActive(false);
     this.setVisible(false);
-    this.setDepth(4);
+    this.setDepth(1.5);
   }
 
   fire(x: number, y: number) {

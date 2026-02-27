@@ -17,7 +17,7 @@ export class BigSpaceGunProjectile extends Phaser.Physics.Arcade.Sprite {
 
     this.setActive(false);
     this.setVisible(false);
-    this.setDepth(4);
+    this.setDepth(1.5);
     this.setScale(BIG_SPACE_GUN_PROJECTILE_SCALE);
   }
 

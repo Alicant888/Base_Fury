@@ -17,7 +17,7 @@ export class RocketProjectile extends Phaser.Physics.Arcade.Sprite {
 
     this.setActive(false);
     this.setVisible(false);
-    this.setDepth(4);
+    this.setDepth(1.5);
     this.setScale(ROCKET_SCALE);
   }
 
