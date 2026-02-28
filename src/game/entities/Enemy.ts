@@ -577,7 +577,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       if (isFighter) {
         this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.85 ? "hunt" : "zigzag";
       } else if (isTorpedo) {
-        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.70 ? "hunt" : "zigzag";
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.20 ? "hunt" : "zigzag";
+      } else if (isFrigate) {
+        // Frigate is heavier but should still track the player a bit.
+        this.aiMode = "hunt";
       } else if (this.kind === "scout") {
         this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.45 ? "zigzag" : "none";
       }
@@ -587,10 +590,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.aiZigzagSpeedX = isTorpedo ? Phaser.Math.Between(45, 85) : isFighter ? Phaser.Math.Between(70, 125) : Phaser.Math.Between(40, 80);
         this.aiZigzagNextToggleAt = this.scene.time.now + Phaser.Math.Between(280, 520);
       } else if (this.aiMode === "hunt") {
-        this.aiHuntMaxSpeedX = isTorpedo ? Phaser.Math.Between(70, 120) : Phaser.Math.Between(90, 150);
-        this.aiHuntK = isTorpedo ? Phaser.Math.FloatBetween(1.2, 1.8) : Phaser.Math.FloatBetween(1.6, 2.4);
+        this.aiHuntMaxSpeedX = isTorpedo
+          ? Phaser.Math.Between(70, 120)
+          : isFrigate
+            ? Phaser.Math.Between(65, 105)
+            : Phaser.Math.Between(90, 150);
+        this.aiHuntK = isTorpedo ? Phaser.Math.FloatBetween(1.2, 1.8) : isFrigate ? Phaser.Math.FloatBetween(1.0, 1.6) : Phaser.Math.FloatBetween(1.6, 2.4);
         this.aiHuntDeadzonePx = Phaser.Math.Between(3, 6);
-        const offsetRange = isTorpedo ? 18 : 12;
+        const offsetRange = isTorpedo ? 18 : isFrigate ? 14 : 12;
         this.aiHuntTargetOffsetX = Phaser.Math.Between(-offsetRange, offsetRange);
       }
     }
@@ -906,14 +913,27 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const playerX = typeof playerXRaw === "number" ? playerXRaw : this.x;
     const { minX, maxX } = this.getStandardBoundsX();
 
-    const offsetRange = this.kind === "torpedo" ? 18 : 12;
+    const isScout = this.kind === "scout";
+    const isTorpedo = this.kind === "torpedo";
+    const isFrigate = this.kind === "frigate";
+    const isBattlecruiser = this.kind === "battlecruiser";
+
+    const offsetRange = isTorpedo ? 18 : isBattlecruiser ? 18 : isFrigate ? 14 : isScout ? 10 : 12;
     const targetX = Phaser.Math.Clamp(playerX + Phaser.Math.Between(-offsetRange, offsetRange), minX, maxX);
     const dx = targetX - this.x;
     const dist = Math.abs(dx);
 
-    const durationMs = this.kind === "torpedo" ? Phaser.Math.Between(650, 950) : Phaser.Math.Between(520, 820);
-    const minSpeedX = this.kind === "torpedo" ? 150 : 180;
-    const maxSpeedX = this.kind === "torpedo" ? 420 : 520;
+    const durationMs = isTorpedo
+      ? Phaser.Math.Between(650, 950)
+      : isBattlecruiser
+        ? Phaser.Math.Between(820, 1200)
+        : isFrigate
+          ? Phaser.Math.Between(720, 1050)
+          : isScout
+            ? Phaser.Math.Between(450, 750)
+            : Phaser.Math.Between(520, 820);
+    const minSpeedX = isTorpedo ? 150 : isBattlecruiser ? 100 : isFrigate ? 120 : isScout ? 200 : 180;
+    const maxSpeedX = isTorpedo ? 420 : isBattlecruiser ? 260 : isFrigate ? 320 : isScout ? 520 : 520;
     const desiredSpeedX = dist / Math.max(0.001, durationMs / 1000);
 
     this.preFireState = "aligning";
@@ -1009,23 +1029,57 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const body = this.body as Phaser.Physics.Arcade.Body | null;
     if (!body) return;
 
-    // Once at hover Y, stop descending and drift horizontally.
-    if (this.y >= MINI_BOSS_HOVER_Y) {
-      body.velocity.y = 0;
-      this.setY(MINI_BOSS_HOVER_Y);
-
-      const halfW = (this.displayWidth || this.width) * 0.5;
-      const minX = halfW + 4;
-      const maxX = GAME_WIDTH - halfW - 4;
-      if (this.x <= minX) this.dreadnoughtDriftDir = 1;
-      if (this.x >= maxX) this.dreadnoughtDriftDir = -1;
-      body.velocity.x = this.dreadnoughtDriftDir * MINI_BOSS_DRIFT_SPEED;
+    // Descend normally until reaching hover Y.
+    if (this.y < MINI_BOSS_HOVER_Y) {
+      body.velocity.x = 0;
+      return;
     }
 
-    // Fire normally.
+    // Hover and "aim" instead of random drifting.
+    body.velocity.y = 0;
+    this.setY(MINI_BOSS_HOVER_Y);
+
+    const { minX, maxX } = this.getStandardBoundsX();
+
+    // If we're aligning for a shot, keep aligning.
+    if (this.preFireState === "aligning") {
+      this.updatePreFireAlign(time);
+      return;
+    }
+
+    // Track the player while idle (keeps pressure, feels intentional).
+    if (!this.isFiring) {
+      const playerXRaw = this.scene.registry.get("playerX");
+      const playerX = typeof playerXRaw === "number" ? playerXRaw : this.x;
+      const targetX = Phaser.Math.Clamp(playerX, minX, maxX);
+      const dx = targetX - this.x;
+
+      const deadzonePx = 4;
+      const speedX =
+        this.kind === "battlecruiser"
+          ? MINI_BOSS_DRIFT_SPEED
+          : this.kind === "frigate"
+            ? MINI_BOSS_DRIFT_SPEED + 8
+            : MINI_BOSS_DRIFT_SPEED + 12;
+
+      body.velocity.x = Math.abs(dx) <= deadzonePx ? 0 : Math.sign(dx) * speedX;
+    } else {
+      body.velocity.x = 0;
+    }
+
+    // Clamp within bounds.
+    if (this.x <= minX) {
+      this.setX(minX);
+      if (body.velocity.x < 0) body.velocity.x = 0;
+    } else if (this.x >= maxX) {
+      this.setX(maxX);
+      if (body.velocity.x > 0) body.velocity.x = 0;
+    }
+
+    // Aim then fire.
     if (!this.isFiring && this.enemyBullets && time >= this.nextFireAt) {
       if (this.kind !== "torpedo" || !this.torpedoSalvoDone) {
-        this.startFiringSequence();
+        this.beginPreFireAlign(time);
       }
     }
   }

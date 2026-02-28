@@ -237,9 +237,13 @@ export class EnemySpawner {
     // Formation selection.
     // Keep it simple: V-waves, horizontal lines, and flankers.
     const roll = Phaser.Math.FloatBetween(0, 1);
-    const pattern: "v" | "line" | "pincer" | "column" =
+    const pattern: "v" | "line" | "pincer" | "column" | "strike" =
       kind === "torpedo"
-        ? (roll < 0.55 ? "pincer" : "column")
+        ? roll < 0.35
+          ? "strike"
+          : roll < 0.65
+            ? "pincer"
+            : "column"
         : kind === "fighter"
           ? (roll < 0.40 ? "pincer" : roll < 0.75 ? "v" : "line")
           : roll < 0.55
@@ -248,6 +252,9 @@ export class EnemySpawner {
               ? "line"
               : "column";
 
+    if (pattern === "strike") {
+      return this.spawnTorpedoBomberWave(shieldChance, baseSpeedY);
+    }
     if (pattern === "pincer") {
       return this.spawnPincer(kind, shieldChance, baseSpeedY);
     }
@@ -329,6 +336,27 @@ export class EnemySpawner {
       const y = baseY - i * 34;
       if (this.spawnEnemyAt(x, y, baseSpeedY, kind, shieldChance)) spawned += 1;
     }
+    return spawned;
+  }
+
+  private spawnTorpedoBomberWave(torpedoShieldChance: number, baseSpeedY: number): number {
+    const baseY = -24;
+    const torpedoDx = 22;
+    const bomberDx = 64;
+    const margin = 24 + bomberDx;
+    const centerX = Phaser.Math.Between(margin, GAME_WIDTH - margin);
+
+    let spawned = 0;
+
+    // 2 Torpedoes: staggered so their salvos don't fully overlap.
+    if (this.spawnEnemyAt(centerX - torpedoDx, baseY, baseSpeedY, "torpedo", torpedoShieldChance)) spawned += 1;
+    if (this.spawnEnemyAt(centerX + torpedoDx, baseY - 26, baseSpeedY, "torpedo", torpedoShieldChance)) spawned += 1;
+
+    // 2 Bombers: slightly behind so they arrive after the torpedo salvo starts.
+    const bomberShieldChance = 1;
+    if (this.spawnEnemyAt(centerX - bomberDx, baseY - 78, baseSpeedY, "bomber", bomberShieldChance)) spawned += 1;
+    if (this.spawnEnemyAt(centerX + bomberDx, baseY - 98, baseSpeedY, "bomber", bomberShieldChance)) spawned += 1;
+
     return spawned;
   }
 
