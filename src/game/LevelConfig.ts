@@ -88,7 +88,7 @@ export const LEVELS: LevelConfig[] = [
   // Level 1 вЂ“ Easy intro (scouts only, no shields, no drops)
   // -----------------------------------------------------------------------
   {
-    level: 1, distanceGoal: 300, bgSet: "none",
+    level: 1, distanceGoal: 100, bgSet: "none",
     asteroidMultiplier: 0, spawnInterval: [800, 1200], enemySpeed: [70, 120],
     enemies: [{ kind: "scout", weight: 1.0, shieldChance: 0 }],
     drops: { health: 0, shield: 0, firingRate: 0, firingRate2: 0, ...NWD },

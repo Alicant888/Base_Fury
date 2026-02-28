@@ -11,6 +11,7 @@ export class EnemySpawner {
   private levelConfig?: LevelConfig;
   private nextEscortWaveAt = 0;
   private escortWaveIndex = 0;
+  private formationCooldownUntil = 0;
 
   constructor(
     private scene: Phaser.Scene,
@@ -27,6 +28,7 @@ export class EnemySpawner {
     this.escortWaveIndex = 0;
     this.nextEscortWaveAt = 0;
     this.nextSpawnAt = 0;
+    this.formationCooldownUntil = 0;
   }
 
   /** True once the Dreadnought has been spawned and then destroyed. */
@@ -56,9 +58,11 @@ export class EnemySpawner {
 
     // Regular level spawning.
     if (time < this.nextSpawnAt) return;
-    this.spawnOne();
+    const spawnedCount = this.spawnOne(time);
     const [min, max] = this.levelConfig.spawnInterval;
-    this.nextSpawnAt = time + Phaser.Math.Between(min, max);
+    const baseInterval = Phaser.Math.Between(min, max);
+    // If we spawned a coordinated formation, slow the next spawn a bit to keep overall density reasonable.
+    this.nextSpawnAt = time + baseInterval * Math.max(1, spawnedCount);
   }
 
   /**
@@ -150,8 +154,8 @@ export class EnemySpawner {
   // Regular enemy spawning (weighted by LevelConfig)
   // ---------------------------------------------------------------------------
 
-  private spawnOne() {
-    if (!this.levelConfig) return;
+  private spawnOne(time: number): number {
+    if (!this.levelConfig) return 0;
 
     const x = Phaser.Math.Between(24, GAME_WIDTH - 24);
     const y = -24;
@@ -172,10 +176,14 @@ export class EnemySpawner {
     }
 
     const kind: EnemyKind = picked.kind;
+
+    const formationSpawned = this.trySpawnFormation(time, picked.kind, picked.shieldChance, speedY);
+    if (formationSpawned > 0) return formationSpawned;
+
     const hasShield = Phaser.Math.FloatBetween(0, 1) < picked.shieldChance;
 
     const enemy = this.enemies.get(x, y) as Enemy | null;
-    if (!enemy) return;
+    if (!enemy) return 0;
     enemy.spawn(x, y, speedY, this.enemyBullets, kind, hasShield);
 
     // Some shielded heavy enemies hover + drift like a mini-boss.
@@ -189,5 +197,150 @@ export class EnemySpawner {
         enemy.setMiniBoss(true);
       }
     }
+
+    return 1;
+  }
+
+  private trySpawnFormation(
+    time: number,
+    kind: EnemyKind,
+    shieldChance: number,
+    baseSpeedY: number,
+  ): number {
+    if (!this.levelConfig) return 0;
+    if (time < this.formationCooldownUntil) return 0;
+
+    // Avoid overwhelming early levels; keep formations to lighter enemies only.
+    if (this.levelConfig.level <= 1) return 0;
+    if (kind !== "scout" && kind !== "fighter" && kind !== "torpedo") return 0;
+
+    // Level- and kind-based formation chance.
+    const level = this.levelConfig.level;
+    const levelFactor = level <= 3 ? 0.65 : level <= 7 ? 0.85 : 1.0;
+    const kindChanceBase = kind === "scout" ? 0.22 : kind === "fighter" ? 0.18 : 0.12;
+    const chance = kindChanceBase * levelFactor;
+    if (Phaser.Math.FloatBetween(0, 1) >= chance) return 0;
+
+    const spawned = this.spawnFormation(kind, shieldChance, baseSpeedY);
+    if (spawned > 1) {
+      // Cooldown prevents back-to-back waves.
+      this.formationCooldownUntil = time + Phaser.Math.Between(2400, 5200);
+    }
+    return spawned;
+  }
+
+  private spawnFormation(kind: EnemyKind, shieldChance: number, baseSpeedY: number): number {
+    if (!this.levelConfig) return 0;
+
+    const level = this.levelConfig.level;
+
+    // Formation selection.
+    // Keep it simple: V-waves, horizontal lines, and flankers.
+    const roll = Phaser.Math.FloatBetween(0, 1);
+    const pattern: "v" | "line" | "pincer" | "column" =
+      kind === "torpedo"
+        ? (roll < 0.55 ? "pincer" : "column")
+        : kind === "fighter"
+          ? (roll < 0.40 ? "pincer" : roll < 0.75 ? "v" : "line")
+          : roll < 0.55
+            ? "v"
+            : roll < 0.85
+              ? "line"
+              : "column";
+
+    if (pattern === "pincer") {
+      return this.spawnPincer(kind, shieldChance, baseSpeedY);
+    }
+    if (pattern === "column") {
+      const count = kind === "torpedo" ? 2 : Phaser.Math.Between(2, 3);
+      return this.spawnColumn(kind, shieldChance, baseSpeedY, count);
+    }
+    if (pattern === "line") {
+      const count = kind === "scout" ? (level >= 6 ? 4 : 3) : 3;
+      return this.spawnLine(kind, shieldChance, baseSpeedY, count);
+    }
+
+    // V pattern.
+    const arms = kind === "scout" ? (level >= 6 ? 2 : 1) : 1;
+    return this.spawnV(kind, shieldChance, baseSpeedY, arms);
+  }
+
+  private spawnEnemyAt(
+    x: number,
+    y: number,
+    speedY: number,
+    kind: EnemyKind,
+    shieldChance: number,
+  ): boolean {
+    if (!this.levelConfig) return false;
+
+    const enemy = this.enemies.get(x, y) as Enemy | null;
+    if (!enemy) return false;
+
+    const hasShield = Phaser.Math.FloatBetween(0, 1) < shieldChance;
+    const spd = Math.max(40, speedY + Phaser.Math.Between(-10, 10));
+    enemy.spawn(x, y, spd, this.enemyBullets, kind, hasShield);
+    return true;
+  }
+
+  private spawnV(kind: EnemyKind, shieldChance: number, baseSpeedY: number, arms: number): number {
+    // Example (arms=2): 5 ships: center, +/-1, +/-2.
+    const baseY = -24;
+    const dx = kind === "fighter" ? 28 : kind === "torpedo" ? 30 : 26;
+    const margin = 24 + arms * dx;
+    const baseX = Phaser.Math.Between(margin, GAME_WIDTH - margin);
+
+    let spawned = 0;
+    if (this.spawnEnemyAt(baseX, baseY, baseSpeedY, kind, shieldChance)) spawned += 1;
+
+    for (let i = 1; i <= arms; i += 1) {
+      const y = baseY - i * 26;
+      if (this.spawnEnemyAt(baseX - i * dx, y, baseSpeedY, kind, shieldChance)) spawned += 1;
+      if (this.spawnEnemyAt(baseX + i * dx, y, baseSpeedY, kind, shieldChance)) spawned += 1;
+    }
+
+    return spawned;
+  }
+
+  private spawnLine(kind: EnemyKind, shieldChance: number, baseSpeedY: number, count: number): number {
+    const baseY = -24;
+    const dx = kind === "fighter" ? 30 : kind === "torpedo" ? 34 : 28;
+    const span = dx * (count - 1);
+    const halfSpan = span * 0.5;
+    const margin = 24 + halfSpan;
+    const centerX = Phaser.Math.Between(Math.ceil(margin), Math.floor(GAME_WIDTH - margin));
+    const startX = centerX - halfSpan;
+
+    let spawned = 0;
+    for (let i = 0; i < count; i += 1) {
+      const x = startX + i * dx;
+      // Slight arc so it doesn't look too static.
+      const y = baseY - Math.abs(i - (count - 1) * 0.5) * 10;
+      if (this.spawnEnemyAt(x, y, baseSpeedY, kind, shieldChance)) spawned += 1;
+    }
+    return spawned;
+  }
+
+  private spawnColumn(kind: EnemyKind, shieldChance: number, baseSpeedY: number, count: number): number {
+    const x = Phaser.Math.Between(24, GAME_WIDTH - 24);
+    const baseY = -24;
+    let spawned = 0;
+    for (let i = 0; i < count; i += 1) {
+      const y = baseY - i * 34;
+      if (this.spawnEnemyAt(x, y, baseSpeedY, kind, shieldChance)) spawned += 1;
+    }
+    return spawned;
+  }
+
+  private spawnPincer(kind: EnemyKind, shieldChance: number, baseSpeedY: number): number {
+    // Two enemies spawn near the edges to create "flankers".
+    const baseY = -24;
+    const edgeX = 34;
+
+    let spawned = 0;
+    if (this.spawnEnemyAt(edgeX, baseY, baseSpeedY, kind, shieldChance)) spawned += 1;
+    if (this.spawnEnemyAt(GAME_WIDTH - edgeX, baseY - 18, baseSpeedY, kind, shieldChance)) spawned += 1;
+
+    return spawned;
   }
 }
