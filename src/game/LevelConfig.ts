@@ -88,7 +88,7 @@ export const LEVELS: LevelConfig[] = [
   // Level 1 вЂ“ Easy intro (scouts only, no shields, no drops)
   // -----------------------------------------------------------------------
   {
-    level: 1, distanceGoal: 36, bgSet: "none",
+    level: 1, distanceGoal: 300, bgSet: "none",
     asteroidMultiplier: 0, spawnInterval: [800, 1200], enemySpeed: [70, 120],
     enemies: [{ kind: "scout", weight: 1.0, shieldChance: 0 }],
     drops: { health: 0, shield: 0, firingRate: 0, firingRate2: 0, ...NWD },
@@ -98,34 +98,34 @@ export const LEVELS: LevelConfig[] = [
   // Level 2 вЂ“ Fighters appear
   // -----------------------------------------------------------------------
   {
-    level: 2, distanceGoal: 42, bgSet: "none",
+    level: 2, distanceGoal: 400, bgSet: "none",
     asteroidMultiplier: 0, spawnInterval: [750, 1100], enemySpeed: [75, 130],
     enemies: [
       { kind: "scout", weight: 0.85, shieldChance: 0 },
       { kind: "fighter", weight: 0.15, shieldChance: 0 },
     ],
-    drops: { health: 0.03, shield: 0.20, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    drops: { health: 0.02, shield: 0.1, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 3 вЂ“ First shields
   // -----------------------------------------------------------------------
   {
-    level: 3, distanceGoal: 48, bgSet: "none",
+    level: 3, distanceGoal: 400, bgSet: "none",
     asteroidMultiplier: 0, spawnInterval: [700, 1050], enemySpeed: [80, 140],
     enemies: [
       { kind: "scout", weight: 0.60, shieldChance: 0.05 },
       { kind: "fighter", weight: 0.30, shieldChance: 0 },
       { kind: "bomber", weight: 0.10, shieldChance: 1 },
     ],
-    drops: { health: 0.03, shield: 0.20, firingRate: 0.02, firingRate2: 0.01, ...NWD },
+    drops: { health: 0.02, shield: 0.1, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 4 вЂ“ Torpedo & frigate intro
   // -----------------------------------------------------------------------
   {
-    level: 4, distanceGoal: 54, bgSet: "none",
+    level: 4, distanceGoal: 400, bgSet: "none",
     asteroidMultiplier: 1.0, spawnInterval: [650, 1000], enemySpeed: [85, 150],
     enemies: [
       { kind: "scout", weight: 0.40, shieldChance: 0.05 },
@@ -134,14 +134,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.10, shieldChance: 0.15 },
       { kind: "bomber", weight: 0.10, shieldChance: 1 },
     ],
-    drops: { health: 0.04, shield: 0.20, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 5 вЂ“ Stronger shields
   // -----------------------------------------------------------------------
   {
-    level: 5, distanceGoal: 60, bgSet: "none",
+    level: 5, distanceGoal: 500, bgSet: "none",
     asteroidMultiplier: 1.5, spawnInterval: [600, 950], enemySpeed: [90, 155],
     enemies: [
       { kind: "scout", weight: 0.25, shieldChance: 0.10 },
@@ -150,14 +150,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.20, shieldChance: 0.30 },
       { kind: "bomber", weight: 0.10, shieldChance: 1 },
     ],
-    drops: { health: 0.04, shield: 0.20, firingRate: 0.02, firingRate2: 0.02, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 6 вЂ“ Asteroids background begins
   // -----------------------------------------------------------------------
   {
-    level: 6, distanceGoal: 66, bgSet: "asteroids",
+    level: 6, distanceGoal: 500, bgSet: "asteroids",
     asteroidMultiplier: 3, spawnInterval: [600, 900], enemySpeed: [90, 160],
     enemies: [
       { kind: "scout", weight: 0.15, shieldChance: 0.10 },
@@ -166,14 +166,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "frigate", weight: 0.25, shieldChance: 0.40 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.04, shield: 0.20, firingRate: 0.02, firingRate2: 0.02, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 7 вЂ“ Battlecruiser intro
   // -----------------------------------------------------------------------
   {
-    level: 7, distanceGoal: 72, bgSet: "asteroids",
+    level: 7, distanceGoal: 500, bgSet: "asteroids",
     asteroidMultiplier: 3, spawnInterval: [550, 850], enemySpeed: [95, 165],
     enemies: [
       { kind: "scout", weight: 0.10, shieldChance: 0.15 },
@@ -183,14 +183,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.10, shieldChance: 0.20 },
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
-    drops: { health: 0.05, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 8 вЂ“ Heavy combat
   // -----------------------------------------------------------------------
   {
-    level: 8, distanceGoal: 78, bgSet: "asteroids",
+    level: 8, distanceGoal: 500, bgSet: "asteroids",
     asteroidMultiplier: 3.0, spawnInterval: [500, 800], enemySpeed: [100, 170],
     enemies: [
       { kind: "scout", weight: 0.10, shieldChance: 0.20 },
@@ -200,14 +200,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.15, shieldChance: 0.30 },
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
-    drops: { health: 0.05, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 9 вЂ“ Maximum intensity (asteroids)
   // -----------------------------------------------------------------------
   {
-    level: 9, distanceGoal: 80, bgSet: "asteroids",
+    level: 9, distanceGoal: 500, bgSet: "asteroids",
     asteroidMultiplier: 3.5, spawnInterval: [500, 750], enemySpeed: [100, 175],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.25 },
@@ -217,14 +217,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.25, shieldChance: 0.50 },
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
-    drops: { health: 0.05, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 10 вЂ“ Last pure-asteroids level
   // -----------------------------------------------------------------------
   {
-    level: 10, distanceGoal: 82, bgSet: "asteroids",
+    level: 10, distanceGoal: 500, bgSet: "asteroids",
     asteroidMultiplier: 4, spawnInterval: [480, 720], enemySpeed: [105, 180],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.30 },
@@ -234,14 +234,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.25, shieldChance: 0.55 },
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
-    drops: { health: 0.05, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.02, shield: 0.10, firingRate: 0.02, firingRate2: 0.02, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 11 вЂ“ Still asteroids (planets start at 12)
   // -----------------------------------------------------------------------
   {
-    level: 11, distanceGoal: 84, bgSet: "asteroids",
+    level: 11, distanceGoal: 500, bgSet: "asteroids",
     asteroidMultiplier: 5, spawnInterval: [470, 700], enemySpeed: [105, 180],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.35 },
@@ -251,14 +251,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.25, shieldChance: 0.60 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.05, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.05, shield: 0.20, firingRate: 0.02, firingRate2: 0.02, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 12 вЂ“ Planets background begins, battlecruiser heavy
   // -----------------------------------------------------------------------
   {
-    level: 12, distanceGoal: 86, bgSet: "planets",
+    level: 12, distanceGoal: 500, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [460, 680], enemySpeed: [110, 185],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.40 },
@@ -268,14 +268,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.30, shieldChance: 0.65 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.06, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.05, shield: 0.20, firingRate: 0.02, firingRate2: 0.02, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 13 вЂ“ Elite enemies
   // -----------------------------------------------------------------------
   {
-    level: 13, distanceGoal: 88, bgSet: "planets",
+    level: 13, distanceGoal: 500, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [450, 660], enemySpeed: [110, 190],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.45 },
@@ -285,14 +285,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.30, shieldChance: 0.70 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.06, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.05, shield: 0.20, firingRate: 0.02, firingRate2: 0.02, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 14 вЂ“ Pre-boss gauntlet
   // -----------------------------------------------------------------------
   {
-    level: 14, distanceGoal: 90, bgSet: "planets",
+    level: 14, distanceGoal: 500, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [440, 640], enemySpeed: [115, 195],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.50 },
@@ -302,14 +302,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.35, shieldChance: 0.75 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.06, shield: 0.20, firingRate: 0.03, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.05, shield: 0.20, firingRate: 0.02, firingRate2: 0.02, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 15 вЂ�� Heavy gauntlet (no boss)
   // -----------------------------------------------------------------------
   {
-    level: 15, distanceGoal: 92, bgSet: "planets",
+    level: 15, distanceGoal: 500, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [430, 640], enemySpeed: [115, 200],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 0.50 },
@@ -319,14 +319,14 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.35, shieldChance: 0.90 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.06, shield: 0.20, firingRate: 0.1, firingRate2: 0.03, ...NWD },
+    drops: { health: 0.05, shield: 0.20, firingRate: 0.1, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
   // Level 16 вЂ“ Final: regular fight в†’ Dreadnought boss at end of distance
   // -----------------------------------------------------------------------
   {
-    level: 16, distanceGoal: 100, bgSet: "planets",
+    level: 16, distanceGoal: 600, bgSet: "planets",
     asteroidMultiplier: 3.5, spawnInterval: [430, 620], enemySpeed: [115, 200],
     enemies: [
       { kind: "scout", weight: 0.05, shieldChance: 1 },
@@ -336,7 +336,7 @@ export const LEVELS: LevelConfig[] = [
       { kind: "battlecruiser", weight: 0.35, shieldChance: 1 },
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
-    drops: { health: 0.07, shield: 0.20, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    drops: { health: 0.05, shield: 0.20, firingRate: 0.01, firingRate2: 0.01, ...NWD },
     isBossLevel: false,
     bossAfterDistance: true,
     bossHp: 5000, bossShieldHp: 5000, escortWaveIntervalMs: 4_000,

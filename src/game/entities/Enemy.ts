@@ -154,6 +154,8 @@ type TorpedoShipShotConfig = {
   offsetY: number;
 };
 
+type StandardEnemyAiMode = "none" | "zigzag" | "hunt";
+
 // Later you can tune each shot position (offsetX/offsetY) and sync frameIndex independently.
 const TORPEDO_SHIP_SALVO_SHOTS: TorpedoShipShotConfig[] = [
   // Left side (3 shots)
@@ -208,6 +210,23 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   private shieldSuppressed = false;
   private _spawnedWithShield = false;
   private _isMiniBoss = false;
+
+  // "Standard" enemy AI (non-bomber / non-boss / non-mini-boss).
+  private aiMode: StandardEnemyAiMode = "none";
+  private aiZigzagDir: -1 | 1 = 1;
+  private aiZigzagSpeedX = 0;
+  private aiZigzagNextToggleAt = 0;
+  private aiHuntMaxSpeedX = 0;
+  private aiHuntK = 0;
+  private aiHuntDeadzonePx = 0;
+  private aiHuntTargetOffsetX = 0;
+
+  // Pre-fire alignment (used by some kinds before starting their firing animation).
+  private preFireState: "none" | "aligning" = "none";
+  private preFireTargetX = 0;
+  private preFireAlignSpeedX = 0;
+  private preFireAlignEpsPx = 0;
+  private preFireAlignUntil = 0;
 
   // Boss-only state (Dreadnought).
   private dreadnoughtState: "idle" | "aligning" | "firing" = "idle";
@@ -273,6 +292,21 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.dreadnoughtDriftDir = Phaser.Math.Between(0, 1) === 0 ? -1 : 1;
     this.bomberPhase = "approach";
     this.bomberSlowUntil = 0;
+
+    // Reset standard AI state (pooled enemy).
+    this.aiMode = "none";
+    this.aiZigzagDir = 1;
+    this.aiZigzagSpeedX = 0;
+    this.aiZigzagNextToggleAt = 0;
+    this.aiHuntMaxSpeedX = 0;
+    this.aiHuntK = 0;
+    this.aiHuntDeadzonePx = 0;
+    this.aiHuntTargetOffsetX = 0;
+    this.preFireState = "none";
+    this.preFireTargetX = 0;
+    this.preFireAlignSpeedX = 0;
+    this.preFireAlignEpsPx = 0;
+    this.preFireAlignUntil = 0;
 
     const defaultHp = isDreadnought ? DREADNOUGHT_HP : isBattlecruiser ? BATTLECRUISER_HP : isFrigate ? FRIGATE_HP : isTorpedo ? TORPEDO_SHIP_HP : isFighter ? FIGHTER_HP : isBomber ? BOMBER_HP : 1;
     this.hp = hpOverride ?? defaultHp;
@@ -537,6 +571,30 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.isFiring = false;
     this.nextFireAt = isBomber ? Number.MAX_SAFE_INTEGER : this.scene.time.now + Phaser.Math.Between(isDreadnought ? 400 : 850, isDreadnought ? 633 : 1400);
 
+    // Standard enemies get a small amount of per-spawn movement variety.
+    // Keep it lightweight: no pathfinding, just simple lateral modes.
+    if (!isBomber && !isDreadnought) {
+      if (isFighter) {
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.85 ? "hunt" : "zigzag";
+      } else if (isTorpedo) {
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.70 ? "hunt" : "zigzag";
+      } else if (this.kind === "scout") {
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.45 ? "zigzag" : "none";
+      }
+
+      if (this.aiMode === "zigzag") {
+        this.aiZigzagDir = Phaser.Math.Between(0, 1) === 0 ? -1 : 1;
+        this.aiZigzagSpeedX = isTorpedo ? Phaser.Math.Between(45, 85) : isFighter ? Phaser.Math.Between(70, 125) : Phaser.Math.Between(40, 80);
+        this.aiZigzagNextToggleAt = this.scene.time.now + Phaser.Math.Between(280, 520);
+      } else if (this.aiMode === "hunt") {
+        this.aiHuntMaxSpeedX = isTorpedo ? Phaser.Math.Between(70, 120) : Phaser.Math.Between(90, 150);
+        this.aiHuntK = isTorpedo ? Phaser.Math.FloatBetween(1.2, 1.8) : Phaser.Math.FloatBetween(1.6, 2.4);
+        this.aiHuntDeadzonePx = Phaser.Math.Between(3, 6);
+        const offsetRange = isTorpedo ? 18 : 12;
+        this.aiHuntTargetOffsetX = Phaser.Math.Between(-offsetRange, offsetRange);
+      }
+    }
+
     // ── Depth (z-order) per enemy type ──
     const d = ENEMY_DEPTH[this.kind];
     this.setDepth(d.body);
@@ -605,10 +663,16 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    if (!this.isFiring && this.enemyBullets && time >= this.nextFireAt) {
+    const isAligning = this.updateStandardEnemyAi(time);
+
+    if (!isAligning && !this.isFiring && this.enemyBullets && time >= this.nextFireAt) {
       // Torpedo Ship fires only once per spawn.
       if (this.kind !== "torpedo" || !this.torpedoSalvoDone) {
-        this.startFiringSequence();
+        if (this.shouldAlignBeforeFiring()) {
+          this.beginPreFireAlign(time);
+        } else {
+          this.startFiringSequence();
+        }
       }
     }
     if (this.y > GAME_HEIGHT + 48) this.kill();
@@ -766,6 +830,123 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   /** Mark this enemy as a mini-boss (hover + drift like Dreadnought). */
   public setMiniBoss(value: boolean) {
     this._isMiniBoss = value;
+  }
+
+  private getStandardBoundsX(): { minX: number; maxX: number } {
+    const halfW = (this.displayWidth || this.width) * 0.5;
+    const minX = halfW + 4;
+    const maxX = GAME_WIDTH - halfW - 4;
+    return { minX, maxX };
+  }
+
+  private updateStandardEnemyAi(time: number): boolean {
+    const body = this.body as Phaser.Physics.Arcade.Body | null;
+    if (!body) return false;
+
+    // Keep enemies readable: don't drift while weapon FX is playing.
+    if (this.isFiring) {
+      body.velocity.x = 0;
+      return false;
+    }
+
+    if (this.preFireState === "aligning") {
+      return this.updatePreFireAlign(time);
+    }
+
+    if (this.aiMode === "zigzag") {
+      if (time >= this.aiZigzagNextToggleAt) {
+        this.aiZigzagDir = this.aiZigzagDir === 1 ? -1 : 1;
+        this.aiZigzagNextToggleAt = time + Phaser.Math.Between(260, 620);
+      }
+      body.velocity.x = this.aiZigzagDir * this.aiZigzagSpeedX;
+    } else if (this.aiMode === "hunt") {
+      const playerXRaw = this.scene.registry.get("playerX");
+      const playerX = typeof playerXRaw === "number" ? playerXRaw : this.x;
+      const { minX, maxX } = this.getStandardBoundsX();
+      const targetX = Phaser.Math.Clamp(playerX + this.aiHuntTargetOffsetX, minX, maxX);
+      const dx = targetX - this.x;
+      if (Math.abs(dx) <= this.aiHuntDeadzonePx) {
+        body.velocity.x = 0;
+      } else {
+        body.velocity.x = Phaser.Math.Clamp(dx * this.aiHuntK, -this.aiHuntMaxSpeedX, this.aiHuntMaxSpeedX);
+      }
+    } else {
+      body.velocity.x = 0;
+    }
+
+    // Stay within bounds.
+    const { minX, maxX } = this.getStandardBoundsX();
+    if (this.x <= minX) {
+      this.setX(minX);
+      if (body.velocity.x < 0) body.velocity.x = Math.abs(body.velocity.x);
+      if (this.aiMode === "zigzag") this.aiZigzagDir = 1;
+    } else if (this.x >= maxX) {
+      this.setX(maxX);
+      if (body.velocity.x > 0) body.velocity.x = -Math.abs(body.velocity.x);
+      if (this.aiMode === "zigzag") this.aiZigzagDir = -1;
+    }
+
+    return false;
+  }
+
+  private shouldAlignBeforeFiring(): boolean {
+    if (this.preFireState !== "none") return false;
+    // Only for standard enemies (not mini-boss / boss / bomber).
+    if (this._isMiniBoss) return false;
+    if (this.kind === "bomber" || this.kind === "dreadnought") return false;
+    return this.kind === "fighter" || this.kind === "torpedo";
+  }
+
+  private beginPreFireAlign(time: number) {
+    const body = this.body as Phaser.Physics.Arcade.Body | null;
+    if (!body) return;
+    if (!this.enemyBullets) return;
+
+    const playerXRaw = this.scene.registry.get("playerX");
+    const playerX = typeof playerXRaw === "number" ? playerXRaw : this.x;
+    const { minX, maxX } = this.getStandardBoundsX();
+
+    const offsetRange = this.kind === "torpedo" ? 18 : 12;
+    const targetX = Phaser.Math.Clamp(playerX + Phaser.Math.Between(-offsetRange, offsetRange), minX, maxX);
+
+    this.preFireState = "aligning";
+    this.preFireTargetX = targetX;
+    this.preFireAlignSpeedX = this.kind === "torpedo" ? Phaser.Math.Between(120, 180) : Phaser.Math.Between(150, 220);
+    this.preFireAlignEpsPx = Phaser.Math.Between(4, 8);
+    this.preFireAlignUntil = time + Phaser.Math.Between(380, 650);
+
+    const dx = targetX - this.x;
+    body.velocity.x = Math.sign(dx || 1) * this.preFireAlignSpeedX;
+  }
+
+  private updatePreFireAlign(time: number): boolean {
+    const body = this.body as Phaser.Physics.Arcade.Body | null;
+    if (!body) return false;
+
+    const { minX, maxX } = this.getStandardBoundsX();
+    const dx = this.preFireTargetX - this.x;
+
+    // Timeout safety: fire anyway even if alignment never converges.
+    if (time >= this.preFireAlignUntil || Math.abs(dx) <= this.preFireAlignEpsPx) {
+      this.setX(Phaser.Math.Clamp(this.preFireTargetX, minX, maxX));
+      body.velocity.x = 0;
+      this.preFireState = "none";
+      this.startFiringSequence();
+      return false;
+    }
+
+    body.velocity.x = Math.sign(dx) * this.preFireAlignSpeedX;
+
+    // Bound safety (avoid drifting off-screen while aligning).
+    if (this.x <= minX) {
+      this.setX(minX);
+      if (body.velocity.x < 0) body.velocity.x = 0;
+    } else if (this.x >= maxX) {
+      this.setX(maxX);
+      if (body.velocity.x > 0) body.velocity.x = 0;
+    }
+
+    return true;
   }
 
   private updateBomber(time: number) {

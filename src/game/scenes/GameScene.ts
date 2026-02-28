@@ -2149,7 +2149,7 @@ export class GameScene extends Phaser.Scene {
     if (r < threshold) return this.spawnFiringRate2Pickup(x, y);
 
     // Drone (satellite) pickup — 2% base drop chance, always available.
-    threshold += 0.2;
+    threshold += 0.05;
     if (r < threshold) return this.spawnDronePickup(x, y);
 
     threshold += d.shield;
