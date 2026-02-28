@@ -46,18 +46,18 @@ const DEPTH_WEAPON = 4.8; // under the ship, still under the shield.
 // Background set is now driven by LevelConfig (per-level).
 
 // Base background (always visible).
-const BG_SCROLL_SPEED_BCG = 0.015;
+const BG_SCROLL_SPEED_BCG = 0.04;
 
 // Asteroids set (reserved for certain levels).
-const ASTEROIDS_SCROLL_SPEED_L4 = 0.3;
-const ASTEROIDS_SCROLL_SPEED_L5 = 0.6;
-const ASTEROIDS_SCROLL_SPEED_L6 = 1.2;
+const ASTEROIDS_SCROLL_SPEED_L4 = 0.6;
+const ASTEROIDS_SCROLL_SPEED_L5 = 1.2;
+const ASTEROIDS_SCROLL_SPEED_L6 = 2.2;
 
 
-const PLANETS_SCROLL_SPEED_L0 = 0.02;
-const PLANETS_SCROLL_SPEED_L1 = 0.03;
-const PLANETS_SCROLL_SPEED_L2 = 0.04;
-const PLANETS_SCROLL_SPEED_L3 = 0.06;
+const PLANETS_SCROLL_SPEED_L0 = 0.04;
+const PLANETS_SCROLL_SPEED_L1 = 0.05;
+const PLANETS_SCROLL_SPEED_L2 = 0.06;
+const PLANETS_SCROLL_SPEED_L3 = 0.08;
 
 const BG_OVERLAY_LAYERS = {
   asteroids: [
@@ -1655,6 +1655,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 0.875);
     this.addShield(5);
   }
 
@@ -1663,6 +1664,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 0.875);
     this.hp = this.maxHp;
     this.updateLivesUI();
     this.updatePlayerDamageAppearance();
@@ -1673,6 +1675,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 0.875);
     // Additive +10% from base (1.0) per pickup.
     // fireRateMultiplier goes from 1.0 down; lower = faster.
     // Cap depends on current level tier.
@@ -1688,6 +1691,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 0.875);
     // Boost active weapon animation speed (+20% per pickup, max +200% = 3.0).
     const MAX_WEAPON_BONUS = 3; // +200%
     const currentRate = this.getActiveWeaponBonusRate();
@@ -1709,6 +1713,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateAutoCannons();
   }
 
@@ -1717,6 +1722,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateRockets();
   }
 
@@ -1725,6 +1731,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateZapper();
   }
 
@@ -1733,6 +1740,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateBigSpaceGun();
   }
 
@@ -1741,6 +1749,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateBaseEngine();
   }
 
@@ -1749,6 +1758,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateSuperchargedEngine();
   }
 
@@ -1757,6 +1767,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateBurstEngine();
   }
 
@@ -1765,6 +1776,7 @@ export class GameScene extends Phaser.Scene {
     if (!pickup.active) return;
 
     pickup.kill();
+    this.playSfx(AUDIO_KEYS.pickup, 1);
     this.activateBigPulseEngine();
   }
 
