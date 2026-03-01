@@ -44,8 +44,8 @@ const SCOUT_HITBOX_W_MULT = 0.5;
 const SCOUT_HITBOX_H_MULT = 0.1;
 
 // Bomber (kamikaze).
-const BOMBER_HP = 1;
-const BOMBER_SHIELD_HP = 1;
+const BOMBER_HP = 5;
+const BOMBER_SHIELD_HP = 5;
 const BOMBER_COLLISION_DAMAGE = 5;
 const BOMBER_HITBOX_W_MULT = 0.5;
 const BOMBER_HITBOX_H_MULT = 0.1;
@@ -569,20 +569,27 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.weaponFx.removeAllListeners();
 
     this.isFiring = false;
-    this.nextFireAt = isBomber ? Number.MAX_SAFE_INTEGER : this.scene.time.now + Phaser.Math.Between(isDreadnought ? 400 : 850, isDreadnought ? 633 : 1400);
+    if (isBomber) {
+      this.nextFireAt = Number.MAX_SAFE_INTEGER;
+    } else {
+      // Torpedo ship should start aiming/firing quickly so it feels like a threat (it only fires once per spawn).
+      const minDelayMs = isDreadnought ? 400 : isTorpedo ? 180 : 850;
+      const maxDelayMs = isDreadnought ? 633 : isTorpedo ? 320 : 1400;
+      this.nextFireAt = this.scene.time.now + Phaser.Math.Between(minDelayMs, maxDelayMs);
+    }
 
     // Standard enemies get a small amount of per-spawn movement variety.
     // Keep it lightweight: no pathfinding, just simple lateral modes.
     if (!isBomber && !isDreadnought) {
       if (isFighter) {
-        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.85 ? "hunt" : "zigzag";
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.95 ? "hunt" : "zigzag";
       } else if (isTorpedo) {
-        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.20 ? "hunt" : "zigzag";
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.20 ? "hunt" : "none";
       } else if (isFrigate) {
         // Frigate is heavier but should still track the player a bit.
         this.aiMode = "hunt";
       } else if (this.kind === "scout") {
-        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.45 ? "zigzag" : "none";
+        this.aiMode = Phaser.Math.FloatBetween(0, 1) < 0.65 ? "zigzag" : "none";
       }
 
       if (this.aiMode === "zigzag") {
@@ -924,7 +931,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const dist = Math.abs(dx);
 
     const durationMs = isTorpedo
-      ? Phaser.Math.Between(650, 950)
+      ? Phaser.Math.Between(260, 420)
       : isBattlecruiser
         ? Phaser.Math.Between(820, 1200)
         : isFrigate
@@ -932,8 +939,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
           : isScout
             ? Phaser.Math.Between(450, 750)
             : Phaser.Math.Between(520, 820);
-    const minSpeedX = isTorpedo ? 150 : isBattlecruiser ? 100 : isFrigate ? 120 : isScout ? 200 : 180;
-    const maxSpeedX = isTorpedo ? 420 : isBattlecruiser ? 260 : isFrigate ? 320 : isScout ? 520 : 520;
+    const minSpeedX = isTorpedo ? 220 : isBattlecruiser ? 100 : isFrigate ? 120 : isScout ? 200 : 180;
+    const maxSpeedX = isTorpedo ? 680 : isBattlecruiser ? 260 : isFrigate ? 320 : isScout ? 520 : 520;
     const desiredSpeedX = dist / Math.max(0.001, durationMs / 1000);
 
     this.preFireState = "aligning";

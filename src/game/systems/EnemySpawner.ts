@@ -260,7 +260,22 @@ export class EnemySpawner {
       return this.spawnFrigateEscort(shieldChance, baseSpeedY);
     }
     if (kind === "battlecruiser") {
-      return this.spawnBattlecruiserScreen(shieldChance, baseSpeedY);
+      const canFrigateWing = this.isKindAllowed("frigate");
+      const canScoutScreen = this.isKindAllowed("scout");
+
+      // Prefer frigate wing sometimes (feels like a heavier "task force").
+      if (canFrigateWing && (!canScoutScreen || Phaser.Math.FloatBetween(0, 1) < 0.55)) {
+        const spawned = this.spawnBattlecruiserFrigateWing(shieldChance, baseSpeedY);
+        if (spawned > 0) return spawned;
+      }
+      if (canScoutScreen) {
+        const spawned = this.spawnBattlecruiserScreen(shieldChance, baseSpeedY);
+        if (spawned > 0) return spawned;
+      }
+      if (canFrigateWing) {
+        return this.spawnBattlecruiserFrigateWing(shieldChance, baseSpeedY);
+      }
+      return 0;
     }
     if (kind === "bomber") {
       return this.spawnBomberRush(baseSpeedY);
@@ -269,13 +284,15 @@ export class EnemySpawner {
     // Formation selection.
     // Keep it simple: V-waves, horizontal lines, and flankers.
     const roll = Phaser.Math.FloatBetween(0, 1);
-    const pattern: "v" | "line" | "pincer" | "column" | "strike" =
+    const pattern: "v" | "line" | "pincer" | "column" | "strike" | "escort" =
       kind === "torpedo"
-        ? roll < 0.35
+        ? roll < 0.28
           ? "strike"
-          : roll < 0.65
-            ? "pincer"
-            : "column"
+          : this.isKindAllowed("fighter") && roll < 0.52
+            ? "escort"
+            : roll < 0.76
+              ? "pincer"
+              : "column"
         : kind === "fighter"
           ? (roll < 0.40 ? "pincer" : roll < 0.75 ? "v" : "line")
           : roll < 0.55
@@ -286,6 +303,9 @@ export class EnemySpawner {
 
     if (pattern === "strike") {
       return this.spawnTorpedoBomberWave(shieldChance, baseSpeedY);
+    }
+    if (pattern === "escort") {
+      return this.spawnTorpedoFighterEscort(shieldChance, baseSpeedY);
     }
     if (pattern === "pincer") {
       return this.spawnPincer(kind, shieldChance, baseSpeedY);
@@ -377,6 +397,29 @@ export class EnemySpawner {
     if (this.spawnEnemyAt(centerX + wideDx, baseY - 22, scoutSpeedY, "scout", scoutShieldChance)) spawned += 1;
     if (this.spawnEnemyAt(centerX - midDx, baseY - 46, scoutSpeedY, "scout", scoutShieldChance)) spawned += 1;
     if (this.spawnEnemyAt(centerX + midDx, baseY - 58, scoutSpeedY, "scout", scoutShieldChance)) spawned += 1;
+
+    return spawned;
+  }
+
+  private spawnBattlecruiserFrigateWing(battlecruiserShieldChance: number, baseSpeedY: number): number {
+    if (!this.levelConfig) return 0;
+    if (!this.isKindAllowed("frigate")) return 0;
+
+    const baseY = -24;
+    const wingDx = Phaser.Math.Between(98, 116);
+    const margin = 24 + wingDx;
+    const centerX = Phaser.Math.Between(margin, GAME_WIDTH - margin);
+
+    const frigateShieldChance = this.getShieldChanceFor("frigate");
+
+    let spawned = 0;
+    // Leader.
+    if (this.spawnEnemyAt(centerX, baseY, baseSpeedY, "battlecruiser", battlecruiserShieldChance)) spawned += 1;
+
+    // Wings: slightly behind to feel like escorts.
+    const wingSpeedY = baseSpeedY + 15;
+    if (this.spawnEnemyAt(centerX - wingDx, baseY - 42, wingSpeedY, "frigate", frigateShieldChance)) spawned += 1;
+    if (this.spawnEnemyAt(centerX + wingDx, baseY - 60, wingSpeedY, "frigate", frigateShieldChance)) spawned += 1;
 
     return spawned;
   }
@@ -494,6 +537,30 @@ export class EnemySpawner {
       if (this.spawnEnemyAt(centerX - bomberDx, baseY - 78, baseSpeedY, "bomber", bomberShieldChance)) spawned += 1;
       if (this.spawnEnemyAt(centerX + bomberDx, baseY - 98, baseSpeedY, "bomber", bomberShieldChance)) spawned += 1;
     }
+
+    return spawned;
+  }
+
+  private spawnTorpedoFighterEscort(torpedoShieldChance: number, baseSpeedY: number): number {
+    if (!this.levelConfig) return 0;
+    if (!this.isKindAllowed("fighter")) return 0;
+
+    const baseY = -24;
+    const wingDx = Phaser.Math.Between(58, 68);
+    const margin = 24 + wingDx;
+    const centerX = Phaser.Math.Between(margin, GAME_WIDTH - margin);
+
+    const fighterShieldChance = this.getShieldChanceFor("fighter");
+
+    let spawned = 0;
+
+    // Leader.
+    if (this.spawnEnemyAt(centerX, baseY, baseSpeedY, "torpedo", torpedoShieldChance)) spawned += 1;
+
+    // Escorts: a bit faster so they can screen the player while the torpedo aims.
+    const escortSpeedY = baseSpeedY + 20;
+    if (this.spawnEnemyAt(centerX - wingDx, baseY - 18, escortSpeedY, "fighter", fighterShieldChance)) spawned += 1;
+    if (this.spawnEnemyAt(centerX + wingDx, baseY - 30, escortSpeedY, "fighter", fighterShieldChance)) spawned += 1;
 
     return spawned;
   }

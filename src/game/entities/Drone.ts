@@ -33,7 +33,7 @@ export class Drone extends Phaser.Physics.Arcade.Image {
 
     /** Activate the drone sprite. orbitRadius is set from the player's display width. */
     activate(playerWidth: number) {
-        this.orbitRadius = playerWidth * 1.8;
+        this.orbitRadius = playerWidth * 1.4;
         this.hp = DRONE_MAX_HP;
         this.orbitAngle = Math.PI; // start from under the ship
         this.setActive(true);
