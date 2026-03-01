@@ -32,10 +32,16 @@ export class Drone extends Phaser.Physics.Arcade.Image {
     }
 
     /** Activate the drone sprite. orbitRadius is set from the player's display width. */
-    activate(playerWidth: number) {
+    activate(playerWidth: number, spawnX?: number, spawnY?: number) {
         this.orbitRadius = playerWidth * 1.4;
         this.hp = DRONE_MAX_HP;
         this.orbitAngle = Math.PI; // start from under the ship
+
+        // Spawn on top of the player to avoid the drone "flying in" from (0,0).
+        if (typeof spawnX === "number" && typeof spawnY === "number") {
+            this.setPosition(spawnX, spawnY);
+        }
+
         this.setActive(true);
         this.setVisible(true);
 
@@ -43,6 +49,7 @@ export class Drone extends Phaser.Physics.Arcade.Image {
         if (body) {
             body.enable = true;
             body.setSize(this.width * 0.8, this.height * 0.8, true);
+            body.reset(this.x, this.y);
         }
     }
 

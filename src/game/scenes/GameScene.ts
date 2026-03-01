@@ -36,11 +36,11 @@ const BASE_MOVE_SPEED_MULTIPLIER = 0.8; // Main Ship is 20% slower by default.
 
 // ── Fan (spread) shooting constants ──────────────────────────
 const FAN_ANGLE_DEG = 5;               // Side bullets angle offset (degrees).
-const FAN_FIRE_RATE_BOOST_STEP = 0.05; // +5% per pickup.
+const FAN_FIRE_RATE_BOOST_STEP = 0.025; // +2,5% per pickup.
 const FAN_FIRE_RATE_FLOOR = 0.5;       // Max fan boost = +100% (2× speed).
 
 // ── Drone (satellite) constants ──────────────────────────────
-const DRONE_FIRE_RATE_BOOST_STEP = 0.1;  // +10% per pickup.
+const DRONE_FIRE_RATE_BOOST_STEP = 0.025;  // +2,5% per pickup.
 const DRONE_FIRE_RATE_FLOOR = 1 / 3;     // Max boost = +200% (3× speed).
 
 const DEPTH_PLAYER = 5;
@@ -1791,7 +1791,7 @@ export class GameScene extends Phaser.Scene {
     const minMultiplier = this.getFireRateFloor();
     if (this.fireRateMultiplier > minMultiplier) {
       // Still room to boost main fire rate.
-      const newMultiplier = Math.max(minMultiplier, this.fireRateMultiplier - 0.05);
+      const newMultiplier = Math.max(minMultiplier, this.fireRateMultiplier - 0.025);
       this.setFireRateMultiplier(newMultiplier);
     } else if (!this.hasFanShot) {
       // Main fire rate maxed → activate fan shooting.
@@ -1929,7 +1929,7 @@ export class GameScene extends Phaser.Scene {
 
   private activateDrone() {
     if (!this.drone) return;
-    this.drone.activate(this.player.displayWidth);
+    this.drone.activate(this.player.displayWidth, this.player.x, this.player.y);
     this.drone.hp = this.droneHp;
     this.configureDroneFireEvent();
   }
