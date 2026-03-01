@@ -7,6 +7,36 @@
 /** Which parallax overlay set to show behind gameplay. */
 export type BgSet = "none" | "asteroids" | "planets";
 
+/** Enemy spawner "wave modes" used by scripted sections. */
+export type EnemyWaveMode = "normal" | "rush" | "formations" | "hazard";
+
+/** Scripted level section (distance-based). */
+export type LevelSection =
+  | {
+      type: "meteorStorm";
+      /** Inclusive start distance (scroll units). */
+      from: number;
+      /** Exclusive end distance (scroll units). */
+      to: number;
+      /** 1..3 (higher = denser + faster meteors). */
+      intensity?: 1 | 2 | 3;
+    }
+  | {
+      type: "asteroidWall";
+      from: number;
+      to: number;
+      /** Time between wall rows (ms). */
+      intervalMs?: number;
+      /** Gap width in pixels. */
+      gapWidthPx?: number;
+    }
+  | {
+      type: "waveMode";
+      from: number;
+      to: number;
+      mode: EnemyWaveMode;
+    };
+
 /** Spawn-weight + shield probability for one enemy kind inside a level. */
 export interface EnemySpawnRate {
   kind: EnemyKind;
@@ -54,6 +84,8 @@ export interface LevelConfig {
   enemies: EnemySpawnRate[];
   /** Pickup drop-chance table. */
   drops: DropChances;
+  /** Optional scripted sections that modify spawning / hazards. */
+  sections?: LevelSection[];
 
   // --- Boss-level fields (level 10) ---
   isBossLevel: boolean;
@@ -167,6 +199,11 @@ export const LEVELS: LevelConfig[] = [
       { kind: "bomber", weight: 0.15, shieldChance: 1 },
     ],
     drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    sections: [
+      { type: "meteorStorm", from: 70, to: 95, intensity: 1 },
+      { type: "waveMode", from: 180, to: 220, mode: "formations" },
+      { type: "asteroidWall", from: 300, to: 330, intervalMs: 2000, gapWidthPx: 92 },
+    ],
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
@@ -184,6 +221,10 @@ export const LEVELS: LevelConfig[] = [
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
     drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    sections: [
+      { type: "waveMode", from: 90, to: 140, mode: "rush" },
+      { type: "asteroidWall", from: 340, to: 380, intervalMs: 1900, gapWidthPx: 88 },
+    ],
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
@@ -201,6 +242,10 @@ export const LEVELS: LevelConfig[] = [
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
     drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    sections: [
+      { type: "meteorStorm", from: 60, to: 85, intensity: 2 },
+      { type: "waveMode", from: 170, to: 230, mode: "formations" },
+    ],
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
@@ -218,6 +263,10 @@ export const LEVELS: LevelConfig[] = [
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
     drops: { health: 0.02, shield: 0.10, firingRate: 0.01, firingRate2: 0.01, ...NWD },
+    sections: [
+      { type: "asteroidWall", from: 200, to: 250, intervalMs: 1650, gapWidthPx: 86 },
+      { type: "meteorStorm", from: 330, to: 360, intensity: 3 },
+    ],
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------
@@ -235,6 +284,10 @@ export const LEVELS: LevelConfig[] = [
       { kind: "bomber", weight: 0.20, shieldChance: 1 },
     ],
     drops: { health: 0.02, shield: 0.10, firingRate: 0.02, firingRate2: 0.02, ...NWD },
+    sections: [
+      { type: "waveMode", from: 120, to: 180, mode: "formations" },
+      { type: "meteorStorm", from: 260, to: 290, intensity: 3 },
+    ],
     isBossLevel: false,
   },
   // -----------------------------------------------------------------------

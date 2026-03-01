@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
 import type { Enemy, EnemyKind } from "../entities/Enemy";
 import { GAME_WIDTH } from "../config";
-import type { LevelConfig } from "../LevelConfig";
+import type { EnemyWaveMode, LevelConfig } from "../LevelConfig";
 
 export class EnemySpawner {
   private nextSpawnAt = 0;
@@ -13,6 +13,7 @@ export class EnemySpawner {
   private escortWaveIndex = 0;
   private formationCooldownUntil = 0;
   private eliteWaveBudget = 0;
+  private waveMode: EnemyWaveMode = "normal";
 
   constructor(
     private scene: Phaser.Scene,
@@ -31,6 +32,12 @@ export class EnemySpawner {
     this.nextSpawnAt = 0;
     this.formationCooldownUntil = 0;
     this.eliteWaveBudget = 0;
+    this.waveMode = "normal";
+  }
+
+  /** Scripted spawner mode (used by LevelSectionDirector). */
+  setWaveMode(mode: EnemyWaveMode) {
+    this.waveMode = mode;
   }
 
   /** True once the Dreadnought has been spawned and then destroyed. */
@@ -66,7 +73,8 @@ export class EnemySpawner {
     // If we spawned a coordinated formation, slow the next spawn a bit to keep overall density reasonable.
     // Use a sublinear factor so 4–5 sized waves don't create long empty gaps.
     const spawnFactor = spawnedCount <= 1 ? 1 : Math.min(3, 1 + (spawnedCount - 1) * 0.5);
-    this.nextSpawnAt = time + baseInterval * spawnFactor;
+    const modeMult = this.waveMode === "rush" ? 0.75 : this.waveMode === "formations" ? 1.05 : this.waveMode === "hazard" ? 1.25 : 1;
+    this.nextSpawnAt = time + baseInterval * spawnFactor * modeMult;
   }
 
   /**
@@ -242,13 +250,16 @@ export class EnemySpawner {
               : kind === "frigate"
                 ? 0.08
                 : 0.06; // battlecruiser
-    const chance = kindChanceBase * levelFactor;
+    const modeMult = this.waveMode === "formations" ? 1.7 : this.waveMode === "rush" ? 0.55 : this.waveMode === "hazard" ? 0.55 : 1;
+    const chance = kindChanceBase * levelFactor * modeMult;
     if (Phaser.Math.FloatBetween(0, 1) >= chance) return 0;
 
     const spawned = this.spawnFormation(kind, shieldChance, baseSpeedY);
     if (spawned > 1) {
       // Cooldown prevents back-to-back waves.
-      this.formationCooldownUntil = time + Phaser.Math.Between(2400, 5200);
+      const minCd = this.waveMode === "formations" ? 1600 : this.waveMode === "hazard" ? 3000 : 2400;
+      const maxCd = this.waveMode === "formations" ? 3800 : this.waveMode === "hazard" ? 6200 : 5200;
+      this.formationCooldownUntil = time + Phaser.Math.Between(minCd, maxCd);
     }
     return spawned;
   }

@@ -23,7 +23,7 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
     return this.durability;
   }
 
-  spawn(x: number, y: number, speedY: number, scale: number, angleDeg: number, durability: number) {
+  spawn(x: number, y: number, speedY: number, scale: number, angleDeg: number, durability: number, damagesEnemiesOverride?: boolean) {
     const body = this.body as Phaser.Physics.Arcade.Body | null;
     if (!body) return;
 
@@ -32,7 +32,7 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
     const s = Math.max(0.05, scale);
 
     this.durability = d;
-    this._damagesEnemies = Math.random() < 0.2; // 20% chance
+    this._damagesEnemies = damagesEnemiesOverride ?? (Math.random() < 0.2); // 20% chance (unless overridden)
 
     this.setFrame(SPRITE_FRAMES.asteroid01Base);
     this.setScale(s);

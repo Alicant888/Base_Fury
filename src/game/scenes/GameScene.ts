@@ -24,6 +24,7 @@ import { Drone } from "../entities/Drone";
 import { DronePickup } from "../entities/DronePickup";
 import { AsteroidSpawner } from "../systems/AsteroidSpawner";
 import { EnemySpawner } from "../systems/EnemySpawner";
+import { LevelSectionDirector } from "../systems/LevelSectionDirector";
 import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_HEIGHT, GAME_WIDTH, IMAGE_KEYS, SPRITE_FRAMES, UI_SCALE, setGameHeight } from "../config";
 import { getLevelConfig, TOTAL_LEVELS, type LevelConfig, type BgSet } from "../LevelConfig";
 import { SaveManager, type SaveData } from "../systems/SaveManager";
@@ -226,6 +227,7 @@ export class GameScene extends Phaser.Scene {
   private bigPulseEnginePickups!: Phaser.Physics.Arcade.Group;
   private spawner!: EnemySpawner;
   private asteroidSpawner!: AsteroidSpawner;
+  private sectionDirector!: LevelSectionDirector;
 
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   private draggingPointerId: number | null = null;
@@ -645,7 +647,7 @@ export class GameScene extends Phaser.Scene {
 
     this.asteroids = this.physics.add.group({
       classType: Asteroid,
-      maxSize: 30,
+      maxSize: 50,
       runChildUpdate: true,
     });
 
@@ -672,6 +674,8 @@ export class GameScene extends Phaser.Scene {
     this.spawner.setLevelConfig(this.levelConfig);
     this.asteroidSpawner = new AsteroidSpawner(this, this.asteroids);
     this.asteroidSpawner.setMultiplier(this.levelConfig.asteroidMultiplier);
+    this.sectionDirector = new LevelSectionDirector(this.spawner, this.asteroidSpawner);
+    this.sectionDirector.setLevelConfig(this.levelConfig);
 
     // Reset distance counter for new level.
     this.distanceTraveled = 0;
@@ -1128,6 +1132,9 @@ export class GameScene extends Phaser.Scene {
       this.updateKeyboardMovement(delta);
     }
 
+    if (!this._bossPhaseActive && !this.levelConfig.isBossLevel) {
+      this.sectionDirector.update(time, this.distanceTraveled);
+    }
     this.asteroidSpawner.update(time);
     this.spawner.update(time);
 
