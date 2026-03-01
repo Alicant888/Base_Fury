@@ -186,6 +186,7 @@ const SHOP_ETH_PRICES = {
   packBig: "0.002",
   packMaxi: "0.006",
   packXp: (process.env.NEXT_PUBLIC_PACK_XP_PRICE_ETH?.trim() || "0.05"),
+  packDrone: "0.006",
 } as const;
 
 const SHOP_PACK_IDS = {
@@ -194,6 +195,7 @@ const SHOP_PACK_IDS = {
   packBig: 2,
   packMaxi: 3,
   packXp: 4,
+  packDrone: 5,
 } as const;
 
 export class GameScene extends Phaser.Scene {
@@ -343,6 +345,7 @@ export class GameScene extends Phaser.Scene {
   private packMedium = false;
   private packBig = false;
   private packMaxi = false;
+  private packDrone = false;
   private syncOnchainPacksInFlight = false;
 
   private applyPackFlags(save: SaveData, grantBonusHpForXpPack: boolean) {
@@ -354,6 +357,7 @@ export class GameScene extends Phaser.Scene {
     this.packMedium = save.packMedium;
     this.packBig = save.packBig;
     this.packMaxi = save.packMaxi;
+    this.packDrone = save.packDrone;
 
     this.maxHp = BASE_HP + (this.packXp ? XP_PACK_HP_BONUS : 0);
 
@@ -403,6 +407,10 @@ export class GameScene extends Phaser.Scene {
       }
       if (onchain.packXp && !save.packXp) {
         save.packXp = true;
+        changed = true;
+      }
+      if (onchain.packDrone && !save.packDrone) {
+        save.packDrone = true;
         changed = true;
       }
 
@@ -2119,7 +2127,7 @@ export class GameScene extends Phaser.Scene {
     const d = this.levelConfig?.drops ?? DEFAULT_DROPS;
     // Weapon/engine drops are gated by purchased shop packs.
     // Each pack unlocks a pair of drops at a fixed base rate.
-    const WPN = 0.03; // weapon drop rate per pack
+    const WPN = 0.02; // weapon drop rate per pack
     const ENG = 0.02; // engine drop rate per pack
     const level = this.currentLevel;
 
@@ -2158,9 +2166,9 @@ export class GameScene extends Phaser.Scene {
     threshold += d.firingRate2;
     if (r < threshold) return this.spawnFiringRate2Pickup(x, y);
 
-    // Drone (satellite) pickup — 5% base drop chance, available starting at level 3.
-    if (level >= 3) {
-      threshold += 0.01;
+    // Drone (satellite) pickup — unlocked by Drone pack, available starting at level 2.
+    if (this.packDrone && level >= 2) {
+      threshold += 0.01; // 1% base drop chance
       if (r < threshold) return this.spawnDronePickup(x, y);
     }
 
@@ -2208,6 +2216,7 @@ export class GameScene extends Phaser.Scene {
       packMedium: this.packMedium,
       packBig: this.packBig,
       packMaxi: this.packMaxi,
+      packDrone: this.packDrone,
     };
     SaveManager.save(save);
 
@@ -2302,6 +2311,7 @@ export class GameScene extends Phaser.Scene {
       packMedium: this.packMedium,
       packBig: this.packBig,
       packMaxi: this.packMaxi,
+      packDrone: this.packDrone,
     };
     SaveManager.save(deathSave);
 
@@ -4045,6 +4055,7 @@ export class GameScene extends Phaser.Scene {
         cleared.packMedium = prev.packMedium;
         cleared.packBig = prev.packBig;
         cleared.packMaxi = prev.packMaxi;
+        cleared.packDrone = prev.packDrone;
         SaveManager.save(cleared);
         this.scene.start("GameScene", { level: 1, showMenu: true });
       });
@@ -4236,7 +4247,7 @@ export class GameScene extends Phaser.Scene {
     const scoreBottom = this.scoreText.y + 16; // scoreText origin(1,0), fontSize 16
     const shopTopPad = scoreBottom + 16;
 
-    type PackFlag = "packBase" | "packMedium" | "packBig" | "packMaxi" | "packXp";
+    type PackFlag = "packBase" | "packMedium" | "packBig" | "packMaxi" | "packXp" | "packDrone";
     interface PackInfo {
       key: string;
       costPoints: number | null;
@@ -4248,9 +4259,10 @@ export class GameScene extends Phaser.Scene {
     }
     const PACKS: PackInfo[] = [
       { key: IMAGE_KEYS.uiPackBase, costPoints: 200, reqLevel: 2, saveFlag: "packBase", displayName: "Base pack", ethPrice: SHOP_ETH_PRICES.packBase, ethPackId: SHOP_PACK_IDS.packBase },
-      { key: IMAGE_KEYS.uiPackMedium, costPoints: 600, reqLevel: 5, saveFlag: "packMedium", displayName: "Medium pack", ethPrice: SHOP_ETH_PRICES.packMedium, ethPackId: SHOP_PACK_IDS.packMedium },
-      { key: IMAGE_KEYS.uiPackBig, costPoints: 1800, reqLevel: 9, saveFlag: "packBig", displayName: "Big pack", ethPrice: SHOP_ETH_PRICES.packBig, ethPackId: SHOP_PACK_IDS.packBig },
-      { key: IMAGE_KEYS.uiPackMaxi, costPoints: 5400, reqLevel: 12, saveFlag: "packMaxi", displayName: "Maxi pack", ethPrice: SHOP_ETH_PRICES.packMaxi, ethPackId: SHOP_PACK_IDS.packMaxi },
+      { key: IMAGE_KEYS.uiPackMedium, costPoints: 2000, reqLevel: 5, saveFlag: "packMedium", displayName: "Medium pack", ethPrice: SHOP_ETH_PRICES.packMedium, ethPackId: SHOP_PACK_IDS.packMedium },
+      { key: IMAGE_KEYS.uiPackBig, costPoints: 10000, reqLevel: 9, saveFlag: "packBig", displayName: "Big pack", ethPrice: SHOP_ETH_PRICES.packBig, ethPackId: SHOP_PACK_IDS.packBig },
+      { key: IMAGE_KEYS.uiPackMaxi, costPoints: 50000, reqLevel: 12, saveFlag: "packMaxi", displayName: "Maxi pack", ethPrice: SHOP_ETH_PRICES.packMaxi, ethPackId: SHOP_PACK_IDS.packMaxi },
+      { key: IMAGE_KEYS.uiPackDrone, costPoints: 50000, reqLevel: 2, saveFlag: "packDrone", displayName: "Drone pack", ethPrice: SHOP_ETH_PRICES.packDrone, ethPackId: SHOP_PACK_IDS.packDrone },
       { key: IMAGE_KEYS.uiPackXp, costPoints: null, reqLevel: 1, saveFlag: "packXp", displayName: "XP pack", ethPrice: SHOP_ETH_PRICES.packXp, ethPackId: SHOP_PACK_IDS.packXp },
     ];
     const onchainEnabled = isPackShopOnchainEnabled();
@@ -4276,16 +4288,17 @@ export class GameScene extends Phaser.Scene {
     const rowGap = halfH * 2 + 18;     // button height + 18px
     const rowY = [firstRowY, firstRowY + rowGap, firstRowY + rowGap * 2];
 
-    // Grid: [basep, mediump], [bigp, maxip], [xpp centred]
+    // Grid: [basep, mediump], [bigp, maxip], [dronepack, xpp]
     const grid = [
       { pi: 0, x: lx, y: rowY[0] },
       { pi: 1, x: rx, y: rowY[0] },
       { pi: 2, x: lx, y: rowY[1] },
       { pi: 3, x: rx, y: rowY[1] },
-      { pi: 4, x: centerX, y: rowY[2] },
+      { pi: 4, x: lx, y: rowY[2] },
+      { pi: 5, x: rx, y: rowY[2] },
     ];
 
-    type Entry = { img: Phaser.GameObjects.Image; lbl: Phaser.GameObjects.Text; pack: PackInfo; isXp: boolean };
+    type Entry = { img: Phaser.GameObjects.Image; lbl: Phaser.GameObjects.Text; pack: PackInfo };
     const entries: Entry[] = [];
     let shopUiDisposed = false;
     container.once("destroy", () => {
@@ -4305,7 +4318,7 @@ export class GameScene extends Phaser.Scene {
       }
       if (!isShopUiActive()) return;
       const sv = SaveManager.load();
-      for (const { img, lbl, pack, isXp } of entries) {
+      for (const { img, lbl, pack } of entries) {
         if (!img.scene || !img.active) continue;
         const owned = sv[pack.saveFlag];
         const reqMet = this.currentLevel >= pack.reqLevel;
@@ -4317,13 +4330,13 @@ export class GameScene extends Phaser.Scene {
         img.off("pointerdown").off("pointerover").off("pointerout");
 
         if (owned) {
-          if (!isXp) lbl.setText("OWNED").setColor("#44ff44").setVisible(true);
+          lbl.setText("OWNED").setColor("#44ff44").setVisible(true);
           img.setTint(0x44ff44);
         } else if (!reqMet) {
-          if (!isXp) lbl.setText(`LVL ${pack.reqLevel}`).setColor("#888888").setVisible(true);
+          lbl.setText(`LVL ${pack.reqLevel}`).setColor("#888888").setVisible(true);
           img.setTint(0x444444).setAlpha(0.4);
         } else {
-          if (!isXp) lbl.setText("Available").setColor("#FFD700").setVisible(true);
+          lbl.setText("Available").setColor("#FFD700").setVisible(true);
 
           if (!canBuyWithPoints && !canBuyWithEth) {
             img.setTint(0x555555).setAlpha(0.5);
@@ -4331,15 +4344,21 @@ export class GameScene extends Phaser.Scene {
           }
 
           if (pendingOnchainPurchase) {
+            lbl.setText("PENDING...").setColor("#66ccff").setVisible(true);
             img.setTint(0x777777).setAlpha(0.6);
             continue;
           }
 
-          const hitPadding = 10;
           img.clearTint().setInteractive({ useHandCursor: true });
           const area = img.input?.hitArea as Phaser.Geom.Rectangle | undefined;
           if (area) {
-            area.setTo(-hitPadding, -hitPadding, img.width + hitPadding * 2, img.height + hitPadding * 2);
+            const hitPadding = 10;
+            area.setTo(
+              -img.width * img.originX - hitPadding,
+              -img.height * img.originY - hitPadding,
+              img.width + hitPadding * 2,
+              img.height + hitPadding * 2,
+            );
           }
           if (img.input) img.input.cursor = "pointer";
           img.on("pointerover", () => img.setTint(0xcccccc));
@@ -4384,7 +4403,7 @@ export class GameScene extends Phaser.Scene {
             pendingOnchainPurchase = true;
             pendingOnchainStartedAt = performance.now();
             if (isShopUiActive()) {
-              if (!isXp) lbl.setText("PENDING...").setColor("#66ccff").setVisible(true);
+              lbl.setText("PENDING...").setColor("#66ccff").setVisible(true);
               img.setTint(0x8888ff);
             }
 
@@ -4402,7 +4421,9 @@ export class GameScene extends Phaser.Scene {
               this.applyPackFlags(sv3, true);
             } catch (error) {
               console.warn("ETH pack purchase failed:", error);
-              if (!isXp && isShopUiActive()) lbl.setText("TX FAILED").setColor("#ff6666").setVisible(true);
+              if (isShopUiActive()) {
+                lbl.setText("TX FAILED").setColor("#ff6666").setVisible(true);
+              }
             } finally {
               clearPendingOnchainPurchase();
               this.draggingPointerId = null;
@@ -4417,7 +4438,6 @@ export class GameScene extends Phaser.Scene {
 
     for (const { pi, x, y } of grid) {
       const pack = PACKS[pi];
-      const isXp = pi === 4; // xpp is the last item, no label
       const img = this.add.image(x, y, pack.key).setScale(UI_SCALE);
       const lbl = this.add.text(x, y + halfH + gap / 2, "", {
         fontFamily: "Orbitron",
@@ -4426,17 +4446,19 @@ export class GameScene extends Phaser.Scene {
         stroke: "#000000",
         strokeThickness: 2,
         align: "center",
-      }).setOrigin(0.5).setVisible(!isXp);
+      }).setOrigin(0.5).setVisible(true);
       container.add([img, lbl]);
-      entries.push({ img, lbl, pack, isXp });
+      entries.push({ img, lbl, pack });
     }
 
     refreshAll();
     void this.syncOnchainPackOwnership(refreshAll);
 
-    // Return the bottom Y of the xpp image (no label underneath).
-    const lastImg = entries[entries.length - 1].img;
-    return lastImg.y + halfH;
+    // Return the bottom Y of the last label (so buttons below don't overlap).
+    const last = entries[entries.length - 1];
+    const lastImgBottom = last.img.y + halfH;
+    const lastLblBottom = last.lbl.y + last.lbl.height / 2;
+    return Math.max(lastImgBottom, lastLblBottom);
   }
 
   private destroyPauseUI() {

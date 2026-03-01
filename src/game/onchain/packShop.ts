@@ -11,6 +11,7 @@ export interface OnchainPackOwnership {
   packBig: boolean;
   packMaxi: boolean;
   packXp: boolean;
+  packDrone: boolean;
 }
 
 function getPackShopContractAddress(): `0x${string}` | null {
@@ -104,6 +105,12 @@ export async function getOnchainPackOwnership(): Promise<OnchainPackOwnership | 
       functionName: "hasPack",
       args: [account, 4],
     }),
+    publicClient.readContract({
+      address: contractAddress,
+      abi,
+      functionName: "hasPack",
+      args: [account, 5],
+    }),
   ]);
 
   return {
@@ -112,6 +119,7 @@ export async function getOnchainPackOwnership(): Promise<OnchainPackOwnership | 
     packBig: owned[2],
     packMaxi: owned[3],
     packXp: owned[4],
+    packDrone: owned[5],
   };
 }
 

@@ -49,6 +49,8 @@ export interface SaveData {
   packBig: boolean;
   /** Maxi Pack: unlocks Big Space Gun + Big Pulse Engine drops (points or ETH). Req level 12. */
   packMaxi: boolean;
+  /** Drone Pack: unlocks Drone (satellite) pickup drops (points or ETH). Req level 2. */
+  packDrone: boolean;
 }
 
 const DEFAULT_SAVE: SaveData = {
@@ -75,6 +77,7 @@ const DEFAULT_SAVE: SaveData = {
   packMedium: false,
   packBig: false,
   packMaxi: false,
+  packDrone: false,
 };
 
 export class SaveManager {

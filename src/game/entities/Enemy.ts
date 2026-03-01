@@ -54,8 +54,8 @@ const BOMBER_SLOW_SPEED = 30;           // crawl speed while locking target
 const BOMBER_SLOW_DURATION_MS = 600;    // time spent crawling
 const BOMBER_CHARGE_SPEED = 550;        // px/s dive speed
 
-const FRIGATE_HP = 3;
-const FRIGATE_SHIELD_HP = 3;
+const FRIGATE_HP = 7;
+const FRIGATE_SHIELD_HP = 7;
 const FRIGATE_BULLET_DAMAGE = 2;
 const FRIGATE_BULLET_DEPTH = ENEMY_DEPTH.frigate.body;
 const FRIGATE_SALVO_BASE_Y_FACTOR = 0.15;
@@ -64,8 +64,8 @@ const FRIGATE_BIG_BULLET_SCALE = 0.6;
 const FRIGATE_HITBOX_W_MULT = 0.7;
 const FRIGATE_HITBOX_H_MULT = 0.1;
 
-const BATTLECRUISER_HP = 30;
-const BATTLECRUISER_SHIELD_HP = 30;
+const BATTLECRUISER_HP = 40;
+const BATTLECRUISER_SHIELD_HP = 40;
 const BATTLECRUISER_WAVE_DAMAGE = 3;
 const BATTLECRUISER_WAVE_DEPTH = ENEMY_DEPTH.battlecruiser.body;
 const BATTLECRUISER_FIRE_Y_FACTOR = 0.28;
@@ -302,7 +302,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
           ? ELITE_TINT_BERSERK
           : this._eliteRole === "support"
             ? ELITE_TINT_SUPPORT
-          : ELITE_TINT_DEFAULT;
+            : ELITE_TINT_DEFAULT;
     this.setTint(tint);
   }
 
@@ -451,7 +451,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
                 : isFighter
                   ? SPRITE_FRAMES.fighterBase
                   : SPRITE_FRAMES.enemyBase,
-        );
+      );
     }
 
     // Reset pooled tinting (and apply elite tint if needed).
@@ -1775,7 +1775,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
             ? 1.15
             : this._eliteRole === "support"
               ? 1.25
-            : 1;
+              : 1;
 
       if (mult !== 1) {
         const speedY = Math.min(720, Math.round(baseSpeedY * mult));

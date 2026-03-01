@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.24;
 
 contract PackShop {
@@ -31,10 +33,11 @@ contract PackShop {
         prices[2] = 2000000000000000;
         prices[3] = 6000000000000000;
         prices[4] = 50000000000000000;
+        prices[5] = 6000000000000000;
     }
 
     function buyPack(uint8 packId) external payable {
-        if (packId > 4) revert InvalidPackId();
+        if (packId > 5) revert InvalidPackId();
         if (hasPack[msg.sender][packId]) revert AlreadyPurchased();
 
         uint256 price = prices[packId];
@@ -45,7 +48,7 @@ contract PackShop {
     }
 
     function setPrice(uint8 packId, uint256 newPriceWei) external onlyOwner {
-        if (packId > 4) revert InvalidPackId();
+        if (packId > 5) revert InvalidPackId();
         prices[packId] = newPriceWei;
         emit PriceUpdated(packId, newPriceWei);
     }

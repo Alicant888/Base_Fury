@@ -61,6 +61,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(IMAGE_KEYS.uiXp, "/assets/atlases/xpico.png");
     // Shop pack buttons
     this.load.image(IMAGE_KEYS.uiPackXp,    "/assets/atlases/UI/xpp.png");
+    this.load.image(IMAGE_KEYS.uiPackDrone, "/assets/atlases/UI/dronepack.png");
     this.load.image(IMAGE_KEYS.uiPackBase,  "/assets/atlases/UI/basep.png");
     this.load.image(IMAGE_KEYS.uiPackMedium,"/assets/atlases/UI/mediump.png");
     this.load.image(IMAGE_KEYS.uiPackBig,   "/assets/atlases/UI/bigp.png");

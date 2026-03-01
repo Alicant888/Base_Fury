@@ -25,6 +25,7 @@ export const IMAGE_KEYS = {
   uiXp: "ui_xp",
   // Shop pack buttons
   uiPackXp: "ui_pack_xp",
+  uiPackDrone: "ui_pack_drone",
   uiPackBase: "ui_pack_base",
   uiPackMedium: "ui_pack_medium",
   uiPackBig: "ui_pack_big",
