@@ -59,7 +59,7 @@ export function GameCanvas() {
   const gameRef = useRef<import("phaser").Game | null>(null);
   const resumeRef = useRef<(() => Promise<void>) | null>(null);
   const [status, setStatus] = useState<"loading" | "running" | "resume" | "error">("loading");
-  const [attemptText, setAttemptText] = useState<string | null>(null);
+  const [, setAttemptText] = useState<string | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
