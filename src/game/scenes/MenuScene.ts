@@ -1,5 +1,6 @@
 import * as Phaser from "phaser";
 import { AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, UI_SCALE, setGameHeight } from "../config";
+import { appendDataSuffix, getBuilderCodeDataSuffix } from "../onchain/builderCode";
 import { sendCallsWithOptionalPaymaster } from "../onchain/sendCalls";
 import { SaveManager, SaveData } from "../systems/SaveManager";
 
@@ -72,6 +73,7 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
   }
 
   const paymasterServiceUrl = process.env.NEXT_PUBLIC_PAYMASTER_PROXY_URL?.trim();
+  const dataSuffix = getBuilderCodeDataSuffix();
   if (paymasterServiceUrl) {
     const data = viem.encodeFunctionData({
       abi,
@@ -91,10 +93,15 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
     });
   }
 
-  return walletClient.writeContract({
-    address: contractAddress,
+  const data = viem.encodeFunctionData({
     abi,
     functionName: "checkIn",
+    args: [],
+  });
+
+  return walletClient.sendTransaction({
+    to: contractAddress,
+    data: appendDataSuffix(data, dataSuffix),
     account,
   });
 }

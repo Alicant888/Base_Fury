@@ -1,3 +1,5 @@
+import { getBuilderCodeDataSuffix } from "./builderCode";
+
 interface RpcProvider {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;
 }
@@ -164,6 +166,7 @@ async function waitForCallsFinalStatus(params: {
 
 export async function sendCallsWithOptionalPaymaster(params: SendCallsParams): Promise<`0x${string}`> {
   const { provider, account, chainIdHex, calls, paymasterServiceUrl } = params;
+  const dataSuffix = getBuilderCodeDataSuffix();
 
   const payload: Record<string, unknown> = {
     from: account,
@@ -172,16 +175,25 @@ export async function sendCallsWithOptionalPaymaster(params: SendCallsParams): P
     calls,
   };
 
+  const capabilities: Record<string, unknown> = {};
+  if (dataSuffix) {
+    capabilities.dataSuffix = {
+      value: dataSuffix,
+    };
+  }
+
   const trimmedUrl = paymasterServiceUrl?.trim();
   if (trimmedUrl) {
     const paymasterSupported = await supportsPaymaster({ provider, account, chainIdHex });
     if (paymasterSupported) {
-      payload.capabilities = {
-        paymasterService: {
-          url: trimmedUrl,
-        },
+      capabilities.paymasterService = {
+        url: trimmedUrl,
       };
     }
+  }
+
+  if (Object.keys(capabilities).length > 0) {
+    payload.capabilities = capabilities;
   }
 
   let sendResult: unknown;

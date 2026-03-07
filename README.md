@@ -81,6 +81,7 @@ NEXT_PUBLIC_PROJECT_NAME="Your App Name"
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=<Replace-WITH-YOUR-CDP-API-KEY>
 NEXT_PUBLIC_URL=https://your-vercel-project-name.vercel.app/
 NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS=
+NEXT_PUBLIC_BASE_BUILDER_CODE=bc_rn2l4vb0
 NEXT_PUBLIC_PACK_XP_PRICE_ETH=0.0005
 ```
 
@@ -93,6 +94,7 @@ vercel env add NEXT_PUBLIC_PROJECT_NAME production
 vercel env add NEXT_PUBLIC_ONCHAINKIT_API_KEY production
 vercel env add NEXT_PUBLIC_URL production
 vercel env add NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS production
+vercel env add NEXT_PUBLIC_BASE_BUILDER_CODE production
 vercel env add NEXT_PUBLIC_PACK_XP_PRICE_ETH production
 ```
 
