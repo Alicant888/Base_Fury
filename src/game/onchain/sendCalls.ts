@@ -1,4 +1,4 @@
-import { getBuilderCodeDataSuffix } from "./builderCode";
+import { appendDataSuffix, getBuilderCodeDataSuffix } from "./builderCode";
 
 interface RpcProvider {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;
@@ -168,11 +168,18 @@ export async function sendCallsWithOptionalPaymaster(params: SendCallsParams): P
   const { provider, account, chainIdHex, calls, paymasterServiceUrl } = params;
   const dataSuffix = getBuilderCodeDataSuffix();
 
+  // Append builder code suffix directly to each call's data so attribution
+  // works even when the wallet ignores the dataSuffix capability.
+  const attributedCalls = calls.map((c) => ({
+    ...c,
+    data: appendDataSuffix(c.data as `0x${string}` | undefined, dataSuffix) ?? c.data,
+  }));
+
   const payload: Record<string, unknown> = {
     from: account,
     chainId: chainIdHex,
     atomicRequired: true,
-    calls,
+    calls: attributedCalls,
   };
 
   const capabilities: Record<string, unknown> = {};
