@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import { AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, UI_SCALE, setGameHeight } from "../config";
-import { appendDataSuffix, getBuilderCodeDataSuffix } from "../onchain/builderCode";
+import { getBuilderCodeDataSuffix } from "../onchain/builderCode";
 import { sendCallsWithOptionalPaymaster } from "../onchain/sendCalls";
 import { SaveManager, SaveData } from "../systems/SaveManager";
 
@@ -93,15 +93,12 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
     });
   }
 
-  const data = viem.encodeFunctionData({
+  return walletClient.writeContract({
+    address: contractAddress,
     abi,
     functionName: "checkIn",
     args: [],
-  });
-
-  return walletClient.sendTransaction({
-    to: contractAddress,
-    data: appendDataSuffix(data, dataSuffix),
+    dataSuffix: dataSuffix ?? undefined,
     account,
   });
 }

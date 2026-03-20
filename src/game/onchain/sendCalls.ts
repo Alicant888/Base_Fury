@@ -169,7 +169,7 @@ export async function sendCallsWithOptionalPaymaster(params: SendCallsParams): P
   const dataSuffix = getBuilderCodeDataSuffix();
 
   // Append builder code suffix directly to each call's data so attribution
-  // works even when the wallet ignores the dataSuffix capability.
+  // is present in calldata without depending on wallet-side capability support.
   const attributedCalls = calls.map((c) => ({
     ...c,
     data: appendDataSuffix(c.data as `0x${string}` | undefined, dataSuffix) ?? c.data,
@@ -183,12 +183,6 @@ export async function sendCallsWithOptionalPaymaster(params: SendCallsParams): P
   };
 
   const capabilities: Record<string, unknown> = {};
-  if (dataSuffix) {
-    capabilities.dataSuffix = {
-      value: dataSuffix,
-    };
-  }
-
   const trimmedUrl = paymasterServiceUrl?.trim();
   if (trimmedUrl) {
     const paymasterSupported = await supportsPaymaster({ provider, account, chainIdHex });

@@ -1,4 +1,4 @@
-import { appendDataSuffix, getBuilderCodeDataSuffix } from "./builderCode";
+import { getBuilderCodeDataSuffix } from "./builderCode";
 import { sendCallsWithOptionalPaymaster } from "./sendCalls";
 
 export interface BuyPackWithEthParams {
@@ -176,10 +176,13 @@ export async function buyPackWithEth({
     });
   }
 
-  return walletClient.sendTransaction({
-    to: contractAddress,
+  return walletClient.writeContract({
+    address: contractAddress,
+    abi,
+    functionName: "buyPack",
+    args: [packId],
     value: viem.parseEther(valueEth),
-    data: appendDataSuffix(callData, dataSuffix),
+    dataSuffix: dataSuffix ?? undefined,
     account,
   });
 }
