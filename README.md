@@ -1,172 +1,100 @@
-# Waitlist Mini App Quickstart
+# Base Fury
 
-This is a demo Mini App application built using OnchainKit and the Farcaster SDK. Build a waitlist sign-up mini app for your company that can be published to the Base app and Farcaster. 
+Base Fury is a standard web app built with Next.js and Phaser. The root route renders a full-screen vertical space shooter with wallet-gated entry, optional onchain progression, and a protected paymaster proxy for sponsored flows on Base Mainnet.
 
-> [!IMPORTANT]  
-> Before interacting with this demo, please review our [disclaimer](#disclaimer) — there are **no official tokens or apps** associated with Cubey, Base, or Coinbase.
+## What Is In This Repo
 
-## Prerequisites
+- Full-screen Phaser 3 game rendered from Next.js App Router
+- Wallet connection through wagmi with Base Account and injected wallet fallback
+- SIWE-style backend auth session with HttpOnly cookie
+- Optional daily onchain check-in flow
+- Optional onchain pack ownership and pack purchases
+- Optional ERC-7677 paymaster proxy protected by wallet session + sender matching
+- Local save system backed by `localStorage`
 
-Before getting started, make sure you have:
+## Stack
 
-* Base app account
-* A [Farcaster](https://farcaster.xyz/) account
-* [Vercel](https://vercel.com/) account for hosting the application
-* [Coinbase Developer Platform](https://portal.cdp.coinbase.com/) Client API Key
+- Next.js 15
+- React 19
+- Phaser 3
+- wagmi + viem
+- SIWE
 
-## Getting Started
+## Routes
 
-### 1. Clone this repository 
+- `/` - main game entry point
+- `/game` - same game page as `/`
+- `/success` - success page for post-transaction flows
+- `/api/auth/nonce` - issues one-time auth nonce
+- `/api/auth/verify` - verifies signed SIWE payload and creates session cookie
+- `/api/auth/session` - returns the current wallet session and refreshes sliding expiration
+- `/api/auth/logout` - clears session cookie
+- `/api/paymaster` - authenticated proxy for paymaster RPC calls
+
+## Local Development
+
+1. Install dependencies.
 
 ```bash
-git clone https://github.com/base/demos.git
-```
-
-### 2. Install dependencies:
-
-```bash
-cd demos/minikit/waitlist-mini-app-qs
 npm install
 ```
 
-### 3. Configure environment variables
-
-Create a `.env.local` file and add your environment variables:
+2. Create `.env.local`.
 
 ```bash
-NEXT_PUBLIC_PROJECT_NAME="Your App Name"
-
+NEXT_PUBLIC_PROJECT_NAME="Base Fury"
+NEXT_PUBLIC_URL="http://localhost:3000"
+AUTH_SESSION_SECRET="replace-me"
 ```
 
-### 4. Run locally:
+3. Start the app.
 
 ```bash
 npm run dev
 ```
 
-## Phaser game (`/game`)
+4. Open the local URL reported by Next.js. If port `3000` is already in use, `next dev` will automatically move to another port.
 
-This repo also includes a small Phaser 3 + TypeScript vertical shooter that runs client-only inside Next.js (App Router).
+Full configuration and environment variable reference lives in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-- **Start dev server**: `npm run dev`
-- **Open route**: `http://localhost:3000/game`
-- **Audio policy**: no autoplay — press **START** in the menu to unlock audio (required on mobile / WebView).
+## Wallet And Auth Flow
 
-## Customization
+- The game loads first. `CONNECT WALLET` appears only after the Phaser preload completes and `LOADING 100%` is finished.
+- After successful sign-in, the connect button disappears.
+- The Phaser `START` button appears only after a valid auth session exists.
+- Auth uses wallet-based signing against chain id `8453`, which is Base Mainnet.
+- Session lifetime is a 7-day sliding window. The cookie is refreshed while the user is active or when authenticated backend routes are used.
+- `next.config.ts` already sets `Cross-Origin-Opener-Policy: same-origin-allow-popups`, which is required for the Base Account popup flow.
 
-### Update Manifest Configuration
+## Paymaster Behavior
 
-The `minikit.config.ts` file configures your manifest located at `app/.well-known/farcaster.json`.
+When paymaster support is enabled:
 
-**Skip the `accountAssociation` object for now.**
+- `/api/paymaster` requires an active auth session cookie
+- the authenticated wallet address must match JSON-RPC `params[0].sender`
+- silent daily check-in skips sponsorship when no matching auth session exists
+- interactive pack purchases fall back to direct wallet transactions when no matching auth session exists
 
-To personalize your app, change the `name`, `subtitle`, and `description` fields and add images to your `/public` folder. Then update their URLs in the file.
+If `AUTH_DEBUG_LOGS=true`, `/api/auth/verify` and `/api/paymaster` log accept/reject decisions, masked wallet addresses, RPC methods, and upstream status without logging signatures, cookies, or raw JSON-RPC payloads.
+
+## Save Data
+
+- Progress is stored locally under the `space_shooter_save` key in `localStorage`.
+- Existing pre-migration saves continue to work as long as the browser and origin stay the same.
+- Switching browser, device, or domain starts with a fresh local save.
+- Onchain pack sync only upgrades local pack flags to `true`; it does not wipe existing saves.
 
 ## Deployment
 
-### 1. Deploy to Vercel
+1. Deploy the app, for example on Vercel.
+2. Set `NEXT_PUBLIC_URL` to the deployed origin.
+3. Set `AUTH_SESSION_SECRET` in the deployed environment.
+4. If you use onchain gameplay, set the contract addresses.
+5. If you use sponsored transactions, configure the paymaster proxy variables.
+6. If you want Base App metadata, register the project in [Base.dev](https://www.base.dev/) and set `NEXT_PUBLIC_BASE_APP_ID`.
 
-```bash
-vercel --prod
-```
+## Notes
 
-You should have a URL deployed to a domain similar to: `https://your-vercel-project-name.vercel.app/`
-
-### 2. Update environment variables
-
-Add your production URL to your local `.env` file:
-
-```bash
-NEXT_PUBLIC_PROJECT_NAME="Your App Name"
-NEXT_PUBLIC_ONCHAINKIT_API_KEY=<Replace-WITH-YOUR-CDP-API-KEY>
-NEXT_PUBLIC_URL=https://your-vercel-project-name.vercel.app/
-NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS=
-NEXT_PUBLIC_BASE_BUILDER_CODE=bc_rn2l4vb0
-NEXT_PUBLIC_PACK_XP_PRICE_ETH=0.0005
-```
-
-### 3. Upload environment variables to Vercel
-
-Add environment variables to your production environment:
-
-```bash
-vercel env add NEXT_PUBLIC_PROJECT_NAME production
-vercel env add NEXT_PUBLIC_ONCHAINKIT_API_KEY production
-vercel env add NEXT_PUBLIC_URL production
-vercel env add NEXT_PUBLIC_PACKS_CONTRACT_ADDRESS production
-vercel env add NEXT_PUBLIC_BASE_BUILDER_CODE production
-vercel env add NEXT_PUBLIC_PACK_XP_PRICE_ETH production
-```
-
-## Account Association
-
-### 1. Sign Your Manifest
-
-1. Navigate to [Farcaster Manifest tool](https://farcaster.xyz/~/developers/mini-apps/manifest)
-2. Paste your domain in the form field (ex: your-vercel-project-name.vercel.app)
-3. Click the `Generate account association` button and follow the on-screen instructions for signing with your Farcaster wallet
-4. Copy the `accountAssociation` object
-
-### 2. Update Configuration
-
-Update your `minikit.config.ts` file to include the `accountAssociation` object:
-
-```ts
-export const minikitConfig = {
-    accountAssociation: {
-        "header": "your-header-here",
-        "payload": "your-payload-here",
-        "signature": "your-signature-here"
-    },
-    frame: {
-        // ... rest of your frame configuration
-    },
-}
-```
-
-### 3. Deploy Updates
-
-```bash
-vercel --prod
-```
-
-## Testing and Publishing
-
-### 1. Preview Your App
-
-Go to [base.dev/preview](https://base.dev/preview) to validate your app:
-
-1. Add your app URL to view the embeds and click the launch button to verify the app launches as expected
-2. Use the "Account association" tab to verify the association credentials were created correctly
-3. Use the "Metadata" tab to see the metadata added from the manifest and identify any missing fields
-
-### 2. Publish to Base App
-
-To publish your app, create a post in the Base app with your app's URL.
-
-## Learn More
-
-For detailed step-by-step instructions, see the [Create a Mini App tutorial](https://docs.base.org/docs/mini-apps/quickstart/create-new-miniapp/) in the Base documentation.
-
-
----
-
-## Disclaimer  
-
-This project is a **demo application** created by the **Base / Coinbase Developer Relations team** for **educational and demonstration purposes only**.  
-
-**There is no token, cryptocurrency, or investment product associated with Cubey, Base, or Coinbase.**  
-
-Any social media pages, tokens, or applications claiming to be affiliated with, endorsed by, or officially connected to Cubey, Base, or Coinbase are **unauthorized and fraudulent**.  
-
-We do **not** endorse or support any third-party tokens, apps, or projects using the Cubey name or branding.  
-
-> [!WARNING]
-> Do **not** purchase, trade, or interact with any tokens or applications claiming affiliation with Coinbase, Base, or Cubey.  
-> Coinbase and Base will never issue a token or ask you to connect your wallet for this demo.  
-
-For official Base developer resources, please visit:  
-- [https://base.org](https://base.org)  
-- [https://docs.base.org](https://docs.base.org)  
-
-----
+- The root page and `/game` render the same game page.
+- Contract addresses are configured through environment variables and are not hardcoded in gameplay logic.
+- Audio does not autoplay. The actual game audio is unlocked on user interaction when the player starts the run.

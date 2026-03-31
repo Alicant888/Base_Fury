@@ -1,34 +1,51 @@
 "use client";
 
-import sdk from '@farcaster/miniapp-sdk';
-import { farcasterConfig } from "../../farcaster.config";
+import { useState } from "react";
+import { appConfig } from "../../app.config";
 import styles from "./page.module.css";
 
 export default function Success() {
+  const [shareLabel, setShareLabel] = useState("SHARE");
 
   const handleShare = async () => {
+    const shareText = `I just started playing ${appConfig.name}. Jump in and try it yourself.`;
+
     try {
-      const text = `Yay! I just joined the waitlist for ${farcasterConfig.miniapp.name.toUpperCase()}! `;
+      if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+        await navigator.share({
+          title: appConfig.name,
+          text: shareText,
+          url: appConfig.url,
+        });
+        setShareLabel("SHARED");
+        return;
+      }
 
-      const result = await sdk.actions.composeCast({
-        text: text,
-        embeds: [farcasterConfig.miniapp.homeUrl]
-      });
-
-      // result.cast can be null if user cancels
-      if (result?.cast) {
-        console.log("Cast created successfully:", result.cast.hash);
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(`${shareText} ${appConfig.url}`);
+        setShareLabel("COPIED");
       } else {
-        console.log("User cancelled the cast");
+        window.open(appConfig.url, "_blank", "noopener,noreferrer");
+        setShareLabel("OPENED");
       }
     } catch (error) {
-      console.error("Error sharing cast:", error);
+      console.error("Error sharing app:", error);
+      setShareLabel("RETRY");
     }
+  };
+
+  const handleClose = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    window.location.assign("/");
   };
 
   return (
     <div className={styles.container}>
-      <button className={styles.closeButton} type="button">
+      <button className={styles.closeButton} type="button" onClick={handleClose}>
         ✕
       </button>
       
@@ -41,15 +58,15 @@ export default function Success() {
             </div>
           </div>
           
-          <h1 className={styles.title}>Welcome to the {farcasterConfig.miniapp.name.toUpperCase()}!</h1>
+          <h1 className={styles.title}>Welcome to {appConfig.name.toUpperCase()}!</h1>
           
           <p className={styles.subtitle}>
-            You&apos;re in! We&apos;ll notify you as soon as we launch.<br />
-            Get ready to experience the future of onchain marketing.
+            Your session is ready and the app now shares like a standard web experience.<br />
+            Launch the game, connect a wallet, and keep progress on Base.
           </p>
 
           <button onClick={handleShare} className={styles.shareButton}>
-            SHARE
+            {shareLabel}
           </button>
         </div>
       </div>

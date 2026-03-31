@@ -1,10 +1,40 @@
 import type { Game } from "phaser";
-import { isMiniApp, ready } from "./miniapp";
+
+export const GAME_LOADING_COMPLETE_EVENT = "base-fury:game-loading-complete";
+
+type PlatformWindow = Window & {
+  __baseFuryGameLoadingComplete?: boolean;
+};
+
+async function ready(): Promise<void> {
+  return;
+}
+
+async function isMiniApp(): Promise<boolean> {
+  return false;
+}
 
 export const platform = {
   ready,
   isMiniApp,
 };
+
+export function isGameLoadingComplete() {
+  if (typeof window === "undefined") return false;
+  return Boolean((window as PlatformWindow).__baseFuryGameLoadingComplete);
+}
+
+export function setGameLoadingComplete(isComplete: boolean) {
+  if (typeof window === "undefined") return;
+
+  const platformWindow = window as PlatformWindow;
+  platformWindow.__baseFuryGameLoadingComplete = isComplete;
+  window.dispatchEvent(new CustomEvent(GAME_LOADING_COMPLETE_EVENT, {
+    detail: {
+      isComplete,
+    },
+  }));
+}
 
 /**
  * RN WebView / mobile browsers: pause on hidden/blur, resume on visible/focus.

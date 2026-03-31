@@ -1,4 +1,5 @@
 import * as Phaser from "phaser";
+import { formatWalletAddress, getConnectedWalletAddress } from "@/src/platform/wallet";
 import { ATLAS_KEYS, AUDIO_KEYS, BG_FRAMES, GAME_WIDTH, setGameHeight } from "../config";
 import { IMAGE_KEYS } from "../config";
 import { SaveManager, SaveData } from "../systems/SaveManager";
@@ -13,21 +14,6 @@ type MiniAppUserInfo = {
   name: string;
   pfpUrl?: string;
 };
-
-function looksLikeWalletIdentifier(name: string): boolean {
-  const n = name.trim();
-  if (!n) return false;
-  if (/\.eth$/i.test(n)) return true;
-  if (/^0x[a-f0-9]{40}$/i.test(n)) return true;
-  if (/^0x[a-f0-9]{2,10}(?:\.{3}|…)[a-f0-9]{2,10}$/i.test(n)) return true;
-  return false;
-}
-
-function formatUsername(name: string): string {
-  const n = name.trim();
-  if (!n) return n;
-  return n.startsWith("@") ? n : `@${n}`;
-}
 
 export class OnboardingScene extends Phaser.Scene {
   private level = 1;
@@ -117,43 +103,19 @@ export class OnboardingScene extends Phaser.Scene {
       this.scale.off(Phaser.Scale.Events.RESIZE, onResize);
     });
 
-    void this.loadMiniAppUserInfo();
+    void this.loadPlayerProfile();
   }
 
-  private async loadMiniAppUserInfo() {
+  private async loadPlayerProfile() {
     try {
-      const { sdk } = await import("@farcaster/miniapp-sdk");
-      if (!(await sdk.isInMiniApp())) return;
-      const ctx = await sdk.context;
-      const username = ctx.user.username?.trim();
-      const displayName = ctx.user.displayName?.trim();
-      const safeDisplayName = displayName && !looksLikeWalletIdentifier(displayName) ? displayName : "";
-      const safeUsername = username && !looksLikeWalletIdentifier(username) ? username : "";
-      const name = safeUsername
-        ? formatUsername(safeUsername)
-        : safeDisplayName
-          ? safeDisplayName
-          : ctx.user.fid
-            ? `User #${ctx.user.fid}`
-            : "Player";
-      const pfpUrl = ctx.user.pfpUrl?.trim();
-      this.userInfo = { name, pfpUrl: pfpUrl || undefined };
+      const address = await getConnectedWalletAddress();
+      if (!address) return;
 
-      if (pfpUrl) {
-        this.load.setCORS("anonymous");
-        this.load.image(this.avatarTextureKey, pfpUrl);
-        this.load.once(Phaser.Loader.Events.COMPLETE, () => {
-          this.avatarLoaded = this.textures.exists(this.avatarTextureKey);
-          const zoom = this.scale.width / GAME_WIDTH;
-          const worldH = this.scale.height / zoom;
-          this.renderPage(worldH);
-        });
-        this.load.start();
-      } else {
-        const zoom = this.scale.width / GAME_WIDTH;
-        const worldH = this.scale.height / zoom;
-        this.renderPage(worldH);
-      }
+      this.userInfo = { name: formatWalletAddress(address) };
+
+      const zoom = this.scale.width / GAME_WIDTH;
+      const worldH = this.scale.height / zoom;
+      this.renderPage(worldH);
     } catch {
       // ignore
     }

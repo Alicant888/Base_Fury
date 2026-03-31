@@ -1,28 +1,21 @@
 import type { Metadata } from "next";
 import { Inter, Source_Code_Pro } from "next/font/google";
+import { appConfig } from "../app.config";
 import { SafeArea } from "./components/SafeArea";
-import { farcasterConfig } from "../farcaster.config";
 import { Providers } from "./providers";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const other = appConfig.baseAppId
+    ? {
+        "base:app_id": appConfig.baseAppId,
+      }
+    : undefined;
+
   return {
-    title: farcasterConfig.miniapp.name,
-    description: farcasterConfig.miniapp.description,
-    other: {
-      "fc:frame": JSON.stringify({
-        version: farcasterConfig.miniapp.version,
-        imageUrl: farcasterConfig.miniapp.heroImageUrl,
-        button: {
-          title: `${farcasterConfig.miniapp.name}`,
-          action: {
-            name: `Launch ${farcasterConfig.miniapp.name}`,
-            type: "launch_frame",
-          },
-        },
-      }),
-      "base:app_id": "699daec54fa7a77f84aa001f",
-    },
+    title: appConfig.name,
+    description: appConfig.description,
+    other,
   };
 }
 
@@ -42,13 +35,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Providers>
-      <html lang="en">
-        <body className={`${inter.variable} ${sourceCodePro.variable}`}>
+    <html lang="en">
+      <body className={`${inter.variable} ${sourceCodePro.variable}`}>
+        <Providers>
           <div style={{ fontFamily: 'Orbitron', visibility: 'hidden', position: 'absolute', pointerEvents: 'none' }}>.</div>
           <SafeArea>{children}</SafeArea>
-        </body>
-      </html>
-    </Providers>
+        </Providers>
+      </body>
+    </html>
   );
 }

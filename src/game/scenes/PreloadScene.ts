@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { platform } from "@/src/platform";
+import { platform, setGameLoadingComplete } from "@/src/platform";
 import { ATLAS_KEYS, AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, setGameHeight } from "../config";
 
 export class PreloadScene extends Phaser.Scene {
@@ -105,6 +105,7 @@ export class PreloadScene extends Phaser.Scene {
     // Base Mini App: hide the native splash screen once we're ready to show content.
     // Guarded so it doesn't crash outside Base/Farcaster.
     void platform.ready().finally(() => {
+      setGameLoadingComplete(true);
       this.scene.start("MenuScene");
     });
   }

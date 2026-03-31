@@ -1,5 +1,7 @@
 "use client";
 
+import { setGameLoadingComplete } from "@/src/platform";
+import { restoreGameWalletConnection } from "@/src/platform/wallet";
 import { useEffect, useRef, useState } from "react";
 
 type GameRenderer = "auto" | "canvas" | "webgl";
@@ -65,8 +67,10 @@ export function GameCanvas() {
     const container = containerRef.current;
     if (!container) return;
 
+    setGameLoadingComplete(false);
     setStatus("loading");
     setAttemptText(null);
+    void restoreGameWalletConnection();
 
     const root = document.documentElement;
     const body = document.body;
@@ -478,6 +482,7 @@ export function GameCanvas() {
 
     return () => {
       disposed = true;
+      setGameLoadingComplete(false);
       resumeRef.current = null;
 
       if (retryTimer) window.clearTimeout(retryTimer);
@@ -509,19 +514,30 @@ export function GameCanvas() {
   return (
     <>
       <div
-        ref={containerRef}
         style={{
           position: "fixed",
           inset: 0,
-          width: "100dvw",
-          height: "100dvh",
-          paddingTop: "env(safe-area-inset-top)",
-          boxSizing: "border-box",
-          overflow: "hidden",
           background: "#000",
+          display: "flex",
+          justifyContent: "center",
+          overflow: "hidden",
           touchAction: "none",
         }}
-      />
+      >
+        <div
+          ref={containerRef}
+          style={{
+            position: "relative",
+            width: "min(100dvw, 440px)",
+            maxWidth: "100%",
+            height: "100dvh",
+            paddingTop: "env(safe-area-inset-top)",
+            boxSizing: "border-box",
+            overflow: "hidden",
+            background: "#000",
+          }}
+        />
+      </div>
 
       {status === "resume" || status === "error" ? (
         <div

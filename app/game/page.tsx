@@ -1,8 +1,6 @@
-"use client";
-
-import { GameCanvas } from "./GameCanvas";
+import { GamePageClient } from "./GamePageClient";
 
 export default function GamePage() {
-  return <GameCanvas />;
+  return <GamePageClient />;
 }
 

@@ -1,10 +1,16 @@
 import * as Phaser from "phaser";
+import { AUTH_SESSION_CHANGED_EVENT, getAuthSession } from "@/src/platform/auth/client";
+import { hasAuthSessionForAddress } from "@/src/platform/auth/client";
+import { getConnectedWalletSession } from "@/src/platform/wallet";
+import { createPublicClient, createWalletClient, custom, encodeFunctionData, http, numberToHex } from "viem";
+import { base } from "viem/chains";
 import { AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, UI_SCALE, setGameHeight } from "../config";
 import { getBuilderCodeDataSuffix } from "../onchain/builderCode";
 import { sendCallsWithOptionalPaymaster } from "../onchain/sendCalls";
 import { SaveManager, SaveData } from "../systems/SaveManager";
 
 const DAY_MS = 86_400_000;
+const START_UNLOCK_DELAY_MS = 250;
 
 function getCheckInContractAddress(): `0x${string}` | null {
   const raw = process.env.NEXT_PUBLIC_CHECKIN_CONTRACT_ADDRESS?.trim();
@@ -20,24 +26,13 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
   const contractAddress = getCheckInContractAddress();
   if (!contractAddress) return null;
 
-  const [{ sdk }, viem, { base }] = await Promise.all([
-    import("@farcaster/miniapp-sdk"),
-    import("viem"),
-    import("viem/chains"),
-  ]);
+  const session = await getConnectedWalletSession();
+  if (!session || session.chainId !== base.id) return null;
 
-  if (!(await sdk.isInMiniApp())) return null;
-
-  const provider = await sdk.wallet.getEthereumProvider();
-  if (!provider) return null;
-
-  const transport = viem.custom(provider);
-  const walletClient = viem.createWalletClient({ chain: base, transport });
-  const publicClient = viem.createPublicClient({ chain: base, transport });
-
-  const existing = await walletClient.getAddresses();
-  const [account] = existing.length ? existing : await walletClient.requestAddresses();
-  if (!account) return null;
+  const { account, provider } = session;
+  const transport = custom(provider);
+  const publicClient = createPublicClient({ chain: base, transport: http() });
+  const walletClient = createWalletClient({ chain: base, transport });
 
   const abi = [
     {
@@ -75,15 +70,18 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
   const paymasterServiceUrl = process.env.NEXT_PUBLIC_PAYMASTER_PROXY_URL?.trim();
   const dataSuffix = getBuilderCodeDataSuffix();
   if (paymasterServiceUrl) {
-    const data = viem.encodeFunctionData({
+    const hasAuthSession = await hasAuthSessionForAddress(account);
+    if (!hasAuthSession) return null;
+
+    const data = encodeFunctionData({
       abi,
       functionName: "checkIn",
       args: [],
     });
     return sendCallsWithOptionalPaymaster({
-      provider: provider as { request(args: { method: string; params?: unknown[] }): Promise<unknown> },
+      provider,
       account,
-      chainIdHex: viem.numberToHex(base.id),
+      chainIdHex: numberToHex(base.id),
       calls: [{
         to: contractAddress,
         value: "0x0",
@@ -94,6 +92,7 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
   }
 
   return walletClient.writeContract({
+    chain: base,
     address: contractAddress,
     abi,
     functionName: "checkIn",
@@ -107,6 +106,8 @@ export class MenuScene extends Phaser.Scene {
   private startButton!: Phaser.GameObjects.Image;
   private menuMusic?: Phaser.Sound.BaseSound;
   private keepMenuMusicOnShutdown = false;
+  private hasUnlockedStart = false;
+  private startButtonUnlockTimer?: Phaser.Time.TimerEvent;
 
   constructor() {
     super("MenuScene");
@@ -137,11 +138,14 @@ export class MenuScene extends Phaser.Scene {
     this.startButton.on("pointerover", () => this.startButton.setTint(0xcccccc));
     this.startButton.on("pointerout", () => this.startButton.clearTint());
     this.startButton.on("pointerdown", () => {
+      if (!this.hasUnlockedStart) return;
       this.startButton.setTint(0x888888);
       this.unlockAudioOnce();
       this.startButton.disableInteractive();
       void this.handleStartPressed();
     });
+
+    this.setStartButtonUnlocked(false);
 
     const layout = (width: number, height: number) => {
       const zoom = width / GAME_WIDTH;
@@ -168,9 +172,24 @@ export class MenuScene extends Phaser.Scene {
     };
     this.scale.on(Phaser.Scale.Events.RESIZE, onResize);
 
+    const syncAuthGate = () => {
+      void this.refreshStartButtonAuthState();
+    };
+
+    void this.refreshStartButtonAuthState();
+
+    if (typeof window !== "undefined") {
+      window.addEventListener(AUTH_SESSION_CHANGED_EVENT, syncAuthGate);
+    }
+
     // Cleanup on scene shutdown.
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.scale.off(Phaser.Scale.Events.RESIZE, onResize);
+      this.startButtonUnlockTimer?.remove(false);
+      this.startButtonUnlockTimer = undefined;
+      if (typeof window !== "undefined") {
+        window.removeEventListener(AUTH_SESSION_CHANGED_EVENT, syncAuthGate);
+      }
       if (!this.keepMenuMusicOnShutdown) {
         this.menuMusic?.stop();
         this.menuMusic?.destroy();
@@ -194,6 +213,39 @@ export class MenuScene extends Phaser.Scene {
     this.menuMusic?.destroy();
     this.menuMusic = undefined;
     this.scene.start("GameScene", { level, save, showMenu });
+  }
+
+  private setStartButtonUnlocked(unlocked: boolean) {
+    this.startButtonUnlockTimer?.remove(false);
+    this.startButtonUnlockTimer = undefined;
+    this.startButton.setActive(false);
+    this.startButton.setVisible(false);
+    this.startButton.setAlpha(1);
+    this.startButton.clearTint();
+    this.startButton.disableInteractive();
+    this.hasUnlockedStart = false;
+
+    if (!unlocked) {
+      return;
+    }
+
+    this.startButtonUnlockTimer = this.time.delayedCall(START_UNLOCK_DELAY_MS, () => {
+      this.startButtonUnlockTimer = undefined;
+      if (!this.sys.isActive()) return;
+
+      this.hasUnlockedStart = true;
+      this.startButton.setVisible(true);
+      this.startButton.setActive(true);
+      this.startButton.clearTint();
+      this.startButton.setInteractive({ useHandCursor: true });
+    });
+  }
+
+  private async refreshStartButtonAuthState() {
+    const session = await getAuthSession();
+    if (!this.sys.isActive()) return;
+
+    this.setStartButtonUnlocked(Boolean(session));
   }
 
   private async handleStartPressed() {

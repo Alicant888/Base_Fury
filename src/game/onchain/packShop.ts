@@ -1,3 +1,5 @@
+import { hasAuthSessionForAddress } from "@/src/platform/auth/client";
+import { getConnectedWalletSession, requestWalletSession } from "@/src/platform/wallet";
 import { getBuilderCodeDataSuffix } from "./builderCode";
 import { sendCallsWithOptionalPaymaster } from "./sendCalls";
 
@@ -30,25 +32,21 @@ export function isPackShopOnchainEnabled(): boolean {
 }
 
 async function getWalletClients() {
-  const [{ sdk }, viem, { base }] = await Promise.all([
-    import("@farcaster/miniapp-sdk"),
+  const [session, viem, { base }] = await Promise.all([
+    getConnectedWalletSession(),
     import("viem"),
     import("viem/chains"),
   ]);
 
-  if (!(await sdk.isInMiniApp())) {
+  if (!session) {
     return null;
   }
 
-  const provider = await sdk.wallet.getEthereumProvider();
-  if (!provider) {
-    return null;
-  }
-
+  const { account, provider, chainId } = session;
   const transport = viem.custom(provider);
   const walletClient = viem.createWalletClient({ chain: base, transport });
   const publicClient = viem.createPublicClient({ chain: base, transport: viem.http() });
-  return { viem, base, provider, walletClient, publicClient };
+  return { viem, base, account, chainId, provider, walletClient, publicClient };
 }
 
 export async function getOnchainPackOwnership(): Promise<OnchainPackOwnership | null> {
@@ -71,10 +69,7 @@ export async function getOnchainPackOwnership(): Promise<OnchainPackOwnership | 
     },
   ] as const;
 
-  const { walletClient, publicClient } = clients;
-  const existing = await walletClient.getAddresses();
-  const [account] = existing.length ? existing : [];
-  if (!account) return null;
+  const { account, publicClient } = clients;
   const owned = await Promise.all([
     publicClient.readContract({
       address: contractAddress,
@@ -133,16 +128,14 @@ export async function buyPackWithEth({
     throw new Error("Pack shop contract is not configured");
   }
 
-  const clients = await getWalletClients();
-  if (!clients) {
-    throw new Error("ETH purchases are available only inside Base App");
-  }
-  const { viem, base, provider, walletClient } = clients;
-  const existing = await walletClient.getAddresses();
-  const [account] = existing.length
-    ? existing
-    : await walletClient.requestAddresses();
-  if (!account) throw new Error("No wallet account available");
+  const [session, viem, { base }] = await Promise.all([
+    requestWalletSession(),
+    import("viem"),
+    import("viem/chains"),
+  ]);
+  const { account, provider } = session;
+  const transport = viem.custom(provider);
+  const walletClient = viem.createWalletClient({ chain: base, transport });
 
   const abi = [
     {
@@ -163,8 +156,22 @@ export async function buyPackWithEth({
   });
 
   if (paymasterServiceUrl) {
+    const hasAuthSession = await hasAuthSessionForAddress(account);
+    if (!hasAuthSession) {
+      return walletClient.writeContract({
+        chain: base,
+        address: contractAddress,
+        abi,
+        functionName: "buyPack",
+        args: [packId],
+        value: viem.parseEther(valueEth),
+        dataSuffix: dataSuffix ?? undefined,
+        account,
+      });
+    }
+
     return sendCallsWithOptionalPaymaster({
-      provider: provider as { request(args: { method: string; params?: unknown[] }): Promise<unknown> },
+      provider,
       account,
       chainIdHex: viem.numberToHex(base.id),
       calls: [{
@@ -177,6 +184,7 @@ export async function buyPackWithEth({
   }
 
   return walletClient.writeContract({
+    chain: base,
     address: contractAddress,
     abi,
     functionName: "buyPack",

@@ -1,0 +1,45 @@
+.overlay {
+  position: fixed;
+  top: 67%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 40;
+  width: min(320px, calc(100vw - 48px));
+}
+
+.primary {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: Orbitron, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 14px;
+  text-transform: uppercase;
+  transition: transform 140ms ease, opacity 140ms ease, box-shadow 140ms ease;
+  color: #04101b;
+  background: linear-gradient(135deg, #6ff2ff, #5bc0ff);
+  box-shadow: 0 10px 28px rgba(91, 192, 255, 0.35);
+}
+
+.primary:hover {
+  transform: translateY(-1px);
+}
+
+.primary:disabled {
+  cursor: default;
+  opacity: 0.6;
+  transform: none;
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    top: 67%;
+    left: 50%;
+    width: min(320px, calc(100vw - 32px));
+  }
+}
