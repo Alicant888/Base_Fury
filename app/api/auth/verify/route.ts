@@ -129,18 +129,38 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Invalid signature" }, { status: 401 });
   }
 
-  const session = createAuthSession(parsedMessage.address as Address, parsedMessage.chainId);
-  const response = NextResponse.json({
-    success: true,
-    session,
-  });
+  try {
+    const session = createAuthSession(parsedMessage.address as Address, parsedMessage.chainId);
+    const response = NextResponse.json({
+      success: true,
+      session,
+    });
 
-  applyAuthSession(response, session);
-  logAuthDebug("auth/verify", "Created auth session", {
-    requestId,
-    address: maskDebugAddress(session.address),
-    chainId: session.chainId,
-    expiresAt: session.expiresAt,
-  });
-  return response;
+    applyAuthSession(response, session);
+    logAuthDebug("auth/verify", "Created auth session", {
+      requestId,
+      address: maskDebugAddress(session.address),
+      chainId: session.chainId,
+      expiresAt: session.expiresAt,
+    });
+    return response;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown auth session error";
+
+    logAuthDebug("auth/verify", "Failed to create auth session", {
+      requestId,
+      address: maskDebugAddress(address),
+      error: message,
+    });
+
+    if (/AUTH_SESSION_SECRET/i.test(message)) {
+      return NextResponse.json({
+        message: "Server auth session is not configured. Set AUTH_SESSION_SECRET in the deployed environment.",
+      }, { status: 500 });
+    }
+
+    return NextResponse.json({
+      message: "Failed to create auth session",
+    }, { status: 500 });
+  }
 }

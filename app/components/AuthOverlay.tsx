@@ -22,6 +22,11 @@ type WalletConnectAuthResult = {
   signature: `0x${string}`;
 };
 
+type VerifyResponse = {
+  message?: string;
+  session?: AuthSession;
+};
+
 function fallbackToPersonalSign(error: unknown) {
   const message = String((error as { message?: unknown })?.message ?? error ?? "");
   return /wallet_connect|method_not_supported|not supported|unsupported|-32601/i.test(message);
@@ -78,6 +83,21 @@ async function fetchSession() {
   }
 
   return (await response.json()) as SessionResponse;
+}
+
+async function readVerifyResponse(response: Response): Promise<VerifyResponse> {
+  const raw = await response.text();
+  if (!raw) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(raw) as VerifyResponse;
+  } catch {
+    return {
+      message: response.ok ? "Authentication failed" : `Authentication failed (${response.status})`,
+    };
+  }
 }
 
 export function AuthOverlay() {
@@ -255,10 +275,7 @@ export function AuthOverlay() {
           body: JSON.stringify(authPayload),
         });
 
-        const verifyData = (await verifyResponse.json()) as {
-          message?: string;
-          session?: AuthSession;
-        };
+        const verifyData = await readVerifyResponse(verifyResponse);
 
         if (!verifyResponse.ok || !verifyData.session) {
           throw new Error(verifyData.message || "Authentication failed");
@@ -291,10 +308,10 @@ export function AuthOverlay() {
         type="button"
         onClick={handleSignIn}
         disabled={isPending}
-        title={errorMessage || undefined}
       >
         {isPending ? "CONNECTING" : "CONNECT WALLET"}
       </button>
+      {errorMessage ? <p className={styles.error}>{errorMessage}</p> : null}
     </aside>
   );
 }
