@@ -25,6 +25,8 @@ interface SendCallsParams {
   paymasterServiceUrl?: string | null;
 }
 
+type PaymasterSupport = "supported" | "unsupported" | "unknown";
+
 function wait(ms: number) {
   return new Promise<void>((resolve) => {
     setTimeout(resolve, ms);
@@ -85,6 +87,14 @@ function extractTxHash(status: WalletSendCallsStatus): `0x${string}` | null {
   return null;
 }
 
+function isCapabilitySupported(value: unknown): boolean {
+  if (value === true) return true;
+  if (typeof value === "string") {
+    return value.toLowerCase() === "supported";
+  }
+  return false;
+}
+
 function isVersionError(error: unknown): boolean {
   const message = String((error as { message?: unknown })?.message ?? error ?? "");
   return /version|invalid params|-32602/i.test(message);
@@ -94,7 +104,7 @@ async function supportsPaymaster(params: {
   provider: RpcProvider;
   account: `0x${string}`;
   chainIdHex: `0x${string}`;
-}): Promise<boolean> {
+}): Promise<PaymasterSupport> {
   const { provider, account, chainIdHex } = params;
   try {
     const capabilitiesRaw = await withTimeout(
@@ -110,10 +120,15 @@ async function supportsPaymaster(params: {
     const paymasterCapability =
       capabilities?.[chainIdHex]?.paymasterService
       ?? capabilities?.[chainIdDecimal]?.paymasterService;
-    return paymasterCapability?.supported === true;
+    return isCapabilitySupported(paymasterCapability?.supported) ? "supported" : "unsupported";
   } catch {
-    return false;
+    return "unknown";
   }
+}
+
+function isPaymasterCapabilityError(error: unknown): boolean {
+  const message = String((error as { message?: unknown })?.message ?? error ?? "");
+  return /paymaster|5700|4100|capability required|not supported/i.test(message);
 }
 
 async function sendCallsWithVersion(params: {
@@ -182,27 +197,39 @@ export async function sendCallsWithOptionalPaymaster(params: SendCallsParams): P
     calls: attributedCalls,
   };
 
-  const capabilities: Record<string, unknown> = {};
   const trimmedUrl = paymasterServiceUrl?.trim();
+  let shouldTryPaymaster = false;
   if (trimmedUrl) {
-    const paymasterSupported = await supportsPaymaster({ provider, account, chainIdHex });
-    if (paymasterSupported) {
-      capabilities.paymasterService = {
+    const paymasterSupport = await supportsPaymaster({ provider, account, chainIdHex });
+    shouldTryPaymaster = paymasterSupport !== "unsupported";
+    if (shouldTryPaymaster) {
+      payload.capabilities = {
+        ...(typeof payload.capabilities === "object" && payload.capabilities ? payload.capabilities as Record<string, unknown> : {}),
+        paymasterService: {
         url: trimmedUrl,
+        },
       };
     }
-  }
-
-  if (Object.keys(capabilities).length > 0) {
-    payload.capabilities = capabilities;
   }
 
   let sendResult: unknown;
   try {
     sendResult = await sendCallsWithVersion({ provider, payload, version: "2.0.0" });
   } catch (error) {
-    if (!isVersionError(error)) throw error;
-    sendResult = await sendCallsWithVersion({ provider, payload, version: "1.0" });
+    if (shouldTryPaymaster && isPaymasterCapabilityError(error)) {
+      const fallbackPayload = { ...payload };
+      delete fallbackPayload.capabilities;
+
+      try {
+        sendResult = await sendCallsWithVersion({ provider, payload: fallbackPayload, version: "2.0.0" });
+      } catch (fallbackError) {
+        if (!isVersionError(fallbackError)) throw fallbackError;
+        sendResult = await sendCallsWithVersion({ provider, payload: fallbackPayload, version: "1.0" });
+      }
+    } else {
+      if (!isVersionError(error)) throw error;
+      sendResult = await sendCallsWithVersion({ provider, payload, version: "1.0" });
+    }
   }
 
   const callsId = extractCallsId(sendResult);
