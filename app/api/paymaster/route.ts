@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { isAddress, isAddressEqual, type Address } from "viem";
-import { applyAuthSession, logAuthDebug, maskDebugAddress, readAuthSession, refreshAuthSession } from "@/src/platform/auth/server";
+import {
+  applyAuthSession,
+  logAuthDebug,
+  maskDebugAddress,
+  readAuthSession,
+  readPaymasterAuthSession,
+  refreshAuthSession,
+} from "@/src/platform/auth/server";
 
 type RateLimitBucket = {
   windowStartMs: number;
@@ -52,7 +59,9 @@ function getRequestOrigin(request: NextRequest): string | null {
   return normalizeOrigin(request.headers.get("referer"));
 }
 
-function isOriginAllowed(request: NextRequest): boolean {
+function isOriginAllowed(request: NextRequest, skipOriginCheck = false): boolean {
+  if (skipOriginCheck) return true;
+
   const allowedOrigins = getAllowedOrigins();
   const requireOrigin = process.env.PAYMASTER_REQUIRE_ORIGIN?.trim() === "true";
   if (allowedOrigins.length === 0 && !requireOrigin) return true;
@@ -199,15 +208,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "CDP_PAYMASTER_URL is not configured" }, { status: 500 });
   }
 
-  if (!isOriginAllowed(request)) {
+  const cookieSession = readAuthSession(request);
+  const paymasterTokenSession = readPaymasterAuthSession(request);
+  const authSession = cookieSession ?? paymasterTokenSession;
+
+  if (!isOriginAllowed(request, Boolean(paymasterTokenSession))) {
     logAuthDebug("paymaster", "Rejected request because origin is not allowlisted", {
       requestId,
       origin: getRequestOrigin(request),
+      hasPaymasterToken: Boolean(paymasterTokenSession),
     });
     return NextResponse.json({ message: "Origin is not allowed" }, { status: 403 });
   }
 
-  const authSession = readAuthSession(request);
   if (!authSession) {
     logAuthDebug("paymaster", "Rejected unauthenticated request", {
       requestId,
@@ -335,10 +348,9 @@ export async function POST(request: NextRequest) {
     });
 
     const responseBody = await upstream.text();
-    const refreshedSession = refreshAuthSession(authSession);
     logAuthDebug("paymaster", "Upstream paymaster response received", {
       requestId,
-      address: maskDebugAddress(refreshedSession.address),
+      address: maskDebugAddress(authSession.address),
       rpcMethods,
       status: upstream.status,
     });
@@ -350,7 +362,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    applyAuthSession(response, refreshedSession);
+    if (cookieSession) {
+      applyAuthSession(response, refreshAuthSession(cookieSession));
+    }
     return response;
   } catch (error) {
     logAuthDebug("paymaster", "Upstream paymaster request failed", {

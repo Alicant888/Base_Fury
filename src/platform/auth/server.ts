@@ -5,6 +5,7 @@ import {
   AUTH_NONCE_TTL_MS,
   AUTH_SESSION_COOKIE_NAME,
   AUTH_SESSION_TTL_MS,
+  PAYMASTER_AUTH_TOKEN_TTL_MS,
   type AuthSession,
 } from "./shared";
 
@@ -21,6 +22,16 @@ if (!globalNonceStore.__authNonceStore) {
 const authNonceStore = globalNonceStore.__authNonceStore;
 
 type AuthDebugDetails = Record<string, unknown>;
+type ExpiringSignedPayload = {
+  expiresAt: string;
+};
+
+export interface PaymasterAuthToken {
+  address: Address;
+  chainId: number;
+  issuedAt: string;
+  expiresAt: string;
+}
 
 function getSessionSecret() {
   const configured = process.env.AUTH_SESSION_SECRET?.trim();
@@ -79,13 +90,30 @@ function isValidSessionPayload(value: unknown): value is AuthSession {
   return true;
 }
 
-function encodeSession(session: AuthSession) {
-  const payload = Buffer.from(JSON.stringify(session)).toString("base64url");
-  const signature = createSessionSignature(payload);
-  return `${payload}.${signature}`;
+function isValidPaymasterAuthTokenPayload(value: unknown): value is PaymasterAuthToken {
+  if (!value || typeof value !== "object") return false;
+
+  const token = value as Partial<PaymasterAuthToken>;
+  if (typeof token.address !== "string" || !isAddress(token.address)) return false;
+  if (typeof token.chainId !== "number" || !Number.isInteger(token.chainId) || token.chainId <= 0) {
+    return false;
+  }
+  if (typeof token.issuedAt !== "string" || Number.isNaN(Date.parse(token.issuedAt))) return false;
+  if (typeof token.expiresAt !== "string" || Number.isNaN(Date.parse(token.expiresAt))) return false;
+
+  return true;
 }
 
-function decodeSession(token: string | undefined): AuthSession | null {
+function encodeSignedPayload<T extends ExpiringSignedPayload>(payload: T) {
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = createSessionSignature(encodedPayload);
+  return `${encodedPayload}.${signature}`;
+}
+
+function decodeSignedPayload<T extends ExpiringSignedPayload>(
+  token: string | undefined,
+  validator: (value: unknown) => value is T,
+): T | null {
   if (!token) return null;
 
   const [payload, signature] = token.split(".");
@@ -99,12 +127,49 @@ function decodeSession(token: string | undefined): AuthSession | null {
 
   try {
     const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    if (!isValidSessionPayload(parsed)) return null;
+    if (!validator(parsed)) return null;
     if (Date.parse(parsed.expiresAt) <= Date.now()) return null;
     return parsed;
   } catch {
     return null;
   }
+}
+
+function encodeSession(session: AuthSession) {
+  return encodeSignedPayload(session);
+}
+
+function decodeSession(token: string | undefined): AuthSession | null {
+  return decodeSignedPayload(token, isValidSessionPayload);
+}
+
+export function createPaymasterAuthToken(session: AuthSession): string {
+  return encodeSignedPayload({
+    address: session.address,
+    chainId: session.chainId,
+    issuedAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + PAYMASTER_AUTH_TOKEN_TTL_MS).toISOString(),
+  });
+}
+
+export function readPaymasterAuthToken(request: NextRequest): PaymasterAuthToken | null {
+  const headerToken = request.headers.get("x-paymaster-auth")?.trim();
+  const queryToken = request.nextUrl.searchParams.get("auth")?.trim();
+  return decodeSignedPayload(headerToken || queryToken || undefined, isValidPaymasterAuthTokenPayload);
+}
+
+function paymasterTokenToSession(token: PaymasterAuthToken): AuthSession {
+  return {
+    address: token.address,
+    chainId: token.chainId,
+    issuedAt: token.issuedAt,
+    expiresAt: token.expiresAt,
+  };
+}
+
+export function readPaymasterAuthSession(request: NextRequest): AuthSession | null {
+  const token = readPaymasterAuthToken(request);
+  return token ? paymasterTokenToSession(token) : null;
 }
 
 export function createAuthSession(address: Address, chainId: number): AuthSession {

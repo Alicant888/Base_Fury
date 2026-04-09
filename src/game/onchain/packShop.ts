@@ -1,4 +1,4 @@
-import { hasAuthSessionForAddress } from "@/src/platform/auth/client";
+import { getPaymasterServiceUrlForAddress } from "@/src/platform/auth/client";
 import { getConnectedWalletSession, requestWalletSession } from "@/src/platform/wallet";
 import { getBuilderCodeDataSuffix } from "./builderCode";
 import { sendCallsWithOptionalPaymaster } from "./sendCalls";
@@ -156,8 +156,8 @@ export async function buyPackWithEth({
   });
 
   if (paymasterServiceUrl) {
-    const hasAuthSession = await hasAuthSessionForAddress(account);
-    if (!hasAuthSession) {
+    const authorizedPaymasterUrl = await getPaymasterServiceUrlForAddress(paymasterServiceUrl, account);
+    if (!authorizedPaymasterUrl) {
       return walletClient.writeContract({
         chain: base,
         address: contractAddress,
@@ -179,7 +179,7 @@ export async function buyPackWithEth({
         value: viem.toHex(viem.parseEther(valueEth)),
         data: callData,
       }],
-      paymasterServiceUrl,
+      paymasterServiceUrl: authorizedPaymasterUrl,
     });
   }
 

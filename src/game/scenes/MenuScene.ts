@@ -1,6 +1,5 @@
 import * as Phaser from "phaser";
-import { AUTH_SESSION_CHANGED_EVENT, getAuthSession } from "@/src/platform/auth/client";
-import { hasAuthSessionForAddress } from "@/src/platform/auth/client";
+import { AUTH_SESSION_CHANGED_EVENT, getAuthSession, getPaymasterServiceUrlForAddress } from "@/src/platform/auth/client";
 import { getConnectedWalletSession } from "@/src/platform/wallet";
 import { createPublicClient, createWalletClient, custom, encodeFunctionData, http, numberToHex } from "viem";
 import { base } from "viem/chains";
@@ -115,8 +114,8 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
   const paymasterServiceUrl = process.env.NEXT_PUBLIC_PAYMASTER_PROXY_URL?.trim();
   const dataSuffix = getBuilderCodeDataSuffix();
   if (paymasterServiceUrl) {
-    const hasAuthSession = await hasAuthSessionForAddress(account);
-    if (hasAuthSession) {
+    const authorizedPaymasterUrl = await getPaymasterServiceUrlForAddress(paymasterServiceUrl, account);
+    if (authorizedPaymasterUrl) {
       const data = encodeFunctionData({
         abi,
         functionName: "checkIn",
@@ -131,7 +130,7 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
           value: "0x0",
           data,
         }],
-        paymasterServiceUrl,
+        paymasterServiceUrl: authorizedPaymasterUrl,
       }).then((txHash) => {
         cacheCheckInForDay(account, today);
         return txHash;
