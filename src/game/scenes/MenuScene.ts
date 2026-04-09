@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import { AUTH_SESSION_CHANGED_EVENT, getAuthSession, getPaymasterServiceUrlForAddress } from "@/src/platform/auth/client";
-import { getConnectedWalletSession } from "@/src/platform/wallet";
+import { requestWalletSession } from "@/src/platform/wallet";
 import { createPublicClient, createWalletClient, custom, encodeFunctionData, http, numberToHex } from "viem";
 import { base } from "viem/chains";
 import { AUDIO_KEYS, GAME_WIDTH, IMAGE_KEYS, UI_SCALE, setGameHeight } from "../config";
@@ -64,8 +64,10 @@ async function ensureDailyOnchainCheckIn(): Promise<`0x${string}` | null> {
   const contractAddress = getCheckInContractAddress();
   if (!contractAddress) return null;
 
-  const session = await getConnectedWalletSession();
-  if (!session || session.chainId !== base.id) return null;
+  const session = await requestWalletSession();
+  if (session.chainId !== base.id) {
+    throw new Error("Wallet is not connected to Base");
+  }
 
   const { account, provider } = session;
   const transport = custom(provider);
